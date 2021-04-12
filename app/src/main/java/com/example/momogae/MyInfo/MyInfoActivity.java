@@ -1,9 +1,13 @@
 package com.example.momogae.MyInfo;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -22,6 +26,9 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.io.ByteArrayOutputStream;
 
 public class MyInfoActivity extends AppCompatActivity {
 
@@ -48,6 +55,7 @@ public class MyInfoActivity extends AppCompatActivity {
         profileUserID.setText(userID);
 
         profileImage = (ImageView) findViewById(R.id.profileImg);
+
         profileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -57,7 +65,7 @@ public class MyInfoActivity extends AppCompatActivity {
             }
         });
 
-        FirebaseStorage.getInstance().getReference(userID+"/profile").child("profileImage").getDownloadUrl().addOnFailureListener(new OnFailureListener() {
+        FirebaseStorage.getInstance().getReference(userID + "/profile").child("profileImage").getDownloadUrl().addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 Glide.with(getApplicationContext()).load(R.drawable.ic_user)
@@ -75,24 +83,27 @@ public class MyInfoActivity extends AppCompatActivity {
 
         // FRAGMENT
         mPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
-            private final Fragment[] mFragments = new Fragment[] {
+            private final Fragment[] mFragments = new Fragment[]{
                     new MyInfoFragment(),
-                    //new MyPostsFragment(),
+                    new MyPostsFragment(),
                     //new MyTopPostsFragment()
             };
-            private final String[] mFragmentNames = new String[] {
+            private final String[] mFragmentNames = new String[]{
                     getString(R.string.heading_my_info),
                     getString(R.string.heading_my_posts),
                     getString(R.string.heading_my_top_posts)
             };
+
             @Override
             public Fragment getItem(int position) {
                 return mFragments[position];
             }
+
             @Override
             public int getCount() {
                 return mFragments.length;
             }
+
             @Override
             public CharSequence getPageTitle(int position) {
                 return mFragmentNames[position];
@@ -100,15 +111,63 @@ public class MyInfoActivity extends AppCompatActivity {
         };
 
 
-
-
-        // NavigationView
-
-
     }
 
 
+        @Override
+        protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+            //Date date = new Date(System.currentTimeMillis());
+            super.onActivityResult(requestCode, resultCode, data);
+            try {
+                if (resultCode == RESULT_OK) {
+                    if (requestCode == PICK_FROM_ALBUM) {
+                        Uri selectedImageUri = data.getData();
+
+                        // Set the image in ImageView
+                        profileImage.setImageURI(selectedImageUri);
+
+                        // [START upload_memory]
+                        profileImage.setDrawingCacheEnabled(true);
+                        profileImage.buildDrawingCache();
+
+                        Bitmap bitmap = ((BitmapDrawable) profileImage.getDrawable()).getBitmap();
+                        ByteArrayOutputStream uploadStream = new ByteArrayOutputStream();
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, uploadStream);
+                        byte[] bytes = uploadStream.toByteArray();
+
+                        UploadTask uploadTask = mStorage.child(userID + "/profile/profileImage").putBytes(bytes);
+                        uploadTask.addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception exception) {
+                                // Handle unsuccessful uploads
+                                Log.e("디버그", "업로드안됨*****************************");
+                            }
+                        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
+                                // ...Log.e("디버그", "업로드됨!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!11*****************************");}
+                            }
+                        });
+                        // [END upload_memory]
+                    }
+                }
+            } catch (Exception e) {
+                Log.e("FileSelectorActivity", "File select error", e);
+            }
+        }
+
+        public String getPathFromURI(Uri contentUri) {
+            String res = null;
+            String[] proj = {MediaStore.Images.Media.DATA};
+            Cursor cursor = getContentResolver().query(contentUri, proj, null, null, null);
+            if (cursor.moveToFirst()) {
+                int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                res = cursor.getString(column_index);
+            }
+            cursor.close();
+            return res;
+        }
 
 
-
-}
+    }

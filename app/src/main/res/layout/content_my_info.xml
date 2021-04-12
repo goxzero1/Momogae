@@ -9,12 +9,12 @@
     tools:context=".MyInfo.MyInfoActivity">
 
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="17dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:visibility="visible">
 
         <LinearLayout
             android:layout_width="0dp"
@@ -22,7 +22,8 @@
             android:layout_gravity="center"
             android:layout_weight="1"
             android:gravity="center"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="invisible">
 
 
             <TextView
@@ -49,7 +50,7 @@
             android:layout_width="105dp"
             android:layout_height="105dp"
             android:src="@drawable/ic_action_account_circle_40"
-            app:civ_border_color="@color/colorAccent"/>
+            app:civ_border_color="@color/colorAccent" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -57,7 +58,8 @@
             android:layout_gravity="center"
             android:layout_weight="1"
             android:gravity="center"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="invisible">
 
 
             <TextView

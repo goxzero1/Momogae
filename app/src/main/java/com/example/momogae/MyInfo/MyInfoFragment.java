@@ -5,16 +5,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.example.momogae.Login.SharedPreference;
 import com.example.momogae.R;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -31,9 +28,10 @@ public class MyInfoFragment extends Fragment {
     TextView userIDView;
     TextView userNameView;
     TextView userPhoneView;
+    TextView userEmailView;
 
-    EditText userPasswordView;
-    EditText userPasswordConfrimView;
+    //EditText userPasswordView;
+    //EditText userPasswordConfrimView;
 
     Button modify;
 
@@ -55,11 +53,12 @@ public class MyInfoFragment extends Fragment {
         userIDView = view.findViewById(R.id.userID);
         userNameView = view.findViewById(R.id.userName);
         userPhoneView = view.findViewById(R.id.userPhone);
-        userPasswordView = view.findViewById(R.id.edt_password);
-        userPasswordConfrimView = view.findViewById(R.id.edt_password_confirm);
+        userEmailView = view.findViewById(R.id.userEmail);
+        //userPasswordView = view.findViewById(R.id.edt_password);
+        //userPasswordConfrimView = view.findViewById(R.id.edt_password_confirm);
 
-        modify = view.findViewById(R.id.submit);
-        modify.setOnClickListener(new View.OnClickListener() {
+        //modify = view.findViewById(R.id.submit);
+        /*modify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mDatabaseReference.child(userID).child("Password").setValue(userPasswordView.getText().toString()).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -69,7 +68,7 @@ public class MyInfoFragment extends Fragment {
                     }
                 });
             }
-        });
+        });*/
 
         mDatabaseReference.child("users").child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
             //ataSnapshot user;
@@ -78,6 +77,7 @@ public class MyInfoFragment extends Fragment {
                 userIDView.setText(dataSnapshot.child("ID").getValue().toString());
                 userNameView.setText(dataSnapshot.child("Name").getValue().toString());
                 userPhoneView.setText(dataSnapshot.child("Phone").getValue().toString());
+                userEmailView.setText(dataSnapshot.child("Email").getValue().toString());
             }
 
             @Override

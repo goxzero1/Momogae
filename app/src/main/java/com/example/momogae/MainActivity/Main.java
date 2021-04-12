@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.example.momogae.Board.BoardActivity;
-import com.example.momogae.Chat.ChatActivity;
+import com.example.momogae.Chat.SplashActivity;
 import com.example.momogae.Classification.ClassificationActivity;
 import com.example.momogae.Diary.DiaryActivity;
 import com.example.momogae.Login.SharedPreference;
@@ -53,7 +53,7 @@ public class Main extends AppCompatActivity {
         imageButton2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), ChatActivity.class);
+                Intent intent = new Intent(getApplicationContext(), SplashActivity.class);
                 startActivity(intent);
             }
 
