@@ -11,7 +11,7 @@ import com.example.momogae.Login.LoginActivity;
 import com.example.momogae.Login.SharedPreference;
 
 public class SplashActivity extends Activity {
-    private final int SPLASH_DISPLAY_LENGTH = 200;
+    private final int SPLASH_DISPLAY_LENGTH = 2000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

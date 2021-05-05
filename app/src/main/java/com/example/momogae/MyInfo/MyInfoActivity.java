@@ -91,7 +91,6 @@ public class MyInfoActivity extends AppCompatActivity {
             private final String[] mFragmentNames = new String[]{
                     getString(R.string.heading_my_info),
                     getString(R.string.heading_my_posts),
-                    getString(R.string.heading_my_top_posts)
             };
 
             @Override

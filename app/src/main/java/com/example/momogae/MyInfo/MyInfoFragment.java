@@ -1,13 +1,17 @@
 package com.example.momogae.MyInfo;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
 import com.example.momogae.Login.SharedPreference;
@@ -20,6 +24,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class MyInfoFragment extends Fragment {
     DatabaseReference mDatabaseReference;
     StorageReference mStorageReference;
@@ -30,10 +37,12 @@ public class MyInfoFragment extends Fragment {
     TextView userPhoneView;
     TextView userEmailView;
 
-    //EditText userPasswordView;
-    //EditText userPasswordConfrimView;
+    EditText userPasswordView;
+    EditText userPasswordConfirmView;
 
     Button modify;
+
+
 
 
     @Override
@@ -54,21 +63,29 @@ public class MyInfoFragment extends Fragment {
         userNameView = view.findViewById(R.id.userName);
         userPhoneView = view.findViewById(R.id.userPhone);
         userEmailView = view.findViewById(R.id.userEmail);
-        //userPasswordView = view.findViewById(R.id.edt_password);
-        //userPasswordConfrimView = view.findViewById(R.id.edt_password_confirm);
+        userPasswordView = view.findViewById(R.id.edt_password);
+        userPasswordConfirmView = view.findViewById(R.id.edt_password_confirm);
 
-        //modify = view.findViewById(R.id.submit);
-        /*modify.setOnClickListener(new View.OnClickListener() {
+        modify = view.findViewById(R.id.submit);
+        modify.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View view) {
-                mDatabaseReference.child(userID).child("Password").setValue(userPasswordView.getText().toString()).addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Toast.makeText(getContext(),"MODIFIED!", Toast.LENGTH_SHORT);
+
+                    mDatabaseReference.child("users").child(userID).child("Password").setValue(userPasswordConfirmView.getText().toString());
+                    {
+
+                        String user = mDatabaseReference.getKey();
+                        Map<String, Object> childUpdates = new HashMap<>();
+                        childUpdates.replace("password", userPasswordConfirmView.getText().toString());
+
+
+                        mDatabaseReference.updateChildren(childUpdates);
+                        Toast.makeText(getActivity(), "비밀번호를 변경하였습니다.", Toast.LENGTH_SHORT).show();
+
                     }
-                });
             }
-        });*/
+        });
 
         mDatabaseReference.child("users").child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
             //ataSnapshot user;

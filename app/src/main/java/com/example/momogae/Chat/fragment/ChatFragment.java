@@ -664,7 +664,7 @@ public class ChatFragment extends Fragment {
                 messageViewHolder.msg_name.setText(userModel.getUsernm());
 
                 if (FirebaseStorage.getInstance().getReference(userModel.ID+"/profile").child("profileImage")==null) {
-                    Glide.with(getContext()).load(R.drawable.user)
+                    Glide.with(getContext()).load(R.drawable.ic_user)
                             .apply(requestOptions)
                             .into(messageViewHolder.user_photo);
                 } else{

@@ -1,59 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
+    android:id="@+id/detailInfo_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorAccent"
     android:gravity="center|top"
-    android:paddingHorizontal="15dp"
-    android:id="@+id/detailInfo_layout">
+    android:orientation="vertical"
+    android:paddingHorizontal="15dp">
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/colorAccent">
+
         <LinearLayout
-            android:orientation="vertical"
             android:id="@+id/layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            >
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <RelativeLayout
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/edt_password_confirm2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="visible">
-
-                    <TextView
-                        android:id="@+id/userPasswordConfirm"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentTop="true"
-                        android:fontFamily="@font/delius_unicase"
-                        android:text="Password Confirmation"
-                        android:textColor="#808080"
-                        android:visibility="invisible" />
-
-                    <com.rengwuxian.materialedittext.MaterialEditText
-                        android:id="@+id/edt_password_confirm"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:drawableRight="@drawable/ic_lock"
-                        android:fontFamily="@font/delius_unicase"
-                        android:inputType="textPassword"
-                        android:textSize="30dp"
-                        android:visibility="gone"
-                        tools:visibility="gone" />
-                </RelativeLayout>
+                    android:layout_gravity="center"
+                    android:drawableRight="@drawable/ic_lock"
+                    android:fontFamily="@font/delius_unicase"
+                    android:inputType="textPassword"
+                    android:textSize="30dp"
+                    android:visibility="invisible" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -66,7 +48,7 @@
                         android:layout_alignParentLeft="true"
                         android:layout_alignParentTop="true"
                         android:fontFamily="sans-serif-thin"
-                        android:text="ID"
+                        android:text="아이디"
                         android:textColor="#808080" />
 
                     <TextView
@@ -78,13 +60,14 @@
                         android:fontFamily="sans-serif-medium"
                         android:text="ID"
                         android:textSize="25dp" />
+
                 </RelativeLayout>
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawableRight="@drawable/ic_lock"
-                    android:visibility="gone">
+                    android:visibility="visible">
 
                     <TextView
                         android:id="@+id/userPassword"
@@ -92,8 +75,8 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:layout_alignParentTop="true"
-                        android:fontFamily="@font/delius_unicase"
-                        android:text="Password"
+                        android:fontFamily="sans-serif-thin"
+                        android:text="비밀번호"
                         android:textColor="#808080" />
 
                     <com.rengwuxian.materialedittext.MaterialEditText
@@ -101,12 +84,35 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:drawableRight="@drawable/ic_lock"
-                        android:fontFamily="@font/delius_unicase"
+                        android:fontFamily="sans-serif"
                         android:inputType="textPassword"
                         android:textSize="30dp"
                         android:visibility="visible"
                         tools:visibility="visible" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/userPasswordConfirm"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentTop="true"
+                        android:fontFamily="sans-serif-thin"
+                        android:text="비밀번호 확인"
+                        android:textColor="#808080" />
+
+                    <com.rengwuxian.materialedittext.MaterialEditText
+                        android:id="@+id/edt_password_confirm"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:fontFamily="sans-serif"
+                        android:inputType="textPassword"
+                        android:textSize="30dp" />
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -120,7 +126,7 @@
                         android:layout_alignParentLeft="true"
                         android:layout_alignParentTop="true"
                         android:fontFamily="sans-serif-thin"
-                        android:text="Name"
+                        android:text="이름"
                         android:textColor="#808080" />
 
                     <TextView
@@ -145,7 +151,7 @@
                         android:layout_alignParentLeft="true"
                         android:layout_alignParentTop="true"
                         android:fontFamily="sans-serif-thin"
-                        android:text="Phone"
+                        android:text="번호"
                         android:textColor="#808080" />
 
                     <TextView
@@ -170,7 +176,7 @@
                         android:layout_alignParentLeft="true"
                         android:layout_alignParentTop="true"
                         android:fontFamily="sans-serif-thin"
-                        android:text="Email"
+                        android:text="이메일"
                         android:textColor="#808080" />
 
                     <TextView
@@ -190,10 +196,11 @@
                     android:layout_width="149dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:fontFamily="@font/delius_unicase"
-                    android:text="Modify"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="변경"
                     android:textStyle="bold"
-                    android:visibility="gone" />
+                    android:visibility="visible" />
+
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

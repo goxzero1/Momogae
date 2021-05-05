@@ -214,7 +214,7 @@ public class ChatRoomFragment extends Fragment {
             storageReference.child(chatRoomModel.getPhoto()).child("profileImage").getDownloadUrl().addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    Glide.with(getActivity()).load(R.drawable.user)
+                    Glide.with(getActivity()).load(R.drawable.ic_user)
                             .apply(requestOptions)
                             .into(roomViewHolder.room_image);
                 }

@@ -180,7 +180,7 @@ public class SelectUserActivity extends AppCompatActivity {
             FirebaseStorage.getInstance().getReference(user.getKey()+"/profile").child("profileImage").getDownloadUrl().addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    Glide.with(getApplicationContext()).load(R.drawable.user)
+                    Glide.with(getApplicationContext()).load(R.drawable.ic_user)
                             .apply(requestOptions)
                             .into(customViewHolder.user_photo);
                 }
