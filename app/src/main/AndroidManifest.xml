@@ -40,9 +40,8 @@
 
         <activity
             android:name=".Board.BoardActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-            //위에꺼 추가 안해서 에러 작렬
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"> //중요
+            </activity>
 
         <activity android:name=".Board.PostDetailActivity"></activity>
         <activity android:name=".Board.NewPostActivity"></activity>

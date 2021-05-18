@@ -22,8 +22,11 @@ import com.example.momogae.Login.SharedPreference;
 import com.example.momogae.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -81,7 +84,22 @@ public class UserFragment extends Fragment {
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 userModel = documentSnapshot.toObject(UserModel.class);
                 user_name.setText(userModel.getUsernm());
-                user_msg.setText(userModel.getUsermsg());
+
+
+                mDatabaseReference.child("users").child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
+                    //ataSnapshot user;
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        user_msg.setText(dataSnapshot.child("userMsg").getValue().toString());
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+
 
                 FirebaseStorage.getInstance().getReference(userModel.ID+"/profile").child("profileImage").getDownloadUrl().addOnFailureListener(new OnFailureListener() {
                     @Override

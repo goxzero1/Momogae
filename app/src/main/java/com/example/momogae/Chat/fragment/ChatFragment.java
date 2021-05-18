@@ -39,6 +39,14 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.example.momogae.Chat.common.Util9;
+import com.example.momogae.Chat.model.ChatModel;
+import com.example.momogae.Chat.model.Message;
+import com.example.momogae.Chat.model.NotificationModel;
+import com.example.momogae.Chat.model.UserModel;
+import com.example.momogae.Chat.photoView.ViewPagerActivity;
+import com.example.momogae.Login.SharedPreference;
+import com.example.momogae.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -61,14 +69,6 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.google.gson.Gson;
-import com.example.momogae.Chat.common.Util9;
-import com.example.momogae.Chat.model.ChatModel;
-import com.example.momogae.Chat.model.Message;
-import com.example.momogae.Chat.model.NotificationModel;
-import com.example.momogae.Chat.model.UserModel;
-import com.example.momogae.Chat.photoView.ViewPagerActivity;
-import com.example.momogae.R;
-import com.example.momogae.Login.SharedPreference;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -334,7 +334,7 @@ public class ChatFragment extends Fragment {
             CreateChattingRoom( firestore.collection("rooms").document(roomID) );
         }
 
-        final Map<String, Object> messages = new HashMap<>();
+        final Map<String,Object> messages = new HashMap<>();
         messages.put("uid", myUid);
         messages.put("msg", msg);
         messages.put("msgtype", msgtype);
