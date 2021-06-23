@@ -86,7 +86,7 @@ public class SelectUserActivity extends AppCompatActivity {
 
             });
         }
-
+        public void onCancelled(DatabaseError databaseError) { }
     };
 
     Button.OnClickListener addRoomUserClickListener = new View.OnClickListener() {

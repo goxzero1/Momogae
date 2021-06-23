@@ -459,7 +459,7 @@ public class ChatFragment extends Fragment {
         Glide.with(getContext())
                 .asBitmap()
                 .load(fileUri)
-                .apply(new RequestOptions().override(150, 150))
+                .apply(new RequestOptions().override(300, 300))
                 .into(new SimpleTarget<Bitmap>() {
                     @Override
                     public void onResourceReady(Bitmap bitmap, Transition<? super Bitmap> transition) {
