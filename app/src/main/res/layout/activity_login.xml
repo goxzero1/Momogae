@@ -24,13 +24,13 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="456dp">
 
                 <ImageView
                     android:id="@+id/imageView"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/momologo" />
+                    android:layout_height="440dp"
+                    app:srcCompat="@drawable/momologo_main" />
 
             </RelativeLayout>
 
