@@ -655,7 +655,7 @@ public class ChatFragment extends Fragment {
                 messageViewHolder.realname = message.getMsg();
                 Glide.with(getContext())
                         .load(storageReference.child("filesmall/"+message.getMsg()))
-                        .apply(new RequestOptions().override(1000, 1000))
+                        .apply(new RequestOptions().override(800, 800))
                         .into(messageViewHolder.img_item);
             }
 
