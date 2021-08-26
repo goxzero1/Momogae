@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.bumptech.glide.Glide;
 import com.example.momogae.Board.BoardActivity;
 import com.example.momogae.Chat.SplashActivity;
-import com.example.momogae.Classification.ClassificationActivity;
+import com.example.momogae.Map.MapActivity;
 import com.example.momogae.Diary.DiaryActivity;
 import com.example.momogae.Login.SharedPreference;
 import com.example.momogae.MyInfo.MyInfoActivity;
@@ -71,7 +71,7 @@ public class Main extends AppCompatActivity {
         imageButton4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), ClassificationActivity.class);
+                Intent intent = new Intent(getApplicationContext(), MapActivity.class);
                 startActivity(intent);
             }
 

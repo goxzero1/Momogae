@@ -8,7 +8,7 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.momogae.Board.BoardActivity;
-import com.example.momogae.Classification.ClassificationActivity;
+import com.example.momogae.Map.ClassificationActivity;
 import com.example.momogae.Diary.DiaryActivity;
 import com.example.momogae.R;
 

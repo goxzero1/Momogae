@@ -67,7 +67,7 @@
         <activity android:name=".Chat.SplashActivity"></activity>
 
         <activity
-            android:name=".Classification.ClassificationActivity">
+            android:name=".Map.MapActivity">
         </activity>
 
         <activity
@@ -97,6 +97,8 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+        //아래 한 줄 추가
+        <meta-data android:name="com.kakao.sdk.AppKey" android:value="fd8b1667c7bcd5ac747c9da1f31d41eb"/>
 
     </application>
 

@@ -1,4 +1,4 @@
-package com.example.momogae.Classification;
+package com.example.momogae.Map;
 
 import android.os.Bundle;
 
@@ -10,6 +10,6 @@ public class ClassificationActivity extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_classfication);
+        setContentView(R.layout.activity_Map);
     }
 }
