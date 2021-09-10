@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical" android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Write Pet Info"
+            android:layout_gravity="center"
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimary"
+            android:layout_marginTop="20dp"
+            android:textSize="35dp"
+            android:fontFamily="sans-serif-light"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="'나의 반려동물 등록하기'"
+            android:layout_gravity="center"
+            android:textColor="#000"
+            android:textSize="14dp"
+            android:layout_marginTop="5dp"
+            android:fontFamily="sans-serif-light"/>
+
+        <ImageView
+            android:id="@+id/pet_profile"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_margin="20dp"
+            android:src="@drawable/dog"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
+
+            <EditText
+                android:id="@+id/new_name"
+                android:layout_margin="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:fontFamily="sans-serif-light"
+                android:hint="이름"
+                android:layout_weight="1"/>
+
+            <EditText
+                android:id="@+id/new_firstDate"
+                android:layout_margin="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:fontFamily="sans-serif-light"
+                android:hint="처음 만난 날 ex(2017-03-22)"
+                android:layout_weight="1"/>
+
+            <EditText
+                android:id="@+id/new_species"
+                android:layout_margin="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:fontFamily="sans-serif-light"
+                android:hint="종"
+                android:layout_weight="1"/>
+
+            <EditText
+                android:id="@+id/new_gender"
+                android:layout_margin="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:fontFamily="sans-serif-light"
+                android:hint="성별"
+                android:layout_weight="1"/>
+
+            <EditText
+                android:id="@+id/new_age"
+                android:layout_margin="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:fontFamily="sans-serif-light"
+                android:hint="나이"
+                android:layout_weight="1"/>
+
+            <EditText
+                android:id="@+id/new_bf"
+                android:layout_margin="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:fontFamily="sans-serif-light"
+                android:hint="나는요"
+                android:layout_weight="1"/>
+
+            <EditText
+                android:id="@+id/new_neutralization"
+                android:layout_margin="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:fontFamily="sans-serif-light"
+                android:hint="중성화 여부"
+                android:layout_weight="1"/>
+
+
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/save_pet"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="20dp"
+            android:fontFamily="sans-serif-light"
+            android:textStyle="bold"
+            android:text="등록"/>
+
+    </LinearLayout>
+
+</ScrollView>
