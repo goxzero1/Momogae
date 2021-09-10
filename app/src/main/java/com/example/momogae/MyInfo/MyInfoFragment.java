@@ -77,11 +77,19 @@ public class MyInfoFragment extends Fragment {
 
                         String user = mDatabaseReference.getKey();
                         Map<String, Object> childUpdates = new HashMap<>();
-                        childUpdates.replace("password", userPasswordConfirmView.getText().toString());
+
+
+                        if(!userPasswordConfirmView.getText().toString().equals(userPasswordView.getText().toString())){
+                            Toast.makeText(getActivity(),"비밀번호가 일치하지 않습니다.",Toast.LENGTH_LONG).show();
+                            return;
+                        } else  childUpdates.replace("password", userPasswordConfirmView.getText().toString());
+
+
 
 
                         mDatabaseReference.updateChildren(childUpdates);
                         Toast.makeText(getActivity(), "비밀번호를 변경하였습니다.", Toast.LENGTH_SHORT).show();
+
 
                     }
             }

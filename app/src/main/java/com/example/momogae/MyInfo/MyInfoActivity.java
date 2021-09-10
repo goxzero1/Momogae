@@ -14,7 +14,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
@@ -79,36 +78,6 @@ public class MyInfoActivity extends AppCompatActivity {
                         .into(profileImage);
             }
         });
-
-
-        // FRAGMENT
-        mPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
-            private final Fragment[] mFragments = new Fragment[]{
-                    new MyInfoFragment(),
-                    new MyPostsFragment(),
-                    //new MyTopPostsFragment()
-            };
-            private final String[] mFragmentNames = new String[]{
-                    getString(R.string.heading_my_info),
-                    getString(R.string.heading_my_posts),
-            };
-
-            @Override
-            public Fragment getItem(int position) {
-                return mFragments[position];
-            }
-
-            @Override
-            public int getCount() {
-                return mFragments.length;
-            }
-
-            @Override
-            public CharSequence getPageTitle(int position) {
-                return mFragmentNames[position];
-            }
-        };
-
 
     }
 

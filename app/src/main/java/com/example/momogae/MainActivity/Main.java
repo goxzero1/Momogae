@@ -12,10 +12,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.bumptech.glide.Glide;
 import com.example.momogae.Board.BoardActivity;
 import com.example.momogae.Chat.SplashActivity;
-import com.example.momogae.Map.MapActivity;
-import com.example.momogae.Diary.DiaryActivity;
 import com.example.momogae.Login.SharedPreference;
+import com.example.momogae.Map.MapActivity;
 import com.example.momogae.MyInfo.MyInfoActivity;
+import com.example.momogae.MyPets.MyPetActivity;
 import com.example.momogae.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -23,6 +23,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+
+
 
 public class Main extends AppCompatActivity {
     private StorageReference mStorage;
@@ -62,7 +64,7 @@ public class Main extends AppCompatActivity {
         imageButton3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), DiaryActivity.class);
+                Intent intent = new Intent(getApplicationContext(), MyPetActivity.class);
                 startActivity(intent);
             }
 

@@ -32,7 +32,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:drawableRight="@drawable/ic_lock"
-                    android:fontFamily="@font/delius_unicase"
+                    android:fontFamily="sans-serif-light"
                     android:inputType="textPassword"
                     android:textSize="30dp"
                     android:visibility="invisible" />

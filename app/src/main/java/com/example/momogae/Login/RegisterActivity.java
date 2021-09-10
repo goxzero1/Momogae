@@ -3,7 +3,6 @@ package com.example.momogae.Login;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,8 +24,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-//import com.example.modumoigae.model.UserModel;
-
 public class RegisterActivity extends AppCompatActivity {
     private DatabaseReference databaseReference;
     private FirebaseFirestore firestore;
@@ -47,9 +44,8 @@ public class RegisterActivity extends AppCompatActivity {
         public void onDataChange(DataSnapshot dataSnapshot) {
             Iterator<DataSnapshot> child = dataSnapshot.getChildren().iterator();
             while (child.hasNext()) {
-                Log.e("디버그","find identical id");
                 if (editID.getText().toString().equals(child.next().getKey())) {
-                    Toast.makeText(getApplicationContext(), "ID already exists.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "이미 존재하는 아이디입니다", Toast.LENGTH_LONG).show();
                     databaseReference.removeEventListener(this);
                     return;
                 }
@@ -84,26 +80,33 @@ public class RegisterActivity extends AppCompatActivity {
         Submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(TextUtils.isEmpty(editID.getText().toString())){
+                    Toast.makeText(com.example.momogae.Login.RegisterActivity.this, "아이디는 필수개", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 if(TextUtils.isEmpty(editPassword.getText().toString())){
-                    Toast.makeText(com.example.momogae.Login.RegisterActivity.this, "Password cannot be null or empty.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(com.example.momogae.Login.RegisterActivity.this, "비밀번호는 필수개", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 if(TextUtils.isEmpty(editPasswordConfirmation.getText().toString())){
-                    Toast.makeText(com.example.momogae.Login.RegisterActivity.this, "Password confirmation cannot be null or empty.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(com.example.momogae.Login.RegisterActivity.this, "비밀번호 확인을 해주세요", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 if(TextUtils.isEmpty(editPhone.getText().toString())){
-                    Toast.makeText(com.example.momogae.Login.RegisterActivity.this, "Phone cannot be null or empty.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(com.example.momogae.Login.RegisterActivity.this, "전화번호는 필수개", Toast.LENGTH_SHORT).show();
                     return;
                 }
-/*
-                if(editPassword.getText().toString() != editPasswordConfirmation.getText().toString()){
-                    Toast.makeText(getApplicationContext(),"Please check your password.",Toast.LENGTH_LONG).show();
+
+
+
+                if(!editPasswordConfirmation.getText().toString().equals(editPassword.getText().toString())){
+                    Toast.makeText(getApplicationContext(),"비밀번호가 일치하지 않습니다.",Toast.LENGTH_LONG).show();
                     return;
                 }
-                */
+
 
                 databaseReference.addListenerForSingleValueEvent(checkRegister);
 
@@ -133,26 +136,26 @@ public class RegisterActivity extends AppCompatActivity {
 
         firestore.collection("users").document(editID.getText().toString()).set(user);
 
-        Log.e("디버그","name can be null");
+
         databaseReference.child(editID.getText().toString()).child("ID").setValue(editID.getText().toString());
         databaseReference.child(editID.getText().toString()).child("Password").setValue(editPassword.getText().toString());
         databaseReference.child(editID.getText().toString()).child("Phone").setValue(editPhone.getText().toString());
         databaseReference.child(editID.getText().toString()).child("userMsg").setValue("hello world!");
 
         if(editName.getText().toString()!=null){
-            Log.e("디버그","name can be null");
+
             databaseReference.child(editID.getText().toString()).child("Name").setValue(editName.getText().toString());
         }
         else{
-            Log.e("디버그","name no data");
+
             databaseReference.child(editID.getText().toString()).child("Name").setValue("No Data");
         }
 
         if(editEmail.getText().toString()!= null){
-            Log.e("디버그","email can be null");
+
             databaseReference.child(editID.getText().toString()).child("Email").setValue(editEmail.getText().toString());        }
         else {
-            Log.e("디버그","email no data");
+
             databaseReference.child(editID.getText().toString()).child("Email").setValue("No Data");
         }
 

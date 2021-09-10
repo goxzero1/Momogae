@@ -45,14 +45,19 @@
             android:name=".MainActivity.Main">
         </activity>
 
+
+
+
         <activity
             android:name=".Board.BoardActivity"
             android:theme="@style/AppTheme.NoActionBar"> //중요
-            </activity>
-
+        </activity>
         <activity android:name=".Board.PostDetailActivity"></activity>
         <activity android:name=".Board.NewPostActivity"></activity>
         <activity android:name=".MainActivity.BaseActivity"></activity>
+
+
+
 
 
         <activity
@@ -66,17 +71,47 @@
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".Chat.SplashActivity"></activity>
 
+
+
+
+
         <activity
             android:name=".Map.MapActivity">
         </activity>
 
-        <activity
-            android:name=".Diary.DiaryActivity">
+
+
+
+
+
+        <activity android:name=".MyPets.MyPetActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".MyPets.PetWriteActivity" />
+        <activity android:name=".MyPets.PetLargeActivity"
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
+        <activity android:name=".MyPets.PetEditActivity"/>
+
+        <activity
+            android:name=".Diary.DiaryActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity android:name=".Diary.DiaryWriteActivity"></activity>
+        <activity android:name=".Diary.DiaryLargeActivity"></activity>
+
+
+
+
+
+
 
         <activity
             android:name=".MyInfo.MyInfoActivity">
         </activity>
+
+
+
+
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -90,6 +125,11 @@
 
 
 
+
+
+
+
+
         <service
             android:name=".Chat.common.MyFirebaseMessagingService"
             android:exported="false">
@@ -97,7 +137,11 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        //아래 한 줄 추가
+
+
+
+
+        //아래 한 줄 추가(카카오맵)
         <meta-data android:name="com.kakao.sdk.AppKey" android:value="fd8b1667c7bcd5ac747c9da1f31d41eb"/>
 
     </application>
