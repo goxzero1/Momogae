@@ -60,7 +60,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:text="@string/you_ve_got_nothing_to_do"
+            android:text="할 일을 추가해 보세요"
             style="@style/ListItemTextStyle"
             android:drawableTop="@drawable/todomomo"
             android:drawablePadding="16dp"
