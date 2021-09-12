@@ -23,7 +23,9 @@
             android:layout_marginBottom="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="38dp" />
 
         <TextView
             android:id="@+id/progressValue"
@@ -60,7 +62,7 @@
             app:layout_constraintTop_toTopOf="parent"
             android:text="@string/you_ve_got_nothing_to_do"
             style="@style/ListItemTextStyle"
-            android:drawableTop="@drawable/ic_empty_img"
+            android:drawableTop="@drawable/todomomo"
             android:drawablePadding="16dp"
             android:visibility="gone"
             />
