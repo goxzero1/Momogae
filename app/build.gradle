@@ -73,6 +73,18 @@ dependencies {
     implementation 'com.jakewharton:butterknife:10.0.0'
     implementation 'com.jakewharton.threetenabp:threetenabp:1.1.1'
 
+
+
+    def room_version = "2.2.4"
+    def lifecycle_version = "2.2.0"
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+    implementation 'androidx.preference:preference:1.1.1'
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
+    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
+    annotationProcessor "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
+
 }
 
 android {

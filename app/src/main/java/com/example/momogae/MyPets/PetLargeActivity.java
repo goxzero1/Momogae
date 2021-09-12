@@ -15,14 +15,12 @@ import com.bumptech.glide.Glide;
 import com.example.momogae.Diary.DiaryActivity;
 import com.example.momogae.Login.SharedPreference;
 import com.example.momogae.R;
+import com.example.momogae.Todo.TodoActivity;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import static com.example.momogae.MyPets.MyPetActivity.pet_data;
 
@@ -95,11 +93,10 @@ public class PetLargeActivity extends AppCompatActivity {
         delete_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Map<String, Object> childUpdates = new HashMap<>();
-                childUpdates.put("/pet/" + userID + "/" + petKey, null);
-                databaseReference.updateChildren(childUpdates);
-                System.out.println("done deleting");
-                finish();
+                Intent edit_intent = new Intent(getApplicationContext(), TodoActivity.class);
+                edit_intent.putExtra("position", position);
+                edit_intent.putExtra("petName", pet_data.get(position).getPetName());
+                startActivity(edit_intent);
             }
         });
 
