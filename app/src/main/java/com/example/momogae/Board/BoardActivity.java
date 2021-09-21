@@ -42,6 +42,7 @@ public class BoardActivity extends BaseActivity {
         mPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
             private final Fragment[] mFragments = new Fragment[] {
                     new RecentPostsFragment(),
+                    //new TopPostsFragment()
 
             };
             private final String[] mFragmentNames = new String[] {

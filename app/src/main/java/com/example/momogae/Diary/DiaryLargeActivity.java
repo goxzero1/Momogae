@@ -14,7 +14,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -121,7 +120,7 @@ public class DiaryLargeActivity extends AppCompatActivity {
         FirebaseStorage.getInstance().getReference("pet/"+ userID + "/"+ petName+ "/diary/" + diary_data.get(position).getDate() ).child("photo").getDownloadUrl().addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getApplicationContext(), "못 갖고왔다!", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "못 갖고왔다!", Toast.LENGTH_SHORT).show();
             }
         }).addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override

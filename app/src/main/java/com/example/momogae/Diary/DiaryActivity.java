@@ -9,10 +9,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import com.example.momogae.Diary.decorators.HighlightWeekendsDecorator;
-import com.example.momogae.Diary.decorators.MySelectorDecorator;
-import com.example.momogae.Diary.decorators.OneDayDecorator;
-import com.example.momogae.Diary.decorators.TodayDecorator;
 import com.example.momogae.Login.SharedPreference;
 import com.example.momogae.R;
 import com.google.firebase.database.DataSnapshot;
@@ -140,7 +136,7 @@ public class DiaryActivity extends AppCompatActivity
         Log.i("shot_Day test", shot_Day + "");
         widget.clearSelection();
 
-        Toast.makeText(getApplicationContext(), shot_Day , Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), shot_Day + "에 무슨 일이 있었개?" , Toast.LENGTH_LONG).show();
         oneDayDecorator.setDate(date.getDate());
         widget.invalidateDecorators();
 

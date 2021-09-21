@@ -8,7 +8,8 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="8dp"
-    tools:context="com.example.android.todolist.TodoActivity">
+    tools:context=".Todo.TodoActivity"
+    tools:ignore="ExtraText">
 
 
     <TextView
@@ -17,13 +18,15 @@
         android:layout_height="28dp"
         android:layout_gravity="center_vertical"
         android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
         android:layout_weight="1"
         android:background="@drawable/priority_circle"
         android:gravity="center"
         android:textAlignment="center"
         android:textColor="@android:color/white"
-        android:visibility="visible"
+        android:visibility="gone"
         tools:text="1" />
+
 
     <LinearLayout
         android:layout_width="0dp"

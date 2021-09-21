@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.momogae">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -21,6 +22,7 @@
         android:roundIcon="@mipmap/momologo_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
+        tools:replace="android:label,android:allowBackup"
 
         android:usesCleartextTraffic="true"
         android:networkSecurityConfig="@xml/network_security_config"
@@ -75,8 +77,11 @@
 
 
         <activity
-            android:name=".Map.MapActivity">
-        </activity>
+            android:name=".Map.MapActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyD7LvI_dIymRRElkz2kKoy3xYNE0_E0tpE" />
 
 
 
@@ -99,10 +104,8 @@
         <activity android:name=".Diary.DiaryLargeActivity"></activity>
 
         <activity android:name=".Todo.TodoActivity"/>
-        <activity
-            android:name=".Todo.AddTaskActivity"
-            android:label="@string/add_task_activity_name"
-            android:windowSoftInputMode = "stateVisible"/>
+        <activity android:name=".Todo.AddTaskActivity"></activity>
+
 
 
 

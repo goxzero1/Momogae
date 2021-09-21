@@ -171,8 +171,8 @@ public class TodoActivity extends AppCompatActivity implements TaskAdapter.ItemC
                     mRecyclerView.setVisibility(View.INVISIBLE);
                     mEmptyView.setVisibility(View.VISIBLE);
                 }else {
-                    mprogressBar.setVisibility(View.VISIBLE);
-                    mProgressValue.setVisibility(View.VISIBLE);
+                    mprogressBar.setVisibility(View.GONE);
+                    mProgressValue.setVisibility(View.GONE);
                     mRecyclerView.setVisibility(View.VISIBLE);
                     mEmptyView.setVisibility(View.GONE);
                 }

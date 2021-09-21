@@ -132,9 +132,9 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo)
     {
         super.onCreateContextMenu(menu, v, menuInfo);
-        menu.setHeaderTitle("Context Menu");
-        menu.add(0, v.getId(), 0, "INFORMATION");
-        menu.add(0, v.getId(), 0, "SEND FRIEND REQUEST");
+        menu.setHeaderTitle("여기를 눌렀을때");
+        menu.add(0, v.getId(), 0, "바로 채팅을 보낼수 있는");
+        menu.add(0, v.getId(), 0, "기능 추가");
     }
 
     @Override

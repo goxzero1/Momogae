@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/delete_all_tasks"
-        android:title="@string/delete_all_tasks"
+        android:title="모든 할 일 삭제"
         app:showAsAction="never"/>
 
 </menu>
