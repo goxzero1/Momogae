@@ -96,7 +96,7 @@
                 android:layout_weight="1"/>
 
             <EditText
-                android:id="@+id/new_bf"
+                android:id="@+id/new_about"
                 android:layout_margin="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

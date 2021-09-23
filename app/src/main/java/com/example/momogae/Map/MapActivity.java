@@ -114,6 +114,7 @@ public class MapActivity extends AppCompatActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         // current location
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON,
@@ -121,9 +122,8 @@ public class MapActivity extends AppCompatActivity
 
         setContentView(R.layout.activity_map);
         Toolbar toolbar = findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
-        //setTitle("Map");
-
+        setSupportActionBar(toolbar);
+        setTitle("Momogae");
         mLayout = findViewById(R.id.layout_map);
 
         Log.d(TAG, "onCreate");

@@ -36,12 +36,12 @@ public class PetWriteActivity extends AppCompatActivity {
 
     private ImageView profileImage;
     public static EditText write_name, write_age, write_gender, write_species,
-            write_neutralization, write_bf, write_firstdate;
+            write_neutralization, write_about, write_firstdate;
     private static final String REQUIRED = "Required";
     public static Button save_btn;
     private DatabaseReference databaseReference;
     private StorageReference mStorage;
-    private String name, age, gender, species, neutralization, bf, firstdate;
+    private String name, age, gender, species, neutralization, about, firstdate;
 
     private Uri petPhotoUri;
 
@@ -70,7 +70,7 @@ public class PetWriteActivity extends AppCompatActivity {
         write_gender = (EditText) findViewById(R.id.new_gender);
         write_species = (EditText) findViewById(R.id.new_species);
         write_neutralization = (EditText) findViewById(R.id.new_neutralization);
-        write_bf = (EditText) findViewById(R.id.new_bf);
+        write_about = (EditText) findViewById(R.id.new_about);
         write_firstdate = (EditText) findViewById(R.id.new_firstDate);
 
         name = write_name.getText().toString();
@@ -78,7 +78,7 @@ public class PetWriteActivity extends AppCompatActivity {
         gender = write_gender.getText().toString();
         species = write_species.getText().toString();
         neutralization = write_neutralization.getText().toString();
-        bf = write_bf.getText().toString();
+        about = write_about.getText().toString();
         firstdate = write_firstdate.getText().toString();
 
         if (TextUtils.isEmpty(name)) {
@@ -101,11 +101,11 @@ public class PetWriteActivity extends AppCompatActivity {
                 gender = write_gender.getText().toString();
                 species = write_species.getText().toString();
                 neutralization = write_neutralization.getText().toString();
-                bf = write_bf.getText().toString();
+                about = write_about.getText().toString();
                 firstdate = write_firstdate.getText().toString();
 
                 String key = name;
-                Pet pet = new Pet(userID, name, age, gender, species, firstdate, neutralization, bf);
+                Pet pet = new Pet(userID, name, age, gender, species, firstdate, neutralization, about);
                 Map<String, Object> childUpdates = new HashMap<>();
                 childUpdates.put("/pet/" + userID + "/" + key, pet.toMap());
                 databaseReference.updateChildren(childUpdates);

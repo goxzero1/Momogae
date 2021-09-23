@@ -68,6 +68,7 @@ public class PetLargeActivity extends AppCompatActivity {
         bestFriend = (TextView) findViewById(R.id.pet_BFF);
 
 
+
         species.setText(pet_data.get(position).getPetSpecies());
         name.setText(pet_data.get(position).getPetName());
         firstdate.setText(pet_data.get(position).getPetFirstDate());

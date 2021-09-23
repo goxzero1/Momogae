@@ -80,11 +80,14 @@ public class PetEditActivity extends AppCompatActivity {
             }
         });
 
+        edit_name = (TextView) findViewById(R.id.edit_name);
+
         update_age = (EditText) findViewById(R.id.edit_age);
         update_gender = (EditText) findViewById(R.id.edit_gender);
-        update_bf = (EditText) findViewById(R.id.edit_bf);
+        update_bf = (EditText) findViewById(R.id.edit_about);
         update_neutralization = (EditText) findViewById(R.id.edit_neutralization);
-        edit_name = (TextView) findViewById(R.id.edit_name);
+
+
         update_age.setText(pet_data.get(position).getPetAge());
         update_gender.setText(pet_data.get(position).getPetGender());
         update_bf.setText(pet_data.get(position).getPetBff());
@@ -102,52 +105,53 @@ public class PetEditActivity extends AppCompatActivity {
         final String revised_neutralization = update_neutralization.getText().toString();
 
         save_btn = (Button) findViewById(R.id.edit_save);
-        save_btn.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                Pet pet = new Pet(userID, name, revised_age, revised_gender, species, first_date,
-                        revised_neutralization, revised_bf);
-                Map<String, Object> childUpdates = new HashMap<>();
-                childUpdates.put("/pet/"+userID+"/"+name, pet.toMap());
-                databaseReference.updateChildren(childUpdates);
-                if (flagImage == 1) {
-                    // [START upload_memory]
-                    profileImage.setDrawingCacheEnabled(true);
-                    profileImage.buildDrawingCache();
+        save_btn.setOnClickListener(v -> {
+            Pet pet = new Pet(userID, name, revised_age, revised_gender, species, first_date,
+                    revised_neutralization, revised_bf);
+            Map<String, Object> childUpdates = new HashMap<>();
+            childUpdates.put("/pet/"+ userID +"/"+ name, pet.toMap());
+            databaseReference.updateChildren(childUpdates);
 
-                    Bitmap bitmap = ((BitmapDrawable) profileImage.getDrawable()).getBitmap();
-                    ByteArrayOutputStream uploadStream = new ByteArrayOutputStream();
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, uploadStream);
-                    byte[] bytes = uploadStream.toByteArray();
 
-                    UploadTask uploadTask = mStorage.child("pet/" + userID + "/" + name + "/profile/profileImage").putBytes(bytes);
-                    uploadTask.addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception exception) {
-                            // Handle unsuccessful uploads
-                            Log.e("디버그", "업로드안됨*****************************");
-                        }
-                    }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
-                            // ...
-                            Log.e("디버그", "업로드됨!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!11*****************************");
-                        }
-                    });
 
-                    System.out.println("new pet added");
-                    finish();
-                }
-                System.out.println("done revising");
+            if (flagImage == 1) {
+                // [START upload_memory]
+                profileImage.setDrawingCacheEnabled(true);
+                profileImage.buildDrawingCache();
+
+                Bitmap bitmap = ((BitmapDrawable) profileImage.getDrawable()).getBitmap();
+                ByteArrayOutputStream uploadStream = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, uploadStream);
+                byte[] bytes = uploadStream.toByteArray();
+
+                UploadTask uploadTask = mStorage.child("pet/" + userID + "/" + name + "/profile/profileImage").putBytes(bytes);
+                uploadTask.addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        // Handle unsuccessful uploads
+                        Log.e("디버그", "업로드안됨*****************************");
+                    }
+                }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
+                        // ...
+                        Log.e("디버그", "업로드됨!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!11*****************************");
+                    }
+                });
+
+                System.out.println("new pet added");
                 finish();
             }
+            System.out.println("done revising");
+            finish();
         });
 
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode,resultCode,data);
         if (requestCode==PICK_FROM_ALBUM) {
             Uri selectedImageUri = data.getData();
             // Set the image in ImageView
@@ -155,7 +159,5 @@ public class PetEditActivity extends AppCompatActivity {
             flagImage = 1;
         }
     }
-
-
 
 }
