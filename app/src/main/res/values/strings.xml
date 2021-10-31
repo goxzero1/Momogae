@@ -14,9 +14,10 @@
     <string name="menu_send">Send</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string name="heading_recent">자유개시판</string>
+    <string name="heading_question">질문개시판</string>
+    <string name="heading_sharing">공유개시판</string>
     <string name="heading_top">HOT</string>
     <string name="heading_my_posts">My Posts</string>
     <string name="heading_my_top_posts">My Top Posts</string>
@@ -44,7 +45,6 @@
     <string name="high_priority">High</string>
     <string name="med_priority">Medium</string>
     <string name="low_priority">Low</string>
-
-
+    <string name="chat_send_author">이 게시자에게 채팅보내기</string>
 
 </resources>

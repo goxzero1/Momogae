@@ -5,9 +5,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
 
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.momogae.MainActivity.BaseActivity;
@@ -17,17 +16,23 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.util.Arrays;
+
 public class BoardActivity extends BaseActivity {
 
     String userID;
     StorageReference mStorage;
 
-    private FragmentPagerAdapter mPagerAdapter;
+    private BoardFragmentPagerAdapter mPagerAdapter;
     private ViewPager mViewPager;
 
     FloatingActionButton fab, fabNewPost, fabDeletePost;
     private Animation fab_open, fab_close;
     private Boolean isFabOpen = false;
+
+    private SearchView mSearchView;
+
+    public String mSearchText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,37 +44,46 @@ public class BoardActivity extends BaseActivity {
         userID = getUid();
         mStorage = FirebaseStorage.getInstance().getReference();
 
-        mPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
-            private final Fragment[] mFragments = new Fragment[] {
-                    new RecentPostsFragment(),
-                    //new TopPostsFragment()
-
-            };
-            private final String[] mFragmentNames = new String[] {
-                    getString(R.string.heading_recent),
-                    getString(R.string.heading_top)
-            };
-            @Override
-            public Fragment getItem(int position) {
-                return mFragments[position];
-            }
-            @Override
-            public int getCount() {
-                return mFragments.length;
-            }
-            @Override
-            public CharSequence getPageTitle(int position) {
-                return mFragmentNames[position];
-            }
-        };
-
+        mPagerAdapter = new BoardFragmentPagerAdapter(getSupportFragmentManager());
+        mPagerAdapter.setFragment(Arrays.asList(new QuestionPostsFragment(), new RecentPostsFragment(), new SharePostsFragment()), Arrays.asList(getString(BoardType.QUESTION.getTitleRes()), getString(BoardType.FREE.getTitleRes()), getString(BoardType.SHARE.getTitleRes())));
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = findViewById(R.id.container);
         mViewPager.setAdapter(mPagerAdapter);
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                mPagerAdapter.setCurrentPosition(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
         TabLayout tabLayout = findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                mPagerAdapter.setCurrentPosition(tab.getPosition());
+            }
 
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
 
         // Button launches NewPostActivity
         fabNewPost = (FloatingActionButton) findViewById(R.id.fab);
@@ -80,9 +94,28 @@ public class BoardActivity extends BaseActivity {
 
             }
         });
+
+        mSearchView = findViewById(R.id.sv_content);
+        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                mPagerAdapter.search(query);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+        mSearchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                mPagerAdapter.search("");
+                return false;
+            }
+        });
     }
-
-
 
 
 }

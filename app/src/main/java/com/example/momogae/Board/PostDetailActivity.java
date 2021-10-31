@@ -1,12 +1,14 @@
 package com.example.momogae.Board;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +22,13 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.momogae.Chat.chatting.ChatActivity;
+import com.example.momogae.Login.SharedPreference;
+import com.example.momogae.MainActivity.BaseActivity;
+import com.example.momogae.MainActivity.models.Comment;
+import com.example.momogae.MainActivity.models.Post;
+import com.example.momogae.MainActivity.models.User;
+import com.example.momogae.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.ChildEventListener;
@@ -30,12 +39,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.example.momogae.MainActivity.BaseActivity;
-import com.example.momogae.MainActivity.models.Comment;
-import com.example.momogae.MainActivity.models.Post;
-import com.example.momogae.MainActivity.models.User;
-import com.example.momogae.R;
-import com.example.momogae.Login.SharedPreference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,12 +48,14 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
     private static final String TAG = "PostDetailActivity";
 
     public static final String EXTRA_POST_KEY = "post_key";
+    public static final String EXTRA_TYPE = "type";
 
     private DatabaseReference mPostReference;
     private StorageReference mImageReference;
     private DatabaseReference mCommentsReference;
     private ValueEventListener mPostListener;
     private String mPostKey;
+    private String mType;
     private CommentAdapter mAdapter;
 
     private View mAuthor;
@@ -79,6 +84,7 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
 
         // Get post key from intent
         mPostKey = getIntent().getStringExtra(EXTRA_POST_KEY);
+        mType = getIntent().getStringExtra(EXTRA_TYPE);
         if (mPostKey == null) {
             throw new IllegalArgumentException("Must pass EXTRA_POST_KEY");
         }
@@ -87,7 +93,7 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
 
         // Initialize Database
         mPostReference = FirebaseDatabase.getInstance().getReference()
-                .child("posts").child(mPostKey);
+                .child("posts/" + mType).child(mPostKey);
         mCommentsReference = FirebaseDatabase.getInstance().getReference()
                 .child("post-comments").child(mPostKey);
 
@@ -95,15 +101,6 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
 
         // Initialize Views
         mAuthor = (View) findViewById(R.id.Author);
-        registerForContextMenu(mAuthor);
-        mAuthor.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                Toast.makeText(getApplicationContext(),"clicked", Toast.LENGTH_SHORT).show();
-                return false;
-            }
-        });
-
 
         mAuthorPhotoView = findViewById(R.id.postAuthorPhoto);
         mAuthorView = findViewById(R.id.postAuthor);
@@ -118,30 +115,28 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
         mCommentButton = findViewById(R.id.buttonPostComment);
         mCommentsRecycler = findViewById(R.id.recyclerPostComments);
 
-
-        //
-
         // Initialize Storage
 
         mCommentButton.setOnClickListener(this);
         mCommentsRecycler.setLayoutManager(new LinearLayoutManager(this));
-
     }
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo)
     {
         super.onCreateContextMenu(menu, v, menuInfo);
-        menu.setHeaderTitle("여기를 눌렀을때");
-        menu.add(0, v.getId(), 0, "바로 채팅을 보낼수 있는");
-        menu.add(0, v.getId(), 0, "기능 추가");
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_chat, menu);
     }
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        if(item.getTitle()=="Action 1"){function1(item.getItemId());}
-        else if(item.getTitle()=="Action 2"){function2(item.getItemId());}
-        else {return false;}
+        Log.e(TAG, "item id ==> " + item.getItemId());
+        if (item.getItemId() == R.id.send_chat) {
+            Intent intent = new Intent(this, ChatActivity.class);
+            intent.putExtra("toUid", mAuthorView.getText());
+            startActivity(intent);
+        }
         return true;
     }
 
@@ -189,6 +184,16 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
                 mAuthorView.setText(post.author);
                 mTitleView.setText(post.title);
                 mBodyView.setText(post.body);
+
+                if (!post.author.equals(userID)) {
+                    mAuthor.setOnLongClickListener(new View.OnLongClickListener() {
+                        @Override
+                        public boolean onLongClick(View view) {
+                            return false;
+                        }
+                    });
+                    registerForContextMenu(mAuthor);
+                }
 
                 /*
                 FirebaseFirestore.getInstance().collection("pet").document(post.uid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>(){
@@ -252,7 +257,7 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
                 // Getting Post failed, log a message
                 Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
                 // [START_EXCLUDE]
-                Toast.makeText(com.example.momogae.Board.PostDetailActivity.this, "Failed to load post.",
+                Toast.makeText(PostDetailActivity.this, "Failed to load post.",
                         Toast.LENGTH_SHORT).show();
                 // [END_EXCLUDE]
             }

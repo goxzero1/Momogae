@@ -10,8 +10,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -52,6 +54,7 @@ public class NewPostActivity extends BaseActivity {
     private EditText mBodyField;
     private ImageView mImageField;
     private FloatingActionButton mSubmitButton;
+    private Spinner mSpinner;
 
     String imgPath = null;
 
@@ -73,6 +76,12 @@ public class NewPostActivity extends BaseActivity {
         mImageField = findViewById(R.id.imgPreview);
         mBodyField = findViewById(R.id.fieldBody);
         mSubmitButton = findViewById(R.id.fabSubmitPost);
+        mSpinner = findViewById(R.id.spinner_type);
+
+
+        ArrayAdapter arrayAdapter = ArrayAdapter.createFromResource(this, R.array.board_type, android.R.layout.simple_spinner_item);
+        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mSpinner.setAdapter(arrayAdapter);
 
         mSubmitButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,6 +142,8 @@ public class NewPostActivity extends BaseActivity {
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
+                        String type = BoardType.findWithIndex(mSpinner.getSelectedItemPosition()).name().toLowerCase();
+
                         // Get user value
                         User user = dataSnapshot.getValue(User.class);
 
@@ -140,12 +151,13 @@ public class NewPostActivity extends BaseActivity {
                         if (user == null) {
                             // User is null, error out
                             Log.e(TAG, "User " + userID + " is unexpectedly null");
-                            Toast.makeText(com.example.momogae.Board.NewPostActivity.this,
+                            Toast.makeText(NewPostActivity.this,
                                     "Error: could not fetch user.",
                                     Toast.LENGTH_SHORT).show();
                         } else {
                             // Write new post
-                            writeNewPost(userID, user.userID, title, body);
+                            Log.e(TAG, "userId ==> " + user.userID);
+                            writeNewPost(userID, user.userID, title, body, type);
                         }
 
                         // Finish this Activity, back to the stream
@@ -204,15 +216,15 @@ public class NewPostActivity extends BaseActivity {
     }
 
     // [START write_fan_out]
-    private void writeNewPost(String userID, String username, String title, String body) {
+    private void writeNewPost(String userID, String username, String title, String body, String type) {
         // Create new post at /user-posts/$userid/$postid and at
-        // /posts/$postid simultaneously
+        // /posts/$type/$postid simultaneously
         String key = mDatabase.child("posts").push().getKey();
-        Post post = new Post(userID, username, title, body);
+        Post post = new Post(userID, username, title, body, type);
         Map<String, Object> postValues = post.toMap();
 
         Map<String, Object> childUpdates = new HashMap<>();
-        childUpdates.put("/posts/" + key, postValues);
+        childUpdates.put("/posts/" + type + "/" + key, postValues);
         childUpdates.put("/user-posts/" + userID + "/" + key, postValues);
 
         mDatabase.updateChildren(childUpdates);
@@ -231,7 +243,7 @@ public class NewPostActivity extends BaseActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if(id==R.id.action_settings) {
+        if(id== R.id.action_settings) {
             submitPost(flagImage);
         }
 

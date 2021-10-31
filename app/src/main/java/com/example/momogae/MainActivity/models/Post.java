@@ -8,11 +8,12 @@ import java.util.Map;
 
 @IgnoreExtraProperties
 public class Post {
-
+    public String key;
     public String uid;
     public String author;
     public String title;
     public String body;
+    public String type;
     public int starCount = 0;
     public Map<String, Boolean> stars = new HashMap<>();
 
@@ -20,11 +21,21 @@ public class Post {
         // Default constructor required for calls to DataSnapshot.getValue(Post.class)
     }
 
-    public Post(String uid, String author, String title, String body) {
+    public Post(String uid, String author, String title, String body, String type) {
         this.uid = uid;
         this.author = uid;
         this.title = title;
         this.body = body;
+        this.type = type;
+    }
+
+    public Post(String key, String uid, String author, String title, String body, String type) {
+        this.key = key;
+        this.uid = uid;
+        this.author = uid;
+        this.title = title;
+        this.body = body;
+        this.type = type;
     }
 
     // [START post_to_map]
@@ -37,6 +48,7 @@ public class Post {
         result.put("body", body);
         result.put("starCount", starCount);
         result.put("stars", stars);
+        result.put("type", type);
 
         return result;
     }

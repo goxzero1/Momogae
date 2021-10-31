@@ -108,7 +108,7 @@ public class MapActivity extends AppCompatActivity
     String userID;
     StorageReference mStorage;
 
-    FloatingActionButton fab, fabMap, fabPetCafe;
+    FloatingActionButton fab, fabPetHospital, fabPetCafe, fabPetRestaurant, fabPetstore;
     private Animation fab_open, fab_close;
     private Boolean isFabOpen = false;
 
@@ -165,8 +165,8 @@ public class MapActivity extends AppCompatActivity
             }
         });
 
-        fabMap = (FloatingActionButton) findViewById(R.id.fabMap);
-        fabMap.setOnClickListener(new View.OnClickListener() {
+        fabPetHospital = (FloatingActionButton) findViewById(R.id.fabMap);
+        fabPetHospital.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 anim();
@@ -179,11 +179,29 @@ public class MapActivity extends AppCompatActivity
             @Override
             public void onClick(View v){
                 anim();
-                showPlaceInformation(currentPosition);
+//                showPlaceInformation(currentPosition);
+                showPetCafePlaceInformation(currentPosition);
                 //Toast.makeText(getApplicationContext(),"앗! 근처에 펫카페가 없어요!", Toast.LENGTH_SHORT);
             }
         });
 
+        fabPetRestaurant = (FloatingActionButton) findViewById(R.id.fabPetRestaurant);
+        fabPetRestaurant.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                anim();
+                showPetRestaurantPlaceInformation(currentPosition);
+            }
+        });
+
+        fabPetstore = (FloatingActionButton) findViewById(R.id.fabPetstore);
+        fabPetstore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                anim();
+                showPlacepetstoreInformation(currentPosition);
+            }
+        });
 
     }
 
@@ -209,8 +227,7 @@ public class MapActivity extends AppCompatActivity
                 location = locationList.get(locationList.size() - 1);
                 //location = locationList.get(0);
 
-                currentPosition
-                        = new LatLng(location.getLatitude(), location.getLongitude());
+                currentPosition = new LatLng(location.getLatitude(), location.getLongitude());
 
 
                 String markerTitle = getCurrentAddress(currentPosition);
@@ -221,7 +238,9 @@ public class MapActivity extends AppCompatActivity
 
 
                 //현재 위치에 마커 생성하고 이동
-                setCurrentLocation(location, markerTitle, markerSnippet);
+                if (mCurrentLocatiion == null) {
+                    setCurrentLocation(location, markerTitle, markerSnippet);
+                }
 
                 mCurrentLocatiion = location;
             }
@@ -319,7 +338,7 @@ public class MapActivity extends AppCompatActivity
                     public void onClick(View view) {
 
                         // 3-3. 사용자게에 퍼미션 요청을 합니다. 요청 결과는 onRequestPermissionResult에서 수신됩니다.
-                        ActivityCompat.requestPermissions( com.example.momogae.Map.MapActivity.this, REQUIRED_PERMISSIONS,
+                        ActivityCompat.requestPermissions( MapActivity.this, REQUIRED_PERMISSIONS,
                                 PERMISSIONS_REQUEST_CODE);
                     }
                 }).show();
@@ -446,9 +465,7 @@ public class MapActivity extends AppCompatActivity
         markerOptions.snippet(markerSnippet);
         markerOptions.draggable(true);
 
-
         currentMarker = mGoogleMap.addMarker(markerOptions);
-
         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLng(currentLatLng);
         mGoogleMap.moveCamera(cameraUpdate);
 
@@ -461,7 +478,7 @@ public class MapActivity extends AppCompatActivity
         //디폴트 위치, Seoul
         LatLng DEFAULT_LOCATION = new LatLng(37.56, 126.97);
         String markerTitle = "위치정보 가져올 수 없음";
-        String markerSnippet = "위치 퍼미션과 GPS 활성 요부 확인하세요";
+        String markerSnippet = "위치 퍼미션과 GPS 활성 여부 확인하세요";
 
 
         if (currentMarker != null) currentMarker.remove();
@@ -473,6 +490,14 @@ public class MapActivity extends AppCompatActivity
         markerOptions.draggable(true);
         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
         currentMarker = mGoogleMap.addMarker(markerOptions);
+
+//        Circle circle = mGoogleMap.addCircle(new CircleOptions()
+//                .center(DEFAULT_LOCATION)
+//                .radius(1000)
+//                .strokeColor(Color.BLUE)
+//                .strokeWidth(3)
+//                .fillColor(Color.argb(125, 0, 0, 255))
+//                .clickable(false));
 
         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(DEFAULT_LOCATION, 15);
         mGoogleMap.moveCamera(cameraUpdate);
@@ -572,7 +597,7 @@ public class MapActivity extends AppCompatActivity
     //여기부터는 GPS 활성화를 위한 메소드들
     private void showDialogForLocationServiceSetting() {
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(com.example.momogae.Map.MapActivity.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(MapActivity.this);
         builder.setTitle("위치 서비스 비활성화");
         builder.setMessage("앱을 사용하기 위해서는 위치 서비스가 필요합니다.\n"
                 + "위치 설정을 수정하실래요?");
@@ -622,16 +647,24 @@ public class MapActivity extends AppCompatActivity
 
     public void anim() {
         if (isFabOpen) {
-            fabMap.startAnimation(fab_close);
+            fabPetHospital.startAnimation(fab_close);
             fabPetCafe.startAnimation(fab_close);
-            fabMap.setClickable(false);
+            fabPetRestaurant.startAnimation(fab_close);
+            fabPetstore.startAnimation(fab_close);
+            fabPetHospital.setClickable(false);
             fabPetCafe.setClickable(false);
+            fabPetRestaurant.setClickable(false);
+            fabPetstore.setClickable(false);
             isFabOpen = false;
         } else {
-            fabMap.startAnimation(fab_open);
+            fabPetHospital.startAnimation(fab_open);
             fabPetCafe.startAnimation(fab_open);
-            fabMap.setClickable(true);
+            fabPetRestaurant.startAnimation(fab_open);
+            fabPetstore.startAnimation(fab_open);
+            fabPetHospital.setClickable(true);
             fabPetCafe.setClickable(true);
+            fabPetRestaurant.setClickable(true);
+            fabPetstore.setClickable(true);
             isFabOpen = true;
         }
     }
@@ -722,14 +755,104 @@ public class MapActivity extends AppCompatActivity
             previous_marker.clear();//지역정보 마커 클리어
 
         new NRPlaces.Builder()
-                .listener(com.example.momogae.Map.MapActivity.this)
-                .key("AIzaSyCRAFrVWsDo4ECDz9kOMYS5Z6mjMbfy1nw")
+                .listener(MapActivity.this)
+                .key("AIzaSyDvEYjENIJ0ff4NDH6_LaS1KrJRkdZNwf8")
                 .latlng(location.latitude, location.longitude)//현재 위치
-                .radius(4000) // 4km 내에서 검색
+                .radius(7000) // 7km 내에서 검색
                 .type(PlaceType.VETERINARY_CARE)
                 .build()
                 .execute();
+        mGoogleMap.animateCamera(CameraUpdateFactory.zoomTo(13), 1000, null);
     }
 
+    public void showPlacepetstoreInformation(LatLng location)
+    {
+        mGoogleMap.clear();//지도 클리어
 
+        if (previous_marker != null)
+            previous_marker.clear();//지역정보 마커 클리어
+
+
+        new NRPlaces.Builder()
+                .listener(MapActivity.this)
+                .key("AIzaSyCRAFrVWsDo4ECDz9kOMYS5Z6mjMbfy1nw")
+                .latlng(location.latitude, location.longitude)//현재 위치
+                .radius(7000) // 7km 내에서 검색
+                .type(PlaceType.PET_STORE)
+                .build()
+                .execute();
+        mGoogleMap.animateCamera(CameraUpdateFactory.zoomTo(13), 1000, null);
+    }
+
+    public void showPetCafePlaceInformation(LatLng location) {
+        mGoogleMap.clear();//지도 클리어
+        if (previous_marker != null)
+            previous_marker.clear();//지역정보 마커 클리어
+
+        new NRPlaces.Builder()
+                .listener(MapActivity.this)
+                .key("AIzaSyDvEYjENIJ0ff4NDH6_LaS1KrJRkdZNwf8")
+                .latlng(location.latitude, location.longitude)//현재 위치
+                .radius(5000) // 4km 내에서 검색
+                .type(PlaceType.CAFE)
+                .language("ko", "KR")
+                .keyword("애견")
+                .build()
+                .execute();
+
+        new NRPlaces.Builder()
+                .listener(MapActivity.this)
+                .key("AIzaSyDvEYjENIJ0ff4NDH6_LaS1KrJRkdZNwf8")
+                .latlng(location.latitude, location.longitude)//현재 위치
+                .radius(5000) // 4km 내에서 검색
+                .type(PlaceType.CAFE)
+                .language("ko", "KR")
+                .keyword("반려")
+                .build()
+                .execute();
+
+        new NRPlaces.Builder()
+                .listener(MapActivity.this)
+                .key("AIzaSyDvEYjENIJ0ff4NDH6_LaS1KrJRkdZNwf8")
+                .latlng(location.latitude, location.longitude)//현재 위치
+                .radius(3000) // 3km 내에서 검색
+                .type(PlaceType.CAFE)
+                .language("ko", "KR")
+                .keyword("애견동반")
+                .build()
+                .execute();
+        mGoogleMap.animateCamera(CameraUpdateFactory.zoomTo(13), 1000, null);
+    }
+
+    public void showPetRestaurantPlaceInformation(LatLng location) {
+        mGoogleMap.clear();//지도 클리어
+
+        if (previous_marker != null)
+            previous_marker.clear();//지역정보 마커 클리어
+
+
+        new NRPlaces.Builder()
+                .listener(MapActivity.this)
+                .key("AIzaSyDvEYjENIJ0ff4NDH6_LaS1KrJRkdZNwf8")
+                .latlng(location.latitude, location.longitude)//현재 위치
+                .radius(10000) // 10km 내에서 검색
+                .type(PlaceType.RESTAURANT)
+                .language("ko", "KR")
+                .keyword("애견동반")
+                .build()
+                .execute();
+
+        new NRPlaces.Builder()
+                .listener(MapActivity.this)
+                .key("AIzaSyDvEYjENIJ0ff4NDH6_LaS1KrJRkdZNwf8")
+                .latlng(location.latitude, location.longitude)//현재 위치
+                .radius(5000) // 4km 내에서 검색
+                .type(PlaceType.STORE)
+                .language("ko", "KR")
+                .keyword("애견동반가능식당")
+                .build()
+                .execute();
+
+        mGoogleMap.animateCamera(CameraUpdateFactory.zoomTo(13), 1000, null);
+    }
 }

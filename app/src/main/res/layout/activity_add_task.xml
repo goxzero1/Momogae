@@ -69,7 +69,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:background="@color/colorPrimary"
+        android:background="#A66D3C"
         android:text="추가하기"
         android:textColor="@android:color/white" />
 

@@ -23,6 +23,7 @@
                 android:layout_height="138dp"
                 android:layout_weight="1"
                 app:srcCompat="@drawable/momologo_main" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -30,6 +31,13 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:orientation="vertical">
+
+            <Button
+                android:id="@+id/buttonTop"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Button" />
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/profileImg2"
@@ -39,6 +47,7 @@
                 android:clickable="false"
                 android:src="@drawable/ic_action_account_circle_40"
                 app:civ_border_color="@color/colorAccent" />
+
         </LinearLayout>
 
         <LinearLayout

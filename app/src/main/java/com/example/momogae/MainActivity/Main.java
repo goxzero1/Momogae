@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
+import com.example.momogae.Abandoned.AbandonedActivity;
 import com.example.momogae.Board.BoardActivity;
 import com.example.momogae.Chat.SplashActivity;
 import com.example.momogae.Login.SharedPreference;
@@ -25,7 +26,6 @@ import com.google.firebase.storage.StorageReference;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
-
 public class Main extends AppCompatActivity {
     private StorageReference mStorage;
     @Override
@@ -37,6 +37,7 @@ public class Main extends AppCompatActivity {
         Button imageButton2 = (Button) findViewById(R.id.butt2);
         Button imageButton3 = (Button) findViewById(R.id.butt3);
         Button imageButton4 = (Button) findViewById(R.id.butt4);
+        Button imageButton5 = (Button) findViewById(R.id.buttonTop);
         CircleImageView profilecircleimage = (CircleImageView)  findViewById((R.id.profileImg2));
 
         mStorage = FirebaseStorage.getInstance().getReference();
@@ -74,6 +75,15 @@ public class Main extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), MapActivity.class);
+                startActivity(intent);
+            }
+
+        });
+
+        imageButton5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), AbandonedActivity.class);
                 startActivity(intent);
             }
 

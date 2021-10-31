@@ -7,12 +7,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.example.momogae.Login.SharedPreference;
+import com.example.momogae.MainActivity.models.Post;
+import com.example.momogae.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -20,9 +22,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.Transaction;
-import com.example.momogae.MainActivity.models.Post;
-import com.example.momogae.R;
-import com.example.momogae.Login.SharedPreference;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 
 
 public abstract class PostListFragment extends Fragment {
@@ -36,7 +38,8 @@ public abstract class PostListFragment extends Fragment {
     private DatabaseReference mDatabase;
     // [END define_database_reference]
 
-    private FirebaseRecyclerAdapter<Post, PostViewHolder> mAdapter;
+//    private FirebaseRecyclerAdapter<Post, PostViewHolder> mAdapter;
+    private PostAdapter mAdapter;
     private RecyclerView mRecycler;
     private LinearLayoutManager mManager;
 
@@ -69,63 +72,78 @@ public abstract class PostListFragment extends Fragment {
         mRecycler.setLayoutManager(mManager);
 
         // Set up FirebaseRecyclerAdapter with the Query
+        initRecyclerAdapter();
+    }
+
+    private void initRecyclerAdapter() {
+        mAdapter = new PostAdapter(getUid());
+
         Query postsQuery = getQuery(mDatabase, ORDER_RECENT);
-
-        FirebaseRecyclerOptions options = new FirebaseRecyclerOptions.Builder<Post>()
-                .setQuery(postsQuery, Post.class)
-                .build();
-
-        mAdapter = new FirebaseRecyclerAdapter<Post, PostViewHolder>(options) {
-
+        postsQuery.addValueEventListener(new ValueEventListener() {
             @Override
-            public PostViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-                LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
-                return new PostViewHolder(inflater.inflate(R.layout.item_post, viewGroup, false));
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                fetchPost(snapshot);
             }
 
             @Override
-            protected void onBindViewHolder(PostViewHolder viewHolder, int position, final Post model) {
-                final DatabaseReference postRef = getRef(position);
+            public void onCancelled(@NonNull DatabaseError error) {
 
-                // Set click listener for the whole post view
-                final String postKey = postRef.getKey();
-                viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        // Launch PostDetailActivity
-                        Intent intent = new Intent(getActivity(), PostDetailActivity.class);
-                        intent.putExtra(PostDetailActivity.EXTRA_POST_KEY, postKey);
-                        startActivity(intent);
-                    }
-                });
-
-                // Determine if the current user has liked this post and set UI accordingly
-                if (model.stars.containsKey(getUid())) {
-                    viewHolder.starView.setImageResource(R.drawable.ic_star_black_24dp);
-                } else {
-                    viewHolder.starView.setImageResource(R.drawable.ic_star_border_black_24dp);
-                }
-
-                // Bind Post to ViewHolder, setting OnClickListener for the star button
-                viewHolder.bindToPost(model, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View starView) {
-                        // Need to write to both places the post is stored
-                        DatabaseReference globalPostRef = mDatabase.child("posts").child(postRef.getKey());
-                        DatabaseReference userPostRef = mDatabase.child("user-posts").child(model.uid).child(postRef.getKey());
-
-                        // Run two transactions
-                        onStarClicked(globalPostRef);
-                        onStarClicked(userPostRef);
-                    }
-                });
             }
-        };
+        });
+
+        mAdapter.setItemClickListener(new PostAdapter.ItemClickListener() {
+            @Override
+            public void onClick(int position, Post post) {
+                // Launch PostDetailActivity
+                Intent intent = new Intent(getActivity(), PostDetailActivity.class);
+                intent.putExtra(PostDetailActivity.EXTRA_POST_KEY, post.key);
+                intent.putExtra(PostDetailActivity.EXTRA_TYPE, getBoardType());
+
+                startActivity(intent);
+            }
+        });
+        mAdapter.setStarClickListener(new PostAdapter.StarClickListener() {
+            @Override
+            public void onClick(int position, Post post) {
+                // Need to write to both places the post is stored
+                DatabaseReference globalPostRef = mDatabase.child("posts/" + getBoardType()).child(post.key);
+                DatabaseReference userPostRef = mDatabase.child("user-posts").child(post.uid).child(post.key);
+
+                // Run two transactions
+                onStarClicked(globalPostRef);
+                onStarClicked(userPostRef);
+            }
+        });
         mRecycler.setAdapter(mAdapter);
+    }
+
+    private void fetchPost(DataSnapshot snapshot) {
+        Log.e(TAG, "snapshot ==> " + snapshot);
+        ArrayList<Post> items = new ArrayList<>();
+        for (DataSnapshot item : snapshot.getChildren()) {
+            Post temp = item.getValue(Post.class);
+            temp.key = item.getKey();
+            items.add(temp);
+        }
+        mAdapter.setPosts(items);
+    }
+
+    private void fetchSearchPost(DataSnapshot snapshot, String query) {
+        Log.e(TAG, "snapshot ==> " + snapshot);
+        ArrayList<Post> items = new ArrayList<>();
+        for (DataSnapshot item : snapshot.getChildren()) {
+            Post temp = item.getValue(Post.class);
+            if (temp.body.contains(query)) {
+                temp.key = item.getKey();
+                items.add(temp);
+            }
+        }
+        mAdapter.setPosts(items);
     }
 
     // [START post_stars_transaction]
     private void onStarClicked(DatabaseReference postRef) {
+        Log.e("111", "post ==> " + postRef);
         postRef.runTransaction(new Transaction.Handler() {
             @Override
             public Transaction.Result doTransaction(MutableData mutableData) {
@@ -159,21 +177,20 @@ public abstract class PostListFragment extends Fragment {
     }
     // [END post_stars_transaction]
 
-
     @Override
     public void onStart() {
         super.onStart();
-        if (mAdapter != null) {
-            mAdapter.startListening();
-        }
+//        if (mAdapter != null) {
+//            mAdapter.startListening();
+//        }
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        if (mAdapter != null) {
-            mAdapter.stopListening();
-        }
+//        if (mAdapter != null) {
+//            mAdapter.stopListening();
+//        }
     }
 
     public String getUid() {
@@ -182,5 +199,38 @@ public abstract class PostListFragment extends Fragment {
 
 
     public abstract Query getQuery(DatabaseReference databaseReference, int order);
+    public abstract String getBoardType();
 
+    public void updateUi(String query) {
+        Log.e("111", "search query ==> " + query);
+
+        if (query.isEmpty()) {
+            Query typeQuery = getQuery(mDatabase, ORDER_RECENT);
+            typeQuery.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    fetchPost(snapshot);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+            return;
+        }
+
+        Query searchQuery = getQuery(mDatabase, ORDER_RECENT);
+        searchQuery.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                fetchSearchPost(snapshot, query);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
 }
