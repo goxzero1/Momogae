@@ -3,17 +3,17 @@ package com.example.momogae.Board;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
 
-public class QuestionPostsFragment extends PostListFragment {
+public class FreePostsFragment extends PostListFragment {
     @Override
     public Query getQuery(DatabaseReference databaseReference, int order) {
 
-        Query questionQuery = databaseReference.getRef().child("posts/" + getBoardType())
+        Query freePostsQuery = databaseReference.child("posts/" + getBoardType())
                 .limitToFirst(100);
-        return questionQuery;
+        return freePostsQuery;
     }
 
     @Override
     public String getBoardType() {
-        return BoardType.QUESTION.name().toLowerCase();
+        return BoardType.FREE.name().toLowerCase();
     }
 }

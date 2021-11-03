@@ -213,7 +213,7 @@
                     android:id="@+id/submit"
                     android:fontFamily="sans-serif-light"
                     android:textStyle="bold"
-                    android:text="Register"/>
+                    android:text="등록"/>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

@@ -19,30 +19,20 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Query;
-import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
 
 public abstract class PostListFragment extends Fragment {
-    final int ORDER_RECENT = 0;
-    final int ORDER_MY_RECENT = 1;
-    final int ORDER_MY_POPULAR = 2;
 
+    final int POST = 0;
     private static final String TAG = "PostListFragment";
-
-    // [START define_database_reference]
     private DatabaseReference mDatabase;
-    // [END define_database_reference]
-
-//    private FirebaseRecyclerAdapter<Post, PostViewHolder> mAdapter;
     private PostAdapter mAdapter;
     private RecyclerView mRecycler;
     private LinearLayoutManager mManager;
-
     public PostListFragment() {}
 
     @Override
@@ -51,10 +41,7 @@ public abstract class PostListFragment extends Fragment {
         super.onCreateView(inflater, container, savedInstanceState);
         View rootView = inflater.inflate(R.layout.fragment_all_posts, container, false);
 
-        // [START create_database_reference]
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        // [END create_database_reference]
-
         mRecycler = rootView.findViewById(R.id.messagesList);
         mRecycler.setHasFixedSize(true);
 
@@ -78,7 +65,7 @@ public abstract class PostListFragment extends Fragment {
     private void initRecyclerAdapter() {
         mAdapter = new PostAdapter(getUid());
 
-        Query postsQuery = getQuery(mDatabase, ORDER_RECENT);
+        Query postsQuery = getQuery(mDatabase, POST);
         postsQuery.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -102,18 +89,7 @@ public abstract class PostListFragment extends Fragment {
                 startActivity(intent);
             }
         });
-        mAdapter.setStarClickListener(new PostAdapter.StarClickListener() {
-            @Override
-            public void onClick(int position, Post post) {
-                // Need to write to both places the post is stored
-                DatabaseReference globalPostRef = mDatabase.child("posts/" + getBoardType()).child(post.key);
-                DatabaseReference userPostRef = mDatabase.child("user-posts").child(post.uid).child(post.key);
 
-                // Run two transactions
-                onStarClicked(globalPostRef);
-                onStarClicked(userPostRef);
-            }
-        });
         mRecycler.setAdapter(mAdapter);
     }
 
@@ -141,42 +117,6 @@ public abstract class PostListFragment extends Fragment {
         mAdapter.setPosts(items);
     }
 
-    // [START post_stars_transaction]
-    private void onStarClicked(DatabaseReference postRef) {
-        Log.e("111", "post ==> " + postRef);
-        postRef.runTransaction(new Transaction.Handler() {
-            @Override
-            public Transaction.Result doTransaction(MutableData mutableData) {
-                Post p = mutableData.getValue(Post.class);
-                if (p == null) {
-                    return Transaction.success(mutableData);
-                }
-
-                if (p.stars.containsKey(getUid())) {
-                    // Unstar the post and remove self from stars
-                    p.starCount = p.starCount - 1;
-                    p.stars.remove(getUid());
-                } else {
-                    // Star the post and add self to stars
-                    p.starCount = p.starCount + 1;
-                    p.stars.put(getUid(), true);
-                }
-
-                // Set value and report transaction success
-                mutableData.setValue(p);
-                return Transaction.success(mutableData);
-            }
-
-            @Override
-            public void onComplete(DatabaseError databaseError, boolean b,
-                                   DataSnapshot dataSnapshot) {
-                // Transaction completed
-                Log.d(TAG, "postTransaction:onComplete:" + databaseError);
-            }
-        });
-    }
-    // [END post_stars_transaction]
-
     @Override
     public void onStart() {
         super.onStart();
@@ -202,10 +142,9 @@ public abstract class PostListFragment extends Fragment {
     public abstract String getBoardType();
 
     public void updateUi(String query) {
-        Log.e("111", "search query ==> " + query);
 
         if (query.isEmpty()) {
-            Query typeQuery = getQuery(mDatabase, ORDER_RECENT);
+            Query typeQuery = getQuery(mDatabase, POST);
             typeQuery.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -220,7 +159,7 @@ public abstract class PostListFragment extends Fragment {
             return;
         }
 
-        Query searchQuery = getQuery(mDatabase, ORDER_RECENT);
+        Query searchQuery = getQuery(mDatabase, POST);
         searchQuery.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

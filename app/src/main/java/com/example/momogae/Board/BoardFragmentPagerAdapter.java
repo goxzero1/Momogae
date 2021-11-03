@@ -1,7 +1,6 @@
 package com.example.momogae.Board;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -30,7 +29,7 @@ public class BoardFragmentPagerAdapter extends FragmentPagerAdapter {
         return mFragments.size();
     }
 
-    @Nullable
+
     @Override
     public CharSequence getPageTitle(int position) {
         return mTitles.get(position);
@@ -62,13 +61,8 @@ public class BoardFragmentPagerAdapter extends FragmentPagerAdapter {
         notifyDataSetChanged();
     }
 
-    public void addFragment(Fragment fragment, String title) {
-        mFragments.add(fragment);
-        mTitles.add(title);
-        notifyDataSetChanged();
-    }
-
     public void setCurrentPosition(int position) {
         currentPosition = position;
     }
+
 }

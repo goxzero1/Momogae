@@ -1,10 +1,7 @@
-
-
 package com.example.momogae.Todo;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.drawable.GradientDrawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -59,14 +56,14 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         // Determine the values of the wanted data
         TaskEntry taskEntry = mTaskEntries.get(position);
         String description = taskEntry.getDescription();
-        int priority = taskEntry.getPriority();
+
         String updatedAt = dateFormat.format(taskEntry.getUpdatedAt());
 
 
         holder.taskDescriptionView.setText(description);
         holder.updatedAtView.setText(updatedAt);
 
-        holder.priorityView.setText(Integer.toString(position+1));
+
 
 
         holder.checkBox.setChecked(taskEntry.isChecked());
@@ -79,41 +76,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
             holder.taskDescriptionView.setBackgroundResource(0);
             holder.taskDescriptionView.setTextColor(ContextCompat.getColor(mContext, R.color.list_item_text_color));
 
-
         }
-
-
-        GradientDrawable priorityCircle = (GradientDrawable) holder.priorityView.getBackground();
-
-        int priorityColor = getPriorityColor(priority);
-        priorityCircle.setColor(priorityColor);
-
-
     }
-
-    /*
-    Helper method for selecting the correct priority circle color.
-    P1 = red, P2 = orange, P3 = yellow
-    */
-    private int getPriorityColor(int priority) {
-        int priorityColor = 0;
-
-        switch (priority) {
-            case 1:
-                priorityColor = ContextCompat.getColor(mContext, R.color.materialRed);
-                break;
-            case 2:
-                priorityColor = ContextCompat.getColor(mContext, R.color.materialOrange);
-                break;
-            case 3:
-                priorityColor = ContextCompat.getColor(mContext, R.color.materialYellow);
-                break;
-            default:
-                break;
-        }
-        return priorityColor;
-    }
-
 
     @Override
     public int getItemCount() {
@@ -150,7 +114,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
 
         TextView taskDescriptionView;
         TextView updatedAtView;
-        TextView priorityView;
         CheckBox checkBox;
 
 
@@ -159,7 +122,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
 
             taskDescriptionView = itemView.findViewById(R.id.taskDescription);
             updatedAtView = itemView.findViewById(R.id.taskUpdatedAt);
-            priorityView = itemView.findViewById(R.id.priorityTextView);
             checkBox = itemView.findViewById(R.id.checkBox);
             itemView.setOnClickListener(this);
 

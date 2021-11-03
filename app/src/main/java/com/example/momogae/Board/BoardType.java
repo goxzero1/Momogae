@@ -4,9 +4,8 @@ import com.example.momogae.R;
 
 public enum BoardType {
     QUESTION(R.string.heading_question),
-    FREE(R.string.heading_recent),
-    SHARE(R.string.heading_sharing)
-    ;
+    FREE(R.string.heading_free),
+    SHARE(R.string.heading_sharing);
 
     private int titleRes;
 

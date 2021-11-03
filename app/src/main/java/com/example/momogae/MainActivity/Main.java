@@ -37,7 +37,7 @@ public class Main extends AppCompatActivity {
         Button imageButton2 = (Button) findViewById(R.id.butt2);
         Button imageButton3 = (Button) findViewById(R.id.butt3);
         Button imageButton4 = (Button) findViewById(R.id.butt4);
-        Button imageButton5 = (Button) findViewById(R.id.buttonTop);
+        Button imageButton5 = (Button) findViewById(R.id.buttTop);
         CircleImageView profilecircleimage = (CircleImageView)  findViewById((R.id.profileImg2));
 
         mStorage = FirebaseStorage.getInstance().getReference();

@@ -59,23 +59,24 @@ public class AbandonedActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... strings) {
 
-            requestUrl = "http://openapi.animal.go.kr/openapi/service/rest/abandonmentPublicSrvc/abandonmentPublic?numOfRows=500&serviceKey=" +dataKey;
-            //url + 서비스키 + 검색할텍스트 일치 여부
+            requestUrl = "http://openapi.animal.go.kr/openapi/service/rest/" +
+                    "abandonmentPublicSrvc/abandonmentPublic?numOfRows=500&serviceKey=" +dataKey;
+            //공공데이터포털 사이트에서 신청했던 api키와 정보를 제공해주는 URL을 연결함
             try {
-                boolean popfile = false;
-                boolean kindCd =false;
-                boolean sexCd = false;
-                boolean specialMark = false;
-                boolean careNm = false;
-                boolean careTel = false;
+                boolean popfile = false; //유기동물 사진
+                boolean kindCd =false; // 품종
+                boolean sexCd = false; //성별
+                boolean specialMark = false; // 특징
+                boolean careNm = false; //보호소 이름
+                boolean careTel = false; //보호소 전화번호 , 이 정보는 공공데이터포털에서 정해준 데이터 변수
 
 
                 URL url = new URL(requestUrl);
-                InputStream is = url.openStream();
+                InputStream is = url.openStream(); //url 주소를 넣어 그 안의 주소를 읽어옴
                 XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
                 XmlPullParser parser = factory.newPullParser();
                 parser.setInput(new InputStreamReader(is, "UTF-8"));
-                // XmlPullParser를 이용해 데이터 파싱 스트림리더로 한글형식 받아옴
+                // XmlPullParser를 이용해 데이터를 파싱하고 데이터를 한글형식으로 받아옴
 
                 String tag;
                 int eventType = parser.getEventType();
@@ -145,7 +146,7 @@ public class AbandonedActivity extends AppCompatActivity {
             dialog= new ProgressDialog(AbandonedActivity.this);
             dialog.setTitle("검색중");
             dialog.setMessage("유기동물 검색중 입니다..");
-            dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);  // progress dialog 설정
             dialog.setCanceledOnTouchOutside(false);
             dialog.show();
             Handler handler = new Handler() {

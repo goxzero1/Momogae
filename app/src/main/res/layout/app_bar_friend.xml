@@ -32,7 +32,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
         android:layout_margin="20dp"
-        app:fabSize="normal"
-        android:src="@drawable/ic_add"/>
+        android:src="@drawable/ic_add"
+        android:visibility="gone"
+        app:fabSize="normal" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,9 +1,6 @@
 package com.example.momogae.Todo;
 
-import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -47,7 +44,7 @@ public class TodoActivity extends AppCompatActivity implements TaskAdapter.ItemC
 
     private LinearLayout adContainer;
     private ConstraintLayout mConstraintLayout;
-//    private CheckBox mCheckBox;
+
 
     private double mTotalProgressPercent;
     private AppDatabase mDb;
@@ -195,15 +192,4 @@ public class TodoActivity extends AppCompatActivity implements TaskAdapter.ItemC
         mTotalProgressPercent = (double)countChecked/taskEntries.size() *100;
     }
 
-    private boolean isConnected(Context context) {
-        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo wifiInfo = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-        NetworkInfo mobileInfo = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
-
-        if ((wifiInfo != null && wifiInfo.isConnected()) || (mobileInfo != null && mobileInfo.isConnected())) {
-            return true;
-        } else {
-            return false;
-        }
-    }
 }

@@ -87,7 +87,6 @@ public class DiaryActivity extends AppCompatActivity
                             oneDayDecorator,
                             todayDecorator
                     );
-                    System.out.println("datesssssssssss size is "+dates.size());
                 }
             }
 

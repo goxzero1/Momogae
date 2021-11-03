@@ -79,17 +79,6 @@ public class UserListFragment extends Fragment {
 
                         userModels.add(user);
                     }
-                    /*
-                    for(DataSnapshot snapshot: dataSnapshot.getChildren()) {
-                        UserModel userModel = snapshot.getValue(UserModel.class);
-                        Log.e("디버그",snapshot.getKey());
-                        //Log.e("디버그",userModel.getUsernm());
-                        //Log.e("디버그",userModel.getUsermsg());
-                        if (myUid.equals(snapshot.getKey())) continue;
-
-                        userModels.add(userModel);
-                    }
-                    */
                     notifyDataSetChanged();
                 }
 

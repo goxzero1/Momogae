@@ -33,11 +33,11 @@
             android:orientation="vertical">
 
             <Button
-                android:id="@+id/buttonTop"
+                android:id="@+id/buttTop"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="Button" />
+                android:text="Abandoned" />
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/profileImg2"

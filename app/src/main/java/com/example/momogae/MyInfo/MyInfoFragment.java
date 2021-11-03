@@ -28,21 +28,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MyInfoFragment extends Fragment {
+
     DatabaseReference mDatabaseReference;
     StorageReference mStorageReference;
     String userID;
-
     TextView userIDView;
     TextView userNameView;
     TextView userPhoneView;
     TextView userEmailView;
-
     EditText userPasswordView;
     EditText userPasswordConfirmView;
-
     Button modify;
-
-
 
 
     @Override
@@ -51,14 +47,12 @@ public class MyInfoFragment extends Fragment {
         mDatabaseReference = FirebaseDatabase.getInstance().getReference();
         mStorageReference = FirebaseStorage.getInstance().getReference();
         userID = SharedPreference.getAttribute(getContext(),"userID");
-
-
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_my_info, container, false);
+
         userIDView = view.findViewById(R.id.userID);
         userNameView = view.findViewById(R.id.userName);
         userPhoneView = view.findViewById(R.id.userPhone);
@@ -68,6 +62,7 @@ public class MyInfoFragment extends Fragment {
 
         modify = view.findViewById(R.id.submit);
         modify.setOnClickListener(new View.OnClickListener() {
+
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View view) {
@@ -84,19 +79,13 @@ public class MyInfoFragment extends Fragment {
                             return;
                         } else  childUpdates.replace("password", userPasswordConfirmView.getText().toString());
 
-
-
-
                         mDatabaseReference.updateChildren(childUpdates);
                         Toast.makeText(getActivity(), "비밀번호를 변경하였습니다.", Toast.LENGTH_SHORT).show();
-
-
                     }
             }
         });
 
         mDatabaseReference.child("users").child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
-            //ataSnapshot user;
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 userIDView.setText(dataSnapshot.child("ID").getValue().toString());
@@ -111,7 +100,6 @@ public class MyInfoFragment extends Fragment {
             }
         });
 
-        // Inflate the layout for this fragment
         return view;
     }
 }

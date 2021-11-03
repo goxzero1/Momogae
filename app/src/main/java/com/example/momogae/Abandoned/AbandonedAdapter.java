@@ -41,14 +41,12 @@ public class AbandonedAdapter extends RecyclerView.Adapter<AbandonedAdapter.MyVi
         Glide.with(mContext)
                 .load(mList.get(position).popfile)
                 .into(holder.popfile);
+
         holder.kindCd.setText("품종 : "+mList.get(position).kindCd);
         holder.sexCd.setText("성별 : "+mList.get(position).sexCd);
         holder.specialMark.setText("특징 : "+mList.get(position).specialMark);
         holder.careNm.setText("보호소 이름 : "+mList.get(position).careNm);
         holder.careTel.setText("보호소 번호 : "+mList.get(position).careTel);
-
-
-        //Click event
     }
 
     @Override

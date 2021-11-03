@@ -97,14 +97,9 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
         mCommentsReference = FirebaseDatabase.getInstance().getReference()
                 .child("post-comments").child(mPostKey);
 
-
-
-        // Initialize Views
         mAuthor = (View) findViewById(R.id.Author);
-
         mAuthorPhotoView = findViewById(R.id.postAuthorPhoto);
         mAuthorView = findViewById(R.id.postAuthor);
-        //mAuthorCompanionView = findViewById(R.id.postAuthorCompanion);
         mTitleView = findViewById(R.id.postTitle);
         mImageView = findViewById(R.id.postImage);
         mImageView.setVisibility(View.GONE);
@@ -115,8 +110,6 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
         mCommentButton = findViewById(R.id.buttonPostComment);
         mCommentsRecycler = findViewById(R.id.recyclerPostComments);
 
-        // Initialize Storage
-
         mCommentButton.setOnClickListener(this);
         mCommentsRecycler.setLayoutManager(new LinearLayoutManager(this));
     }
@@ -126,26 +119,19 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
     {
         super.onCreateContextMenu(menu, v, menuInfo);
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_chat, menu);
+        inflater.inflate(R.menu.menu_chat, menu); // 채팅을 보내기 위해 메뉴 추가
     }
 
     @Override
-    public boolean onContextItemSelected(MenuItem item) {
-        Log.e(TAG, "item id ==> " + item.getItemId());
+    public boolean onContextItemSelected(MenuItem item) { //Select 되었을 때
         if (item.getItemId() == R.id.send_chat) {
-            Intent intent = new Intent(this, ChatActivity.class);
-            intent.putExtra("toUid", mAuthorView.getText());
-            startActivity(intent);
+            Intent intent = new Intent(this, ChatActivity.class); //chatActivity 연결
+            intent.putExtra("toUid", mAuthorView.getText()); //특정 사용자를 나타내는 Uid를 가져옴
+            startActivity(intent); //ChatActivity 이동 Start
         }
         return true;
     }
 
-    public void function1(int id){
-        Toast.makeText(this, "function 1 called", Toast.LENGTH_SHORT).show();
-    }
-    public void function2(int id){
-        Toast.makeText(this, "function 2 called", Toast.LENGTH_SHORT).show();
-    }
 
     @Override
     public void onStart() {
@@ -194,17 +180,6 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
                     });
                     registerForContextMenu(mAuthor);
                 }
-
-                /*
-                FirebaseFirestore.getInstance().collection("pet").document(post.uid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>(){
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        DocumentSnapshot documentSnapshot = task.getResult();
-                        for(documentSnapshot : documentSnapshot.get("petSpecies")){
-                        }
-                    }
-                });
-                */
 
 
                 FirebaseDatabase.getInstance().getReference("/pet/"+post.uid).addValueEventListener(new ValueEventListener() {

@@ -34,9 +34,6 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText editPhone;
     private EditText editName;
     private EditText editEmail;
-    private EditText editEmailID;
-    private EditText editEmailDomainFirst;
-    private EditText editEmailDomainLast;
 
 
     private ValueEventListener checkRegister = new ValueEventListener() {

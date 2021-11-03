@@ -3,7 +3,6 @@ package com.example.momogae.Board;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.view.animation.Animation;
 
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
@@ -25,14 +24,10 @@ public class BoardActivity extends BaseActivity {
 
     private BoardFragmentPagerAdapter mPagerAdapter;
     private ViewPager mViewPager;
-
-    FloatingActionButton fab, fabNewPost, fabDeletePost;
-    private Animation fab_open, fab_close;
-    private Boolean isFabOpen = false;
-
     private SearchView mSearchView;
 
-    public String mSearchText;
+    FloatingActionButton fabNewPost;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,11 +36,17 @@ public class BoardActivity extends BaseActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        userID = getUid();
+        userID = getUid(); //파이어베이스 사용자 고유번호
         mStorage = FirebaseStorage.getInstance().getReference();
 
         mPagerAdapter = new BoardFragmentPagerAdapter(getSupportFragmentManager());
-        mPagerAdapter.setFragment(Arrays.asList(new QuestionPostsFragment(), new RecentPostsFragment(), new SharePostsFragment()), Arrays.asList(getString(BoardType.QUESTION.getTitleRes()), getString(BoardType.FREE.getTitleRes()), getString(BoardType.SHARE.getTitleRes())));
+        mPagerAdapter.setFragment(Arrays.asList(new QuestionPostsFragment(),
+                                                new FreePostsFragment(),
+                                                new SharePostsFragment()),
+
+                Arrays.asList(getString(BoardType.QUESTION.getTitleRes()),
+                              getString(BoardType.FREE.getTitleRes()),
+                              getString(BoardType.SHARE.getTitleRes())));
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = findViewById(R.id.container);
@@ -85,13 +86,12 @@ public class BoardActivity extends BaseActivity {
             }
         });
 
-        // Button launches NewPostActivity
+        // 패브버튼 이용해서 새로운 글 작성하기
         fabNewPost = (FloatingActionButton) findViewById(R.id.fab);
         fabNewPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(BoardActivity.this, NewPostActivity.class));
-
             }
         });
 

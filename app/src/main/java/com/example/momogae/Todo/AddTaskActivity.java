@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,17 +24,12 @@ public class AddTaskActivity extends AppCompatActivity {
     public static final String EXTRA_TASK_ID = "extraTaskId";
     // Extra for the task ID to be received after rotation
     public static final String INSTANCE_TASK_ID = "instanceTaskId";
-    // Constants for priority
-    public static final int PRIORITY_HIGH = 1;
-    public static final int PRIORITY_MEDIUM = 2;
-    public static final int PRIORITY_LOW = 3;
     // Constant for default task id to be used when not in update mode
     private static final int DEFAULT_TASK_ID = -1;
     // Constant for logging
     private static final String TAG = AddTaskActivity.class.getSimpleName();
     // Fields for views
     EditText mEditText;
-    RadioGroup mRadioGroup;
     Button mButton;
 
     private int mTaskId = DEFAULT_TASK_ID;
@@ -82,8 +76,6 @@ public class AddTaskActivity extends AppCompatActivity {
 
     private void initViews() {
         mEditText = findViewById(R.id.editTextTaskDescription);
-        mRadioGroup = findViewById(R.id.radioGroup);
-
         mButton = findViewById(R.id.saveButton);
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,19 +91,17 @@ public class AddTaskActivity extends AppCompatActivity {
             return;
         }
         mEditText.setText(task.getDescription());
-        setPriorityInViews(task.getPriority());
     }
 
 
     public void onSaveButtonClicked() {
         String description = mEditText.getText().toString();
-        int priority = getPriorityFromViews();
         Date date = new Date();
 
         if(description.equals("")){
             Toast.makeText(this,"Describe your task", Toast.LENGTH_SHORT).show();
         }else{
-            final TaskEntry taskEntry = new TaskEntry(description, priority, date, false );
+            final TaskEntry taskEntry = new TaskEntry(description, date, false );
 
             AppExecutors.getInstance().diskIO().execute(new Runnable() {
                 @Override
@@ -125,39 +115,6 @@ public class AddTaskActivity extends AppCompatActivity {
                     finish(); //automatically return to main activity
                 }
             });
-        }
-
-
-    }
-
-
-    public int getPriorityFromViews() {
-        int priority = 1;
-        int checkedId = ((RadioGroup) findViewById(R.id.radioGroup)).getCheckedRadioButtonId();
-        switch (checkedId) {
-            case R.id.radButton1:
-                priority = PRIORITY_HIGH;
-                break;
-            case R.id.radButton2:
-                priority = PRIORITY_MEDIUM;
-                break;
-            case R.id.radButton3:
-                priority = PRIORITY_LOW;
-        }
-        return priority;
-    }
-
-
-    public void setPriorityInViews(int priority) {
-        switch (priority) {
-            case PRIORITY_HIGH:
-                ((RadioGroup) findViewById(R.id.radioGroup)).check(R.id.radButton1);
-                break;
-            case PRIORITY_MEDIUM:
-                ((RadioGroup) findViewById(R.id.radioGroup)).check(R.id.radButton2);
-                break;
-            case PRIORITY_LOW:
-                ((RadioGroup) findViewById(R.id.radioGroup)).check(R.id.radButton3);
         }
     }
 }

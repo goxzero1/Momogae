@@ -45,10 +45,8 @@ public class NewPostActivity extends BaseActivity {
     private static final String TAG = "NewPostActivity";
     private static final String REQUIRED = "Required";
 
-    // [START declare_database_ref]
     private DatabaseReference mDatabase;
     private StorageReference mStorage;
-    // [END declare_database_ref]
 
     private EditText mTitleField;
     private EditText mBodyField;
@@ -56,7 +54,6 @@ public class NewPostActivity extends BaseActivity {
     private FloatingActionButton mSubmitButton;
     private Spinner mSpinner;
 
-    String imgPath = null;
 
     private String userID;
     int flagImage=0;
@@ -67,21 +64,20 @@ public class NewPostActivity extends BaseActivity {
         setContentView(R.layout.activity_new_post);
 
         userID = SharedPreference.getAttribute(getApplicationContext(),"userID");
-        // [START initialize_database_ref]
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        mStorage = FirebaseStorage.getInstance().getReference();
-        // [END initialize_database_ref]
+        mStorage = FirebaseStorage.getInstance().getReference(); //파이어베이스 데이터정보를 읽어옴
 
-        mTitleField = findViewById(R.id.fieldTitle);
-        mImageField = findViewById(R.id.imgPreview);
-        mBodyField = findViewById(R.id.fieldBody);
-        mSubmitButton = findViewById(R.id.fabSubmitPost);
-        mSpinner = findViewById(R.id.spinner_type);
+        mTitleField = findViewById(R.id.fieldTitle); //제목
+        mImageField = findViewById(R.id.imgPreview); //이미지
+        mBodyField = findViewById(R.id.fieldBody); //글 내용
+        mSubmitButton = findViewById(R.id.fabSubmitPost); //제출버튼
+        mSpinner = findViewById(R.id.spinner_type); //글 타입
 
 
-        ArrayAdapter arrayAdapter = ArrayAdapter.createFromResource(this, R.array.board_type, android.R.layout.simple_spinner_item);
-        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mSpinner.setAdapter(arrayAdapter);
+        ArrayAdapter arrayAdapter = ArrayAdapter.createFromResource
+                (this, R.array.board_type, android.R.layout.simple_spinner_item);
+        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); //스피너 연결
+        mSpinner.setAdapter(arrayAdapter); //스피너를 사용하여 글 타입을 선택
 
         mSubmitButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,22 +95,9 @@ public class NewPostActivity extends BaseActivity {
         if (requestCode==PICK_FROM_ALBUM && resultCode== RESULT_OK) {
             mImageField.setImageURI(data.getData());
             flagImage = PICK_FROM_ALBUM;
-            //userPhotoUri = data.getData();
         }
     }
-/*
-    public String getPathFromURI(Uri contentUri) {
-        String res = null;
-        String[] proj = {MediaStore.Images.Media.DATA};
-        Cursor cursor = getContentResolver().query(contentUri, proj, null, null, null);
-        if (cursor.moveToFirst()) {
-            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-            res = cursor.getString(column_index);
-        }
-        cursor.close();
-        return res;
-    }
-    */
+
 
     private void submitPost(int flag) {
         final String title = mTitleField.getText().toString();
@@ -215,16 +198,15 @@ public class NewPostActivity extends BaseActivity {
         }
     }
 
-    // [START write_fan_out]
-    private void writeNewPost(String userID, String username, String title, String body, String type) {
-        // Create new post at /user-posts/$userid/$postid and at
-        // /posts/$type/$postid simultaneously
-        String key = mDatabase.child("posts").push().getKey();
-        Post post = new Post(userID, username, title, body, type);
-        Map<String, Object> postValues = post.toMap();
 
-        Map<String, Object> childUpdates = new HashMap<>();
-        childUpdates.put("/posts/" + type + "/" + key, postValues);
+    private void writeNewPost(String userID, String username, String title, String body, String type) {
+
+        String key = mDatabase.child("posts").push().getKey(); //게시글 별 키를 다르게 해야 하기 때문에 키를 받아옴
+        Post post = new Post(userID, username, title, body, type); //게시글 정보에는 유저 아이디, 이름, 글 제목, 글 내용 그리고 타입이 있다.
+        Map<String, Object> postValues = post.toMap(); //위 정보는 posts/type/key/ 경로의 하위 정보로 업데이트된다. (postValues)
+
+        Map<String, Object> childUpdates = new HashMap<>(); // 파이어베이스에 데이터 업데이트
+        childUpdates.put("/posts/" + type + "/" + key, postValues); //경로 : posts/type/key, +postValues
         childUpdates.put("/user-posts/" + userID + "/" + key, postValues);
 
         mDatabase.updateChildren(childUpdates);
@@ -233,7 +215,7 @@ public class NewPostActivity extends BaseActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.activity_new_post_menu, menu);
+        getMenuInflater().inflate(R.menu.menu_new_post, menu);
         return true;
     }
 

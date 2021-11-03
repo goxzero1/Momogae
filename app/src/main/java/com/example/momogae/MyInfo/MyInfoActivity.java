@@ -1,7 +1,6 @@
 package com.example.momogae.MyInfo;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
@@ -14,15 +13,12 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
 import com.example.momogae.Login.SharedPreference;
 import com.example.momogae.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -33,14 +29,10 @@ public class MyInfoActivity extends AppCompatActivity {
 
     final int PICK_FROM_ALBUM = 1;
     String userID;
-
-    private FragmentPagerAdapter mPagerAdapter;
-    private ViewPager mViewPager;
     private TextView profileUserID;
     private ImageView profileImage;
-
     private StorageReference mStorage;
-    private FirebaseFirestore firestore;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,10 +41,8 @@ public class MyInfoActivity extends AppCompatActivity {
         // for profile
         mStorage = FirebaseStorage.getInstance().getReference();
         userID = SharedPreference.getAttribute(getApplicationContext(), "userID");
-
         profileUserID = (TextView) findViewById(R.id.userID);
         profileUserID.setText(userID);
-
         profileImage = (ImageView) findViewById(R.id.profileImg);
 
         profileImage.setOnClickListener(new View.OnClickListener() {
@@ -124,18 +114,4 @@ public class MyInfoActivity extends AppCompatActivity {
                 Log.e("FileSelectorActivity", "File select error", e);
             }
         }
-
-        public String getPathFromURI(Uri contentUri) {
-            String res = null;
-            String[] proj = {MediaStore.Images.Media.DATA};
-            Cursor cursor = getContentResolver().query(contentUri, proj, null, null, null);
-            if (cursor.moveToFirst()) {
-                int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-                res = cursor.getString(column_index);
-            }
-            cursor.close();
-            return res;
-        }
-
-
     }

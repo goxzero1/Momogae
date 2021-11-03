@@ -170,7 +170,7 @@ public class MapActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 anim();
-                showPlaceInformation(currentPosition);
+                showPlace_veterinarycare(currentPosition);
             }
         });
 
@@ -180,7 +180,7 @@ public class MapActivity extends AppCompatActivity
             public void onClick(View v){
                 anim();
 //                showPlaceInformation(currentPosition);
-                showPetCafePlaceInformation(currentPosition);
+                showPlace_petcafe(currentPosition);
                 //Toast.makeText(getApplicationContext(),"앗! 근처에 펫카페가 없어요!", Toast.LENGTH_SHORT);
             }
         });
@@ -190,7 +190,7 @@ public class MapActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 anim();
-                showPetRestaurantPlaceInformation(currentPosition);
+                showPlace_PetRestaurant(currentPosition);
             }
         });
 
@@ -199,7 +199,7 @@ public class MapActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 anim();
-                showPlacepetstoreInformation(currentPosition);
+                showPlace_petstore(currentPosition);
             }
         });
 
@@ -747,25 +747,25 @@ public class MapActivity extends AppCompatActivity
 
     }
 
-    public void showPlaceInformation(LatLng location)
+    public void showPlace_veterinarycare(LatLng location)
     {
-        mGoogleMap.clear();//지도 클리어
+        mGoogleMap.clear(); //지도를 초기화하는 구문
 
         if (previous_marker != null)
-            previous_marker.clear();//지역정보 마커 클리어
+            previous_marker.clear();//마커를 초기화하는 구문
 
         new NRPlaces.Builder()
                 .listener(MapActivity.this)
-                .key("AIzaSyDvEYjENIJ0ff4NDH6_LaS1KrJRkdZNwf8")
-                .latlng(location.latitude, location.longitude)//현재 위치
+                .key("AIzaSyDvEYjENIJ0ff4NDH6_LaS1KrJRkdZNwf8") //구글맵 api 키 설정
+                .latlng(location.latitude, location.longitude)//현재 위치 반경에서
                 .radius(7000) // 7km 내에서 검색
-                .type(PlaceType.VETERINARY_CARE)
+                .type(PlaceType.VETERINARY_CARE) //구글에서 제공해주는 api
                 .build()
                 .execute();
         mGoogleMap.animateCamera(CameraUpdateFactory.zoomTo(13), 1000, null);
     }
 
-    public void showPlacepetstoreInformation(LatLng location)
+    public void showPlace_petstore(LatLng location)
     {
         mGoogleMap.clear();//지도 클리어
 
@@ -784,17 +784,17 @@ public class MapActivity extends AppCompatActivity
         mGoogleMap.animateCamera(CameraUpdateFactory.zoomTo(13), 1000, null);
     }
 
-    public void showPetCafePlaceInformation(LatLng location) {
-        mGoogleMap.clear();//지도 클리어
+    public void showPlace_petcafe(LatLng location) {
+        mGoogleMap.clear();//지도를 초기화하는 구문
         if (previous_marker != null)
-            previous_marker.clear();//지역정보 마커 클리어
+            previous_marker.clear();//마커를 초기화하는 구문
 
         new NRPlaces.Builder()
                 .listener(MapActivity.this)
                 .key("AIzaSyDvEYjENIJ0ff4NDH6_LaS1KrJRkdZNwf8")
-                .latlng(location.latitude, location.longitude)//현재 위치
+                .latlng(location.latitude, location.longitude)//현재 위치 반경에서
                 .radius(5000) // 4km 내에서 검색
-                .type(PlaceType.CAFE)
+                .type(PlaceType.CAFE) //모든 카페가 검색됨
                 .language("ko", "KR")
                 .keyword("애견")
                 .build()
@@ -814,17 +814,17 @@ public class MapActivity extends AppCompatActivity
         new NRPlaces.Builder()
                 .listener(MapActivity.this)
                 .key("AIzaSyDvEYjENIJ0ff4NDH6_LaS1KrJRkdZNwf8")
-                .latlng(location.latitude, location.longitude)//현재 위치
+                .latlng(location.latitude, location.longitude)//현재 위치 반경에서
                 .radius(3000) // 3km 내에서 검색
-                .type(PlaceType.CAFE)
+                .type(PlaceType.CAFE) //모든 카페 정보가 검색됨
                 .language("ko", "KR")
-                .keyword("애견동반")
+                .keyword("애견동반") //키워드 "애견동반"을 포함하여 검색
                 .build()
                 .execute();
         mGoogleMap.animateCamera(CameraUpdateFactory.zoomTo(13), 1000, null);
     }
 
-    public void showPetRestaurantPlaceInformation(LatLng location) {
+    public void showPlace_PetRestaurant(LatLng location) {
         mGoogleMap.clear();//지도 클리어
 
         if (previous_marker != null)

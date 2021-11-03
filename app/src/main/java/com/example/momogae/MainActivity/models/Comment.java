@@ -9,9 +9,7 @@ public class Comment {
     public String author;
     public String text;
 
-    public Comment() {
-        // Default constructor required for calls to DataSnapshot.getValue(Comment.class)
-    }
+    public Comment() {}
 
     public Comment(String uid, String author, String text) {
         this.uid = uid;

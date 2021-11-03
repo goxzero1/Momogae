@@ -1,50 +1,22 @@
 <resources>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
-    <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Settings</string>
-
-    <string name="menu_home">Home</string>
-    <string name="menu_gallery">Gallery</string>
-    <string name="menu_slideshow">Slideshow</string>
-    <string name="menu_tools">Tools</string>
-    <string name="menu_share">Share</string>
-    <string name="menu_send">Send</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 
-    <string name="heading_recent">자유개시판</string>
+    <string name="heading_free">자유개시판</string>
     <string name="heading_question">질문개시판</string>
     <string name="heading_sharing">공유개시판</string>
-    <string name="heading_top">HOT</string>
-    <string name="heading_my_posts">My Posts</string>
-    <string name="heading_my_top_posts">My Top Posts</string>
 
-    <string name="heading_my_info">My Information</string>
-    <string name="heading_my_companion">My Companion</string>
-    <string name="heading_hmm">Hmm</string>
-    <string name="title_activity_news_web_view">NewsWebView</string>
-
-    <string name="section_format">Hello World from section: %1$d</string>
     <item name="photoView" type="id"/>
-    <string name="app_name">Momogae</string>
-
-
 
 
     <string name="update_button">수정</string>
-    <string name="main_activity_name">All Tasks</string>
-    <string name="add_task_activity_name">Add a New Task</string>
-    <string name="priority_1">1</string>
-    <string name="priority_2">2</string>
-    <string name="priority_3">3</string>
     <string name="edit_task_description">해야 할 일이 무엇인가요?&#8230;</string>
-    <string name="priority_string">Priority</string>
-    <string name="high_priority">High</string>
-    <string name="med_priority">Medium</string>
-    <string name="low_priority">Low</string>
     <string name="chat_send_author">이 게시자에게 채팅보내기</string>
+
+    <string-array name="board_type">
+        <item>@string/heading_question</item>
+        <item>@string/heading_free</item>
+        <item>@string/heading_sharing</item>
+    </string-array>
 
 </resources>

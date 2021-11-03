@@ -29,15 +29,8 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:gravity="center_vertical"
-            tools:text="someauthor@email.com" />
+            tools:text="Author" />
 
-        <TextView
-            android:id="@+id/postAuthorCompanion"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
-            tools:text="cat dog flog" />
     </LinearLayout>
 
 

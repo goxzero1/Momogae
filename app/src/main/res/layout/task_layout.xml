@@ -12,22 +12,6 @@
     tools:ignore="ExtraText">
 
 
-    <TextView
-        android:id="@+id/priorityTextView"
-        android:layout_width="28dp"
-        android:layout_height="28dp"
-        android:layout_gravity="center_vertical"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_weight="1"
-        android:background="@drawable/priority_circle"
-        android:gravity="center"
-        android:textAlignment="center"
-        android:textColor="@android:color/white"
-        android:visibility="gone"
-        tools:text="1" />
-
-
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"

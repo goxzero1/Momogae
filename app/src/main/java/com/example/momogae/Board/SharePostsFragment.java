@@ -8,7 +8,7 @@ public class SharePostsFragment extends PostListFragment {
     public Query getQuery(DatabaseReference databaseReference, int order) {
 
         Query shareQuery = databaseReference.getRef().child("posts/" + getBoardType())
-                .limitToFirst(10);
+                .limitToFirst(100);
         return shareQuery;
     }
 
