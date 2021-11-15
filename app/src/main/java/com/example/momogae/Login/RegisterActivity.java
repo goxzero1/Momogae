@@ -27,7 +27,6 @@ import java.util.Map;
 public class RegisterActivity extends AppCompatActivity {
     private DatabaseReference databaseReference;
     private FirebaseFirestore firestore;
-    //private UserModel userModel;
     private EditText editID;
     private EditText editPassword;
     private EditText editPasswordConfirmation;
@@ -54,8 +53,6 @@ public class RegisterActivity extends AppCompatActivity {
         }
     };
 
-    private FirebaseAuth auth;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,22 +75,22 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(TextUtils.isEmpty(editID.getText().toString())){
-                    Toast.makeText(com.example.momogae.Login.RegisterActivity.this, "아이디는 필수개", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this, "아이디는 필수개", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 if(TextUtils.isEmpty(editPassword.getText().toString())){
-                    Toast.makeText(com.example.momogae.Login.RegisterActivity.this, "비밀번호는 필수개", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this, "비밀번호는 필수개", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 if(TextUtils.isEmpty(editPasswordConfirmation.getText().toString())){
-                    Toast.makeText(com.example.momogae.Login.RegisterActivity.this, "비밀번호 확인을 해주세요", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this, "비밀번호 확인을 해주세요", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 if(TextUtils.isEmpty(editPhone.getText().toString())){
-                    Toast.makeText(com.example.momogae.Login.RegisterActivity.this, "전화번호는 필수개", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this, "전화번호는 필수개", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -107,7 +104,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                 databaseReference.addListenerForSingleValueEvent(checkRegister);
 
-                Intent intent  = new Intent(com.example.momogae.Login.RegisterActivity.this, LoginActivity.class);
+                Intent intent  = new Intent(RegisterActivity.this, LoginActivity.class); //완료시에 로그인 액티비티로 돌아감
                 startActivity(intent);
                 finish();
             }
@@ -115,12 +112,9 @@ public class RegisterActivity extends AppCompatActivity {
     }
     void makeNewUser()
     {
-        Date date = new Date(System.currentTimeMillis());
 
-        // firestore
-        Map<String, Object> user = new HashMap<>();
+        Map<String, Object> user = new HashMap<>(); //여기부터
         user.put("ID",editID.getText().toString());
-        //user.put("UserID",editID.getText().toString());
         if(editName.getText().toString() != null) {
             user.put("name", editName.getText().toString());
         }
@@ -130,14 +124,14 @@ public class RegisterActivity extends AppCompatActivity {
         user.put("usermsg", "hello world!");
         user.put("token", "");
         user.put("userphoto", "");
+        firestore.collection("users").document(editID.getText().toString()).set(user); //여기까지 firestore 저장내용
 
-        firestore.collection("users").document(editID.getText().toString()).set(user);
-
-
+        Date date = new Date(System.currentTimeMillis());
         databaseReference.child(editID.getText().toString()).child("ID").setValue(editID.getText().toString());
         databaseReference.child(editID.getText().toString()).child("Password").setValue(editPassword.getText().toString());
         databaseReference.child(editID.getText().toString()).child("Phone").setValue(editPhone.getText().toString());
         databaseReference.child(editID.getText().toString()).child("userMsg").setValue("hello world!");
+        databaseReference.child(editID.getText().toString()).child("RegistrationDate").setValue(date.toString());
 
         if(editName.getText().toString()!=null){
 
@@ -156,7 +150,6 @@ public class RegisterActivity extends AppCompatActivity {
             databaseReference.child(editID.getText().toString()).child("Email").setValue("No Data");
         }
 
-        databaseReference.child(editID.getText().toString()).child("RegistrationDate").setValue(date.toString());
         Toast.makeText(getApplicationContext(), "모모개 가입을 환영하개", Toast.LENGTH_LONG).show();
     }
 }

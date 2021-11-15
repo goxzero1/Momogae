@@ -71,18 +71,18 @@ public class DiaryWriteActivity extends AppCompatActivity {
         monthView = (TextView) findViewById(R.id.write_month);
 
         String mth = saveDate.split("-")[1];
-        if (mth=="1") { monthView.setText("January"); }
-        if (mth=="2") { monthView.setText("February"); }
-        if (mth=="3") { monthView.setText("March"); }
-        if (mth=="4") { monthView.setText("April"); }
-        if (mth=="5") { monthView.setText("May"); }
-        if (mth=="6") { monthView.setText("June"); }
-        if (mth=="7") { monthView.setText("July"); }
-        if (mth=="8") { monthView.setText("August"); }
-        if (mth=="9") { monthView.setText("September"); }
-        if (mth=="10") { monthView.setText("October"); }
-        if (mth=="11") { monthView.setText("November"); }
-        if (mth=="12") { monthView.setText("December"); }
+        if (mth.equals("1")) { monthView.setText("January"); }
+        if (mth.equals("2")) { monthView.setText("February"); }
+        if (mth.equals("3")) { monthView.setText("March"); }
+        if (mth.equals("4")) { monthView.setText("April"); }
+        if (mth.equals("5")) { monthView.setText("May"); }
+        if (mth.equals("6")) { monthView.setText("June"); }
+        if (mth.equals("7")) { monthView.setText("July"); }
+        if (mth.equals("8")) { monthView.setText("August"); }
+        if (mth.equals("9")) { monthView.setText("September"); }
+        if (mth.equals("10")) { monthView.setText("October"); }
+        if (mth.equals("11")) { monthView.setText("November"); }
+        if (mth.equals("12")) { monthView.setText("December"); }
         dateView.setText(saveDate.split("-")[2]);
 
         userID = SharedPreference.getAttribute(getApplicationContext(),"userID");

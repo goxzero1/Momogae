@@ -14,7 +14,6 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.momogae.R;
-import com.example.momogae.Todo.database.TaskEntry;
 
 import java.text.SimpleDateFormat;
 import java.util.List;

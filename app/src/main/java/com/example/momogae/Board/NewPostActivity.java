@@ -17,11 +17,11 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.momogae.Login.SharedPreference;
-import com.example.momogae.MainActivity.BaseActivity;
-import com.example.momogae.MainActivity.models.Post;
-import com.example.momogae.MainActivity.models.User;
+import com.example.momogae.Main.models.Post;
+import com.example.momogae.Main.models.User;
 import com.example.momogae.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -39,7 +39,7 @@ import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-public class NewPostActivity extends BaseActivity {
+public class NewPostActivity extends AppCompatActivity {
     private static final int PICK_FROM_ALBUM = 1;
 
     private static final String TAG = "NewPostActivity";
@@ -57,6 +57,10 @@ public class NewPostActivity extends BaseActivity {
 
     private String userID;
     int flagImage=0;
+
+    public String getUid() {
+        return SharedPreference.getAttribute(getApplicationContext(), "userID");
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

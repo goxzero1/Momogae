@@ -4,11 +4,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
-import com.example.momogae.MainActivity.BaseActivity;
+import com.example.momogae.Login.SharedPreference;
 import com.example.momogae.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
@@ -17,7 +18,7 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.Arrays;
 
-public class BoardActivity extends BaseActivity {
+public class BoardActivity extends AppCompatActivity {
 
     String userID;
     StorageReference mStorage;
@@ -115,6 +116,10 @@ public class BoardActivity extends BaseActivity {
                 return false;
             }
         });
+    }
+
+    public String getUid() {
+        return SharedPreference.getAttribute(getApplicationContext(), "userID");
     }
 
 

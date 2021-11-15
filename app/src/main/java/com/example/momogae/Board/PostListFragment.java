@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.momogae.Login.SharedPreference;
-import com.example.momogae.MainActivity.models.Post;
+import com.example.momogae.Main.models.Post;
 import com.example.momogae.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -44,8 +43,6 @@ public class DiaryLargeActivity extends AppCompatActivity {
     int position = 0;
     String key, userID, petName, day, month;
     public static EditText update_title, update_contents;
-    public static Button edit_btn, delete_btn;
-    private DatabaseReference diary_selecteddate;
     private TextView dateView, monthView;
     private ImageView diary_image;
     private static final int PICK_FROM_ALBUM = 1;
@@ -97,18 +94,18 @@ public class DiaryLargeActivity extends AppCompatActivity {
 
         key = diary_data.get(position).getDate();
         String mth = key.split("-")[1];
-        if (mth=="1") { monthView.setText("January"); }
-        if (mth=="2") { monthView.setText("February"); }
-        if (mth=="3") { monthView.setText("March"); }
-        if (mth=="4") { monthView.setText("April"); }
-        if (mth=="5") { monthView.setText("May"); }
-        if (mth=="6") { monthView.setText("June"); }
-        if (mth=="7") { monthView.setText("July"); }
-        if (mth=="8") { monthView.setText("August"); }
-        if (mth=="9") { monthView.setText("September"); }
-        if (mth=="10") { monthView.setText("October"); }
-        if (mth=="11") { monthView.setText("November"); }
-        if (mth=="12") { monthView.setText("December"); }
+        if (mth.equals("1")) { monthView.setText("January"); }
+        if (mth.equals("2")) { monthView.setText("February"); }
+        if (mth.equals("3")) { monthView.setText("March"); }
+        if (mth.equals("4")) { monthView.setText("April"); }
+        if (mth.equals("5")) { monthView.setText("May"); }
+        if (mth.equals("6")) { monthView.setText("June"); }
+        if (mth.equals("7")) { monthView.setText("July"); }
+        if (mth.equals("8")) { monthView.setText("August"); }
+        if (mth.equals("9")) { monthView.setText("September"); }
+        if (mth.equals("10")) { monthView.setText("October"); }
+        if (mth.equals("11")) { monthView.setText("November"); }
+        if (mth.equals("12")) { monthView.setText("December"); }
         dateView.setText(key.split("-")[2]);
         System.out.println("key Date number is "+key);
     }

@@ -1,4 +1,4 @@
-package com.example.momogae.Chat.model;
+package com.example.momogae.Chat;
 
 import java.util.ArrayList;
 import java.util.Date;

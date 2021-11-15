@@ -19,15 +19,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.momogae.Chat.chatting.ChatActivity;
+import com.example.momogae.Chat.ChatActivity;
 import com.example.momogae.Login.SharedPreference;
-import com.example.momogae.MainActivity.BaseActivity;
-import com.example.momogae.MainActivity.models.Comment;
-import com.example.momogae.MainActivity.models.Post;
-import com.example.momogae.MainActivity.models.User;
+import com.example.momogae.Main.models.Comment;
+import com.example.momogae.Main.models.Post;
+import com.example.momogae.Main.models.User;
 import com.example.momogae.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -43,7 +43,7 @@ import com.google.firebase.storage.StorageReference;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PostDetailActivity extends BaseActivity implements View.OnClickListener {
+public class PostDetailActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = "PostDetailActivity";
 
@@ -61,7 +61,6 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
     private View mAuthor;
     private ImageView mAuthorPhotoView;
     private TextView mAuthorView;
-    private TextView mAuthorCompanionView;
     private TextView mTitleView;
     private ImageView mImageView;
     private TextView mBodyView;
@@ -114,12 +113,16 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
         mCommentsRecycler.setLayoutManager(new LinearLayoutManager(this));
     }
 
+    public String getUid() {
+        return SharedPreference.getAttribute(getApplicationContext(), "userID");
+    }
+
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo)
     {
         super.onCreateContextMenu(menu, v, menuInfo);
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_chat, menu); // 채팅을 보내기 위해 메뉴 추가
+        inflater.inflate(R.menu.menu_boardchat, menu); // 채팅을 보내기 위해 메뉴 추가
     }
 
     @Override

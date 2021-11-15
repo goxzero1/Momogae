@@ -4,8 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.momogae.Todo.database.AppDatabase;
-
 public class AddTaskViewModelFactory extends ViewModelProvider.NewInstanceFactory {
 
     private final AppDatabase mDb;

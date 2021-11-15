@@ -1,4 +1,4 @@
-package com.example.momogae.Chat.model;
+package com.example.momogae.Chat;
 
 public class UserModel {
     public String userid;

@@ -7,7 +7,6 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.momogae.Login.SharedPreference;
@@ -30,9 +29,6 @@ public class MyPetActivity extends AppCompatActivity  {
     private FloatingActionButton fab_add;
     public static ArrayList<Pet> pet_data;
     RecyclerView recyclerView;
-    final int EDIT_OR_DELETE = 0;
-    final int REQUEST_GET_SINGLE_FILE = 1;
-    CardView cardView;
     private DatabaseReference petDB;
     public static String userID;
     PetViewAdapter adapter;
@@ -41,7 +37,6 @@ public class MyPetActivity extends AppCompatActivity  {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Intent pet_intent = getIntent();
         userID = SharedPreference.getAttribute(getApplicationContext(), "userID");
         pet_data = new ArrayList<Pet>();
         setContentView(R.layout.activity_my_pet);

@@ -12,8 +12,6 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.momogae.R;
-import com.example.momogae.Todo.database.AppDatabase;
-import com.example.momogae.Todo.database.TaskEntry;
 
 import java.util.Date;
 

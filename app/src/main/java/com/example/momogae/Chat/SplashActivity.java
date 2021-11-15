@@ -6,9 +6,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.WindowManager;
 
-import com.example.momogae.R;
 import com.example.momogae.Login.LoginActivity;
 import com.example.momogae.Login.SharedPreference;
+import com.example.momogae.R;
 
 public class SplashActivity extends Activity {
     private final int SPLASH_DISPLAY_LENGTH = 2000;
@@ -26,12 +26,12 @@ public class SplashActivity extends Activity {
             public void run() {
                 Intent mainIntent = null;
                 if ( SharedPreference.getAttribute(getApplicationContext(),"userID")==null) {
-                    mainIntent = new Intent(com.example.momogae.Chat.SplashActivity.this, LoginActivity.class);
+                    mainIntent = new Intent(SplashActivity.this, LoginActivity.class);
                 } else {
-                    mainIntent = new Intent(com.example.momogae.Chat.SplashActivity.this, com.example.momogae.Chat.FriendActivity.class);
+                    mainIntent = new Intent(SplashActivity.this, FriendActivity.class);
                 }
-                com.example.momogae.Chat.SplashActivity.this.startActivity(mainIntent);
-                com.example.momogae.Chat.SplashActivity.this.finish();
+                SplashActivity.this.startActivity(mainIntent);
+                SplashActivity.this.finish();
             }
         }, SPLASH_DISPLAY_LENGTH);
     }

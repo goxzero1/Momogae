@@ -1,24 +1,18 @@
-package com.example.momogae.Chat.chatting;
+package com.example.momogae.Chat;
 
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.MenuItem;
-import android.view.View;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.drawerlayout.widget.DrawerLayout;
 
-import com.example.momogae.Chat.fragment.ChatFragment;
-import com.example.momogae.Chat.fragment.UserListInRoomFragment;
 import com.example.momogae.R;
 
 
 public class ChatActivity extends AppCompatActivity {
-    private DrawerLayout drawerLayout;
     private ChatFragment chatFragment;
-    private UserListInRoomFragment userListInRoomFragment = null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,30 +31,6 @@ public class ChatActivity extends AppCompatActivity {
         if (roomTitle!=null) {
             actionBar.setTitle(roomTitle);
         }
-
-        // left drawer
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        findViewById(R.id.rightMenuBtn).setOnClickListener(new View.OnClickListener() {
-
-            @Override
-
-            public void onClick(View v) {
-                if (drawerLayout.isDrawerOpen(Gravity.RIGHT)) {
-                    drawerLayout.closeDrawer(Gravity.RIGHT);
-                } else {
-                    if (userListInRoomFragment==null) {
-                        userListInRoomFragment = UserListInRoomFragment.getInstance(roomID, chatFragment.getUserList());
-
-                        getSupportFragmentManager()
-                                .beginTransaction()
-                                .replace(R.id.drawerFragment, userListInRoomFragment)
-                                .commit();
-                    }
-                    drawerLayout.openDrawer(Gravity.RIGHT);
-                }
-            }
-
-        });
 
         // chatting area
         chatFragment = ChatFragment.getInstance(toUid, roomID);

@@ -26,14 +26,4 @@
 
     <include layout="@layout/content_friend" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/makeRoomBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end|bottom"
-        android:layout_margin="20dp"
-        android:src="@drawable/ic_add"
-        android:visibility="gone"
-        app:fabSize="normal" />
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

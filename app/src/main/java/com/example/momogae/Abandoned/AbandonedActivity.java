@@ -27,7 +27,7 @@ public class AbandonedActivity extends AppCompatActivity {
     //공공데이터에서 받은 서비스 키
     private String requestUrl;
     ArrayList<AbandonedItem> list = null;
-    AbandonedItem abandonedItem = null;
+    AbandonedItem abandonedItem = null; //데이터를 받아올 리스트 초기화
     RecyclerView recyclerView;
     AbandonedAdapter adapter;
     TextView no_result;
@@ -50,14 +50,13 @@ public class AbandonedActivity extends AppCompatActivity {
 
 
         MyAsyncTask myAsyncTask = new MyAsyncTask();
-        myAsyncTask.execute();
-        //AsyncTask로 비동기 방식으로 데이터 파싱
+        myAsyncTask.execute(); //Asynctask 수행 시작 - background에서는 데이터 파싱이 이루어짐
     }
 
     public class MyAsyncTask extends AsyncTask<String, Void, String> {
 
         @Override
-        protected String doInBackground(String... strings) {
+        protected String doInBackground(String... strings) {  //background에서 데이터 파싱이 이루어지는 코드
 
             requestUrl = "http://openapi.animal.go.kr/openapi/service/rest/" +
                     "abandonmentPublicSrvc/abandonmentPublic?numOfRows=500&serviceKey=" +dataKey;
@@ -101,7 +100,7 @@ public class AbandonedActivity extends AppCompatActivity {
                             if(parser.getName().equals("item")){
                                 abandonedItem = new AbandonedItem();
                             }
-                            if (parser.getName().equals("popfile")) popfile = true;
+                            if (parser.getName().equals("popfile")) popfile = true; //일치할시 접근가능
                             if (parser.getName().equals("kindCd")) kindCd = true;
                             if (parser.getName().equals("sexCd")) sexCd = true;
                             if (parser.getName().equals("specialMark")) specialMark = true;
@@ -109,9 +108,9 @@ public class AbandonedActivity extends AppCompatActivity {
                             if (parser.getName().equals("careTel")) careTel = true;
                             break;
                         case XmlPullParser.TEXT:
-                            //요소의 텍스트를 만났을때 반환값
+                            //파서가 내용에 접근했을때 반환값
                             if(popfile){
-                                abandonedItem.setPopfile(parser.getText());
+                                abandonedItem.setPopfile(parser.getText()); //true일때 내용을 저장함
                                 popfile = false;
                             } else if(kindCd) {
                                 abandonedItem.setKindCd(parser.getText());
@@ -152,7 +151,7 @@ public class AbandonedActivity extends AppCompatActivity {
             Handler handler = new Handler() {
                 @Override
                 public void handleMessage(Message msg) {
-                    adapter = new AbandonedAdapter(getApplicationContext(), list);
+                    adapter = new AbandonedAdapter(getApplicationContext(), list); //정보를 어댑터와 연결
                     recyclerView.setAdapter(adapter);
                     dialog.dismiss();
                     dialog = null;

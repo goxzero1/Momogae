@@ -10,17 +10,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary">
-
-        <Button
-            android:id="@+id/rightMenuBtn"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_gravity="right"
-            android:layout_marginRight="10dp"
-            android:background="@drawable/ic_menu" />
-
-    </androidx.appcompat.widget.Toolbar>
+        android:background="?attr/colorPrimary"/>
 
     <androidx.drawerlayout.widget.DrawerLayout
         android:id="@+id/drawer_layout"
@@ -39,14 +29,6 @@
             </FrameLayout>
 
         </LinearLayout>
-
-        <FrameLayout
-            android:id="@+id/drawerFragment"
-            android:layout_width="260dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="right"
-            android:background="@android:color/white">
-        </FrameLayout>
 
     </androidx.drawerlayout.widget.DrawerLayout>
 

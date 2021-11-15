@@ -1,15 +1,12 @@
-package com.example.momogae.Chat.common;
+package com.example.momogae.Chat;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Environment;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
 
@@ -19,21 +16,13 @@ import java.util.Date;
 public class Util9 {
     private static final Util9 ourInstance = new Util9();
 
-    static Util9 getInstance() {
-        return ourInstance;
-    }
 
     private Util9() {
     }
 
-    public static void showMessage(Context context, String msg) {
-        Toast toast = Toast.makeText(context, msg, Toast.LENGTH_SHORT);
-        toast.setGravity(Gravity.CENTER, 0, 0);
-        toast.show();
-    }
 
     public static void hideKeyboard(Activity activity) {
-        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE); //키보드 보이기&숨기기
         View view = activity.getCurrentFocus();
         if (view == null) {
             view = new View(activity);

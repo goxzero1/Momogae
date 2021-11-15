@@ -1,4 +1,4 @@
-package com.example.momogae.Chat.fragment;
+package com.example.momogae.Chat;
 
 import android.net.Uri;
 import android.os.Build;
@@ -17,7 +17,6 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
-import com.example.momogae.Chat.model.UserModel;
 import com.example.momogae.Login.SharedPreference;
 import com.example.momogae.R;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -67,15 +66,14 @@ public class UserFragment extends Fragment {
 
         Button saveBtn = view.findViewById(R.id.saveBtn);
         saveBtn.setOnClickListener(saveBtnClickListener);
-        //Button changePWBtn = view.findViewById(R.id.changePWBtn);
-        //changePWBtn.setOnClickListener(changePWBtnClickListener);
+
 
         getUserInfoFromServer();
         return view;
     }
 
     void getUserInfoFromServer(){
-        //String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
         final String uid = SharedPreference.getAttribute(getContext(), "userID");
 
         DocumentReference docRef = FirebaseFirestore.getInstance().collection("users").document(uid);

@@ -1,4 +1,4 @@
-package com.example.momogae.Chat.common;
+package com.example.momogae.Chat;
 
 import android.content.Context;
 

@@ -1,4 +1,4 @@
-package com.example.momogae.Chat.fragment;
+package com.example.momogae.Chat;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -19,75 +19,68 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.momogae.Login.SharedPreference;
+import com.example.momogae.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.example.momogae.Chat.chatting.SelectUserActivity;
-import com.example.momogae.Chat.model.UserModel;
-import com.example.momogae.R;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
-public class UserListInRoomFragment extends Fragment {
-    private String roomID;
-    private List<UserModel> userModels;
-    private RecyclerView recyclerView;
+public class UserListFragment extends Fragment {
 
-    public UserListInRoomFragment() {
-    }
-
-    public static final UserListInRoomFragment getInstance(String roomID, Map<String, UserModel> userModels) {
-        List<UserModel> users = new ArrayList();
-        for( Map.Entry<String, UserModel> elem : userModels.entrySet() ){
-            users.add(elem.getValue());
-        }
-
-        UserListInRoomFragment f = new UserListInRoomFragment();
-        f.setUserList(users);
-        Bundle bdl = new Bundle();
-        bdl.putString("roomID", roomID);
-        f.setArguments(bdl);
-
-        return f;
+    public UserListFragment() {
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_userlistinroom, container, false);
-        if (getArguments() != null) {
-            roomID = getArguments().getString("roomID");
-        }
-
-        recyclerView = view.findViewById(R.id.recyclerView);
+        View view = inflater.inflate(R.layout.fragment_userlist, container, false);
+        RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager( new LinearLayoutManager((inflater.getContext())));
         recyclerView.setAdapter(new UserFragmentRecyclerViewAdapter());
-
-        view.findViewById(R.id.addContactBtn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                Intent intent = new Intent(getActivity(), SelectUserActivity.class);
-                intent.putExtra("roomID", roomID);
-                startActivity(intent);
-            }
-        });
 
         return view;
     }
 
-    public void setUserList(List<UserModel> users) {
-        userModels = users;
-    }
-
     class UserFragmentRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
+
+        private List<DataSnapshot> userModels;
         private StorageReference storageReference;
         final private RequestOptions requestOptions = new RequestOptions().transforms(new CenterCrop(), new RoundedCorners(90));
 
         public UserFragmentRecyclerViewAdapter() {
             storageReference  = FirebaseStorage.getInstance().getReference();
+            userModels = new ArrayList<>();
+
+            final String myUid = SharedPreference.getAttribute(getContext(),"userID");
+
+            FirebaseDatabase.getInstance().getReference().child("users").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    //userModels.clear();
+                    Iterator<DataSnapshot> child = dataSnapshot.getChildren().iterator();
+                    while(child.hasNext()){
+                        DataSnapshot user = child.next();
+                        if (myUid.equals(user.getKey())) continue;
+
+                        userModels.add(user);
+                    }
+                    notifyDataSetChanged();
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
         }
 
         @NonNull
@@ -99,12 +92,13 @@ public class UserListInRoomFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-            final UserModel user = userModels.get(position);
+            //final UserModel user = userModels.get(position);
+            final DataSnapshot user = userModels.get(position);
             final CustomViewHolder customViewHolder = (CustomViewHolder) holder;
-            customViewHolder.user_name.setText(user.name);
-            //customViewHolder.user_msg.setText(user.getUsermsg());
+            customViewHolder.user_name.setText(user.child("Name").getValue().toString());
+            customViewHolder.user_msg.setText(user.child("userMsg").getValue().toString());
 
-            FirebaseStorage.getInstance().getReference(user.ID+"/profile").child("profileImage").getDownloadUrl().addOnFailureListener(new OnFailureListener() {
+            FirebaseStorage.getInstance().getReference(user.getKey()+"/profile").child("profileImage").getDownloadUrl().addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
                     Glide.with(getActivity()).load(R.drawable.ic_user)
@@ -118,6 +112,16 @@ public class UserListInRoomFragment extends Fragment {
                             .load(uri)
                             .apply(requestOptions)
                             .into(customViewHolder.user_photo);
+                }
+            });
+
+
+            holder.itemView.setOnClickListener( new View.OnClickListener(){
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getView().getContext(), ChatActivity.class);
+                    intent.putExtra("toUid", user.getKey());
+                    startActivity(intent);
                 }
             });
         }
@@ -138,7 +142,6 @@ public class UserListInRoomFragment extends Fragment {
             user_photo = view.findViewById(R.id.user_photo);
             user_name = view.findViewById(R.id.user_name);
             user_msg = view.findViewById(R.id.user_msg);
-            user_msg.setVisibility(View.GONE);
         }
     }
 }

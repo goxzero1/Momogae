@@ -30,15 +30,15 @@ public class AbandonedAdapter extends RecyclerView.Adapter<AbandonedAdapter.MyVi
 
     @NonNull
     @Override
-    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) { //뷰 홀더와 레이아웃 파일을 연결해주는 역할
         View view = mInflate.inflate(R.layout.item_abandoned, parent, false);
         MyViewHolder viewHolder = new MyViewHolder(view);
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        Glide.with(mContext)
+    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) { //데이터를 뷰홀더에 바인딩 해주는 부분
+        Glide.with(mContext) //popfile은 유기동물 사진이므로 glide를 통해 이미지를 홀더에 넣음
                 .load(mList.get(position).popfile)
                 .into(holder.popfile);
 

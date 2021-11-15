@@ -1,4 +1,4 @@
-package com.example.momogae.MainActivity;
+package com.example.momogae.Main;
 
 import android.content.Intent;
 import android.os.Bundle;

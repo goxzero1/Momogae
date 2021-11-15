@@ -1,4 +1,4 @@
-package com.example.momogae.Chat.fragment;
+package com.example.momogae.Chat;
 
 
 import android.Manifest;
@@ -39,12 +39,6 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
-import com.example.momogae.Chat.common.Util9;
-import com.example.momogae.Chat.model.ChatModel;
-import com.example.momogae.Chat.model.Message;
-import com.example.momogae.Chat.model.NotificationModel;
-import com.example.momogae.Chat.model.UserModel;
-import com.example.momogae.Chat.photoView.ViewPagerActivity;
 import com.example.momogae.Login.SharedPreference;
 import com.example.momogae.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -68,11 +62,9 @@ import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.google.gson.Gson;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -80,26 +72,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
-
 import static android.app.Activity.RESULT_OK;
 
 public class ChatFragment extends Fragment {
     private static final int PICK_FROM_ALBUM = 1;
-    private static final int PICK_FROM_FILE = 2;
     private static String rootPath = Util9.getRootPath()+"/DirectTalk9/";
 
     private Button sendBtn;
     private EditText msg_input;
     private RecyclerView recyclerView;
     private RecyclerViewAdapter mAdapter;
-    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
     private SimpleDateFormat dateFormatDay = new SimpleDateFormat("yyyy-MM-dd");
     private SimpleDateFormat dateFormatHour = new SimpleDateFormat("aa hh:mm");
     private String roomID;
@@ -141,7 +123,7 @@ public class ChatFragment extends Fragment {
         sendBtn.setOnClickListener(sendBtnClickListener);
 
         view.findViewById(R.id.imageBtn).setOnClickListener(imageBtnClickListener);
-        view.findViewById(R.id.fileBtn).setOnClickListener(fileBtnClickListener);
+
         view.findViewById(R.id.msg_input).setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -385,35 +367,6 @@ public class ChatFragment extends Fragment {
         });
     };
 
-    void sendGCM(){
-        Gson gson = new Gson();
-        NotificationModel notificationModel = new NotificationModel();
-        notificationModel.notification.title = userList.get(myUid).getUsernm();
-        notificationModel.notification.body = msg_input.getText().toString();
-        notificationModel.data.title = userList.get(myUid).getUsernm();
-        notificationModel.data.body = msg_input.getText().toString();
-
-        for ( Map.Entry<String, UserModel> elem : userList.entrySet() ){
-            if (myUid.equals(elem.getValue().getUid())) continue;
-            notificationModel.to = elem.getValue().getToken();
-            RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf8"), gson.toJson(notificationModel));
-            Request request = new Request.Builder()
-                    .header("Content-Type", "application/json")
-                    .addHeader("Authorization", "key=")
-                    .url("https://fcm.googleapis.com/fcm/send")
-                    .post(requestBody)
-                    .build();
-
-            OkHttpClient okHttpClient = new OkHttpClient();
-            okHttpClient.newCall(request).enqueue(new Callback() {
-                @Override
-                public void onFailure(Call call, IOException e) {                }
-                @Override
-                public void onResponse(Call call, Response response) throws IOException {                }
-            });
-        }
-    }
-
     // choose image
     Button.OnClickListener imageBtnClickListener = new View.OnClickListener() {
         public void onClick(final View view) {
@@ -423,16 +376,6 @@ public class ChatFragment extends Fragment {
         }
     };
 
-    // choose file
-    Button.OnClickListener fileBtnClickListener = new View.OnClickListener() {
-        public void onClick(final View view) {
-            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            intent.setType("*/*");
-            intent.setAction(Intent.ACTION_GET_CONTENT);
-            startActivityForResult(Intent.createChooser(intent, "Select File"), PICK_FROM_FILE);
-        }
-
-    };
 
     // uploading image / file
     @Override
@@ -515,10 +458,6 @@ public class ChatFragment extends Fragment {
         progressDialog.show();
     }
 
-    public void setProgressDialog(int value) {
-        progressDialog.setProgress(value);
-    }
-
     public void hideProgressDialog() {
         progressDialog.dismiss();
     }
@@ -532,7 +471,7 @@ public class ChatFragment extends Fragment {
 
         List<Message> messageList;
         String beforeDay = null;
-        MessageViewHolder beforeViewHolder;
+
 
         RecyclerViewAdapter() {
             File dir = new File(rootPath);
@@ -701,46 +640,6 @@ public class ChatFragment extends Fragment {
 
             }
 
-            /*messageViewHolder.timestamp.setText("");
-
-            if (message.getTimestamp()==null) {return;}
-
-
-
-            String day = dateFormatDay.format( message.getTimestamp());
-
-            String timestamp = dateFormatHour.format( message.getTimestamp());
-
-
-
-            messageViewHolder.timestamp.setText(timestamp);
-
-
-
-            if (position==0) {
-
-                messageViewHolder.divider_date.setText(day);
-
-                messageViewHolder.divider.setVisibility(View.VISIBLE);
-
-                messageViewHolder.divider.getLayoutParams().height = 60;
-
-            };
-
-            if (!day.equals(beforeDay) && beforeDay!=null) {
-
-                beforeViewHolder.divider_date.setText(beforeDay);
-
-                beforeViewHolder.divider.setVisibility(View.VISIBLE);
-
-                beforeViewHolder.divider.getLayoutParams().height = 60;
-
-            }
-
-            beforeViewHolder = messageViewHolder;
-
-            beforeDay = day;*/
-
         }
 
         void setReadCounter (Message message, final TextView textView) {
@@ -790,10 +689,6 @@ public class ChatFragment extends Fragment {
 
             if (msgLine_item!=null) {
                 msgLine_item.setOnClickListener(downloadClickListener);
-            }
-
-            if (img_item!=null) {                                       // for image
-                img_item.setOnClickListener(imageClickListener);
             }
 
         }
@@ -859,16 +754,6 @@ public class ChatFragment extends Fragment {
                 startActivity(Intent.createChooser(intent, "Your title"));
             }
 
-        };
-
-        // photo view
-        Button.OnClickListener imageClickListener = new View.OnClickListener() {
-            public void onClick(View view) {
-                Intent intent = new Intent(getContext(), ViewPagerActivity.class);
-                intent.putExtra("roomID", roomID);
-                intent.putExtra("realname", realname);
-                startActivity(intent);
-            }
         };
     }
 

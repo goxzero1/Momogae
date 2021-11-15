@@ -3,9 +3,6 @@ package com.example.momogae.Todo;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.momogae.Todo.database.AppDatabase;
-import com.example.momogae.Todo.database.TaskEntry;
-
 class AddTaskViewModel extends ViewModel {
 
     private LiveData<TaskEntry> task;

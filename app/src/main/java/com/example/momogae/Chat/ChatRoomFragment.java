@@ -1,4 +1,4 @@
-package com.example.momogae.Chat.fragment;
+package com.example.momogae.Chat;
 
 import android.content.Context;
 import android.content.Intent;
@@ -24,6 +24,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.momogae.Login.SharedPreference;
+import com.example.momogae.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.EventListener;
@@ -34,12 +36,6 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.example.momogae.Chat.chatting.ChatActivity;
-import com.example.momogae.Chat.model.ChatRoomModel;
-import com.example.momogae.Chat.model.Message;
-import com.example.momogae.Chat.model.UserModel;
-import com.example.momogae.R;
-import com.example.momogae.Login.SharedPreference;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -171,7 +167,7 @@ public class ChatRoomFragment extends Fragment {
                                 orderedRooms.put(message.getTimestamp(), chatRoomModel);
                             }
                             roomList.clear();
-                            for(Map.Entry<Date,ChatRoomModel> entry : orderedRooms.entrySet()) {
+                            for(Map.Entry<Date, ChatRoomModel> entry : orderedRooms.entrySet()) {
                                 roomList.add(entry.getValue());
                             }
                             notifyDataSetChanged();

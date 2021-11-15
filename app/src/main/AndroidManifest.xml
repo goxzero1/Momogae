@@ -43,7 +43,7 @@
         </activity>
 
         <activity
-            android:name=".MainActivity.Main">
+            android:name=".Main.MainActivity">
         </activity>
 
 
@@ -55,19 +55,16 @@
         </activity>
         <activity android:name=".Board.PostDetailActivity"></activity>
         <activity android:name=".Board.NewPostActivity"></activity>
-        <activity android:name=".MainActivity.BaseActivity"></activity>
+
 
 
 
 
 
         <activity
-            android:name=".Chat.chatting.ChatActivity"
+            android:name=".Chat.ChatActivity"
             android:theme="@style/AppTheme.NoActionBar"> //상습범
         </activity>
-        <activity android:name=".Chat.chatting.SelectUserActivity"></activity>
-        <activity android:name=".Chat.photoView.ViewPagerActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".Chat.FriendActivity"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".Chat.SplashActivity"></activity>
@@ -107,33 +104,13 @@
 
 
 
-
-
-
         <activity
             android:name=".MyInfo.MyInfoActivity">
         </activity>
 
 
-
-
-
-
-        <service
-            android:name=".Chat.common.MyFirebaseMessagingService"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-            </intent-filter>
-        </service>
-
         <activity android:name=".Abandoned.AbandonedActivity"></activity>
 
-
-
-
-        //아래 한 줄 추가(카카오맵)
-        <meta-data android:name="com.kakao.sdk.AppKey" android:value="fd8b1667c7bcd5ac747c9da1f31d41eb"/>
 
     </application>
 

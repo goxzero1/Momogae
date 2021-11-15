@@ -6,9 +6,6 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
-import com.example.momogae.Todo.database.AppDatabase;
-import com.example.momogae.Todo.database.TaskEntry;
-
 import java.util.List;
 
 public class MainViewModel extends AndroidViewModel {

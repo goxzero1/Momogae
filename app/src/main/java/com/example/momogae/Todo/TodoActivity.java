@@ -6,8 +6,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -21,8 +19,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.momogae.R;
-import com.example.momogae.Todo.database.AppDatabase;
-import com.example.momogae.Todo.database.TaskEntry;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Collections;
@@ -38,15 +34,8 @@ public class TodoActivity extends AppCompatActivity implements TaskAdapter.ItemC
 
     private RecyclerView mRecyclerView;
     private TaskAdapter mAdapter;
-    private ProgressBar mprogressBar;
-    private TextView mProgressValue;
     private TextView mEmptyView;
-
-    private LinearLayout adContainer;
     private ConstraintLayout mConstraintLayout;
-
-
-    private double mTotalProgressPercent;
     private AppDatabase mDb;
 
     @Override
@@ -54,16 +43,10 @@ public class TodoActivity extends AppCompatActivity implements TaskAdapter.ItemC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_todo);
 
-        mprogressBar = findViewById(R.id.progressBar);
         mRecyclerView = findViewById(R.id.recyclerViewTasks);
-        mProgressValue = findViewById(R.id.progressValue);
         mEmptyView = findViewById(R.id.emptyView);
         mConstraintLayout = findViewById(R.id.constraintLayout);
-
-
-
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-
         mAdapter = new TaskAdapter(this, this, this);
         mRecyclerView.setAdapter(mAdapter);
 
@@ -163,33 +146,15 @@ public class TodoActivity extends AppCompatActivity implements TaskAdapter.ItemC
 
 
                 if(taskEntries.isEmpty()){
-                    mprogressBar.setVisibility(View.INVISIBLE);
-                    mProgressValue.setVisibility(View.INVISIBLE);
                     mRecyclerView.setVisibility(View.INVISIBLE);
                     mEmptyView.setVisibility(View.VISIBLE);
                 }else {
-                    mprogressBar.setVisibility(View.GONE);
-                    mProgressValue.setVisibility(View.GONE);
                     mRecyclerView.setVisibility(View.VISIBLE);
                     mEmptyView.setVisibility(View.GONE);
                 }
-
-                calculatePercent(taskEntries);
-                mprogressBar.setProgress((int)mTotalProgressPercent);
-                mProgressValue.setText((int)mTotalProgressPercent + " %");
-
-                Log.d("setupVM", " called TotalPercent = " + (int)mTotalProgressPercent );
                 mAdapter.setTasks(taskEntries);
             }
         });
-    }
-
-    private void calculatePercent(List<TaskEntry> taskEntries) {
-        int countChecked = 0;
-        for(TaskEntry i: taskEntries){
-            if(i.isChecked()) countChecked++;
-        }
-        mTotalProgressPercent = (double)countChecked/taskEntries.size() *100;
     }
 
 }

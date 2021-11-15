@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.momogae.MainActivity.models.Post;
+import com.example.momogae.Main.models.Post;
 import com.example.momogae.R;
 
 import java.util.ArrayList;

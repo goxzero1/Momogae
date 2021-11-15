@@ -29,7 +29,7 @@
                 <com.rengwuxian.materialedittext.MaterialEditText
                     android:id="@+id/edt_password_confirm2"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="31dp"
                     android:layout_gravity="center"
                     android:drawableRight="@drawable/ic_lock"
                     android:fontFamily="sans-serif-light"
@@ -197,7 +197,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:fontFamily="sans-serif-medium"
-                    android:text="변경"
+                    android:text="비밀번호 변경"
                     android:textStyle="bold"
                     android:visibility="visible" />
 

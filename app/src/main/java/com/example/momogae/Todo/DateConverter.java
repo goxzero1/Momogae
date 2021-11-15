@@ -1,4 +1,4 @@
-package com.example.momogae.Todo.database;
+package com.example.momogae.Todo;
 
 import androidx.room.TypeConverter;
 
