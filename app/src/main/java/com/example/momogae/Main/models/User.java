@@ -1,4 +1,4 @@
-package com.example.momogae.MainActivity.models;
+package com.example.momogae.Main.models;
 
 import com.google.firebase.database.IgnoreExtraProperties;
 

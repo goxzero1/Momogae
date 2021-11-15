@@ -1,4 +1,4 @@
-package com.example.momogae.MainActivity;
+package com.example.momogae.Main;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -26,7 +26,7 @@ import com.google.firebase.storage.StorageReference;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
-public class Main extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity {
     private StorageReference mStorage;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
