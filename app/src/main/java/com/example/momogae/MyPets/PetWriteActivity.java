@@ -105,7 +105,7 @@ public class PetWriteActivity extends AppCompatActivity {
                 String key = name;
                 PetModel petModel = new PetModel(userID, name, age, gender, species, firstdate, neutralization, about);
                 Map<String, Object> childUpdates = new HashMap<>();
-                childUpdates.put("/petModel/" + userID + "/" + key, petModel.toMap());
+                childUpdates.put("/pet/" + userID + "/" + key, petModel.toMap());
                 databaseReference.updateChildren(childUpdates);
 
                 if (flagImage == 1) {
@@ -118,7 +118,7 @@ public class PetWriteActivity extends AppCompatActivity {
                     bitmap.compress(Bitmap.CompressFormat.JPEG, 100, uploadStream);
                     byte[] bytes = uploadStream.toByteArray();
 
-                    UploadTask uploadTask = mStorage.child("petModel/" + userID + "/" + name + "/profile/profileImage").putBytes(bytes);
+                    UploadTask uploadTask = mStorage.child("pet/" + userID + "/" + name + "/profile/profileImage").putBytes(bytes);
                     uploadTask.addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception exception) {
