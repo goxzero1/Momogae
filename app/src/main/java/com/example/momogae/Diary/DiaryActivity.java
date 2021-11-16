@@ -2,7 +2,6 @@ package com.example.momogae.Diary;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -35,7 +34,7 @@ import butterknife.ButterKnife;
 public class DiaryActivity extends AppCompatActivity
         implements OnDateSelectedListener {
 
-    public static ArrayList<DiaryClass> diary_data;
+    public static ArrayList<DiaryModel> diary_data;
     String userID, petName;
     private DatabaseReference diaryDB, dateDB;
     StorageReference mStorage;
@@ -57,7 +56,7 @@ public class DiaryActivity extends AppCompatActivity
         mStorage = FirebaseStorage.getInstance().getReference();
         setContentView(R.layout.content_my_diary);
         ButterKnife.bind(this);
-        diary_data = new ArrayList<DiaryClass>();
+        diary_data = new ArrayList<DiaryModel>();
         dates = new ArrayList<CalendarDay>();
 
         dateDB = FirebaseDatabase.getInstance().getReference("/pet/"+userID+"/"+petName);
@@ -151,7 +150,7 @@ public class DiaryActivity extends AppCompatActivity
                     for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                         String key = postSnapshot.getKey();
                         if (key.equals(shot_Day)) {
-                            DiaryClass get = postSnapshot.getValue(DiaryClass.class);
+                            DiaryModel get = postSnapshot.getValue(DiaryModel.class);
                             diary_data.add(get);
                         }
                     }

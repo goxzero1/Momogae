@@ -153,9 +153,9 @@ public class DiaryLargeActivity extends AppCompatActivity {
 
 
 
-        DiaryClass diaryClass= new DiaryClass(userID, revised_title, revised_contents, key);
+        DiaryModel diaryModel = new DiaryModel(userID, revised_title, revised_contents, key);
         Map<String, Object> childUpdates = new HashMap<>();
-        childUpdates.put("/pet/"+userID+"/"+petName+"/"+key, diaryClass.toMap());
+        childUpdates.put("/pet/"+userID+"/"+petName+"/"+key, diaryModel.toMap());
         databaseReference.updateChildren(childUpdates);
 
         // [END single_value_read]

@@ -144,9 +144,9 @@ public class DiaryWriteActivity extends AppCompatActivity {
         String format_time1 = format.format(time.getTime());
 
 
-        DiaryClass diaryClass = new DiaryClass(userID, title, contents, saveDate);
+        DiaryModel diaryModel = new DiaryModel(userID, title, contents, saveDate);
         Map<String, Object> childUpdates= new HashMap<>();
-        childUpdates.put("/pet/"+userID+"/"+petName+"/"+saveDate, diaryClass.toMap());
+        childUpdates.put("/pet/"+userID+"/"+petName+"/"+saveDate, diaryModel.toMap());
         databaseReference.updateChildren(childUpdates); //다이어리 업로드
 
 

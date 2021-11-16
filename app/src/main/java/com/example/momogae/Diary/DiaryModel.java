@@ -5,16 +5,16 @@ import com.google.firebase.database.Exclude;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DiaryClass {
+public class DiaryModel {
 
     private String id;
     private String title;
     private String date;
     private String contents;
 
-    public DiaryClass() {}
+    public DiaryModel() {}
 
-    public DiaryClass(String id, String title, String contents, String date){
+    public DiaryModel(String id, String title, String contents, String date){
         this.id = id;
         this.title = title;
         this.date = date;
