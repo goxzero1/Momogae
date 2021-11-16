@@ -158,7 +158,7 @@
                     android:textSize="20dp" />
 
                 <TextView
-                    android:id="@+id/pet_BFF"
+                    android:id="@+id/pet_about"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:fontFamily="sans-serif-light"
@@ -187,7 +187,7 @@
                     />
 
                 <Button
-                    android:id="@+id/delete_pet_btn"
+                    android:id="@+id/todo_pet_btn"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"

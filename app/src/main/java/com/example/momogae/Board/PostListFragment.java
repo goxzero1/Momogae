@@ -2,7 +2,6 @@ package com.example.momogae.Board;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +12,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.momogae.Login.SharedPreference;
-import com.example.momogae.Main.models.Post;
 import com.example.momogae.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -51,14 +49,10 @@ public abstract class PostListFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        // Set up Layout Manager, reverse layout
         mManager = new LinearLayoutManager(getActivity());
         mManager.setReverseLayout(true);
         mManager.setStackFromEnd(true);
         mRecycler.setLayoutManager(mManager);
-
-        // Set up FirebaseRecyclerAdapter with the Query
         initRecyclerAdapter();
     }
 
@@ -80,13 +74,12 @@ public abstract class PostListFragment extends Fragment {
 
         mAdapter.setItemClickListener(new PostAdapter.ItemClickListener() {
             @Override
-            public void onClick(int position, Post post) {
-                // Launch PostDetailActivity
+            public void onClick(int position, PostModel postModel) {
                 Intent intent = new Intent(getActivity(), PostDetailActivity.class);
-                intent.putExtra(PostDetailActivity.EXTRA_POST_KEY, post.key);
+                intent.putExtra(PostDetailActivity.EXTRA_POST_KEY, postModel.key);
                 intent.putExtra(PostDetailActivity.EXTRA_TYPE, getBoardType());
 
-                startActivity(intent);
+                startActivity(intent); //PostDetailActivity 시작
             }
         });
 
@@ -94,50 +87,43 @@ public abstract class PostListFragment extends Fragment {
     }
 
     private void fetchPost(DataSnapshot snapshot) {
-        Log.e(TAG, "snapshot ==> " + snapshot);
-        ArrayList<Post> items = new ArrayList<>();
+
+        ArrayList<PostModel> items = new ArrayList<>();
         for (DataSnapshot item : snapshot.getChildren()) {
-            Post temp = item.getValue(Post.class);
+            PostModel temp = item.getValue(PostModel.class);
             temp.key = item.getKey();
             items.add(temp);
         }
-        mAdapter.setPosts(items);
+        mAdapter.setPostModels(items);
     }
 
     private void fetchSearchPost(DataSnapshot snapshot, String query) {
-        Log.e(TAG, "snapshot ==> " + snapshot);
-        ArrayList<Post> items = new ArrayList<>();
+        ArrayList<PostModel> items = new ArrayList<>();
         for (DataSnapshot item : snapshot.getChildren()) {
-            Post temp = item.getValue(Post.class);
+            PostModel temp = item.getValue(PostModel.class);
             if (temp.body.contains(query)) {
                 temp.key = item.getKey();
                 items.add(temp);
             }
         }
-        mAdapter.setPosts(items);
+        mAdapter.setPostModels(items);
     }
 
     @Override
     public void onStart() {
         super.onStart();
-//        if (mAdapter != null) {
-//            mAdapter.startListening();
-//        }
+
     }
 
     @Override
     public void onStop() {
         super.onStop();
-//        if (mAdapter != null) {
-//            mAdapter.stopListening();
-//        }
+
     }
 
     public String getUid() {
         return SharedPreference.getAttribute(getContext(),"userID");
     }
-
-
     public abstract Query getQuery(DatabaseReference databaseReference, int order);
     public abstract String getBoardType();
 

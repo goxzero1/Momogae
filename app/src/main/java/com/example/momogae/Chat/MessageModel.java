@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class Message {
+public class MessageModel {
     private String uid;
     private String msg;
     private String msgtype;          // 0: msg, 1: image, 2: file

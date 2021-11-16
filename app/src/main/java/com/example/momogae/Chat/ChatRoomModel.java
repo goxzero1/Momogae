@@ -23,10 +23,10 @@ public class ChatRoomModel {
     }
     public String getPhoto() {
         return photo;
-    }
+    } //프로필사진
     public void setPhoto(String photo) {
         this.photo = photo;
-    }
+    } //프로필사진
     public String getLastMsg() {
         return lastMsg;
     }
@@ -41,14 +41,12 @@ public class ChatRoomModel {
     }
     public Integer getUserCount() {
         return userCount;
-    }
+    } // 채팅에 참여하는 유저 수
     public void setUserCount(Integer userCount) {
         this.userCount = userCount;
-    }
+    } //채팅에 참여하는 유저 수
     public Integer getUnreadCount() {
         return unreadCount;
-    }
-    public void setUnreadCount(Integer unreadCount) {
-        this.unreadCount = unreadCount;
-    }
+    } //읽지 않은 사람의 수
+    public void setUnreadCount(Integer unreadCount) { this.unreadCount = unreadCount; } //읽지 않은 사람의 수
 }

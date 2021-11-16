@@ -2,7 +2,6 @@ package com.example.momogae.Todo;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -132,7 +131,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
                     }else {
                         mTaskEntries.get(getAdapterPosition()).setChecked(true);
                     }
-                    Log.d("adpatercheck", "is checked  " + mTaskEntries.get(getAdapterPosition()).isChecked());
                     mCheckBoxCheckListener.onCheckBoxCheckListener(mTaskEntries.get(getAdapterPosition()));
                 }
             });

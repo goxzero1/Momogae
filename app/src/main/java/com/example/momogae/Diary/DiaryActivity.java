@@ -20,7 +20,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
-import com.prolificinteractive.materialcalendarview.CalendarMode;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
@@ -31,7 +30,6 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 
 public class DiaryActivity extends AppCompatActivity
@@ -63,19 +61,16 @@ public class DiaryActivity extends AppCompatActivity
         dates = new ArrayList<CalendarDay>();
 
         dateDB = FirebaseDatabase.getInstance().getReference("/pet/"+userID+"/"+petName);
-        System.out.println("petName is "+petName);
         String sort_column_name="date";
         Query sortbyDate = dateDB.orderByChild(sort_column_name);
         sortbyDate.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 dates.clear();
-                System.out.println("dates all cleared");
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     String key = postSnapshot.getKey();
                     if (key.equals("petAge")||key.equals("petGender")||key.equals("petName")||key.equals("petSpecies")||
-                            key.equals("petBff")||key.equals("petFirstDate")||key.equals("petNeutralization")||key.equals("uid")) {continue;}
-                    System.out.println("key of dateDB is " + key);
+                            key.equals("petAbout")||key.equals("petFirstDate")||key.equals("petNeutralization")||key.equals("uid")) {continue;}
                     int year = Integer.parseInt(key.split("-")[0]);
                     int month = Integer.parseInt(key.split("-")[1]);
                     int day = Integer.parseInt(key.split("-")[2]);
@@ -131,8 +126,6 @@ public class DiaryActivity extends AppCompatActivity
         int Day = date.getDay();
 
         String shot_Day = Year + "-" + Month + "-" + Day;
-
-        Log.i("shot_Day test", shot_Day + "");
         widget.clearSelection();
 
         Toast.makeText(getApplicationContext(), shot_Day + "에 무슨 일이 있었개?" , Toast.LENGTH_LONG).show();
@@ -148,14 +141,12 @@ public class DiaryActivity extends AppCompatActivity
         }
 
         else {
-            System.out.println("dates contain this date!!");
             diaryDB = FirebaseDatabase.getInstance().getReference("/pet/" + userID + "/" + petName);
             String sort_column_name = "title";
             Query sortbyTitle = diaryDB.orderByChild(sort_column_name);
             sortbyTitle.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    System.out.println("Done clear the diary data");
                     diary_data.clear();
                     for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                         String key = postSnapshot.getKey();
@@ -176,20 +167,6 @@ public class DiaryActivity extends AppCompatActivity
             intent.putExtra("petName", petName);
             startActivity(intent);
         }
-    }
-
-    @OnClick(R.id.button_weeks)
-    public void onSetWeekMode() {
-        widget.state().edit()
-                .setCalendarDisplayMode(CalendarMode.WEEKS)
-                .commit();
-    }
-
-    @OnClick(R.id.button_months)
-    public void onSetMonthMode() {
-        widget.state().edit()
-                .setCalendarDisplayMode(CalendarMode.MONTHS)
-                .commit();
     }
 
 

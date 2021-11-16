@@ -1,17 +1,17 @@
-package com.example.momogae.Main.models;
+package com.example.momogae.Board;
 
 import com.google.firebase.database.IgnoreExtraProperties;
 
 @IgnoreExtraProperties
-public class Comment {
+public class CommentModel {
 
     public String uid;
     public String author;
     public String text;
 
-    public Comment() {}
+    public CommentModel() {}
 
-    public Comment(String uid, String author, String text) {
+    public CommentModel(String uid, String author, String text) {
         this.uid = uid;
         this.author = uid;
         this.text = text;

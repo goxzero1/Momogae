@@ -1,4 +1,4 @@
-package com.example.momogae.MyPets.models;
+package com.example.momogae.MyPets;
 
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @IgnoreExtraProperties
-public class  Pet {
+public class PetModel {
 
     private String uid;
     private String petName;
@@ -16,14 +16,14 @@ public class  Pet {
     private String petSpecies;
     private String petFirstDate;
     private String petNeutralization;
-    private String petBff;
+    private String petAbout;
 
-    public Pet() {
-        // Default constructor required for calls to DataSnapshot.getValue(Pet.class)
+    public PetModel() {
+        // Default constructor required for calls to DataSnapshot.getValue(PetModel.class)
     }
 
-    public Pet(String uid, String petName, String petAge, String petGender, String petSpecies,
-               String petFirstDate, String petNeutralization, String petBff) {
+    public PetModel(String uid, String petName, String petAge, String petGender, String petSpecies,
+                    String petFirstDate, String petNeutralization, String petAbout) {
         this.uid = uid;
         this.petName = petName;
         this.petAge = petAge;
@@ -31,7 +31,7 @@ public class  Pet {
         this.petSpecies = petSpecies;
         this.petFirstDate = petFirstDate;
         this.petNeutralization = petNeutralization;
-        this.petBff = petBff;
+        this.petAbout = petAbout;
     }
 
     public String getUid() {return uid;}
@@ -41,7 +41,7 @@ public class  Pet {
     public String getPetAge() {return petAge;}
     public String getPetFirstDate() {return petFirstDate;}
     public String getPetNeutralization() {return petNeutralization;}
-    public String getPetBff() {return petBff;}
+    public String getPetAbout() {return petAbout;}
 
     public void setUid(String uid) {this.uid = uid;}
     public void setpetName(String petName) {this.petName = petName;}
@@ -50,7 +50,7 @@ public class  Pet {
     public void setpetAge(String petAge) {this.petAge = petAge;}
     public void setPetFirstDate(String petFirstDate) {this.petFirstDate = petFirstDate;}
     public void setPetNeutralization(String petNeutralization) {this.petNeutralization = petNeutralization;}
-    public void setPetBff(String petBff) {this.petBff = petBff;}
+    public void setPetAbout(String petAbout) {this.petAbout = petAbout;}
 
     // [START post_to_map]
     @Exclude
@@ -62,7 +62,7 @@ public class  Pet {
         result.put("petGender", petGender);
         result.put("petSpecies", petSpecies);
         result.put("petFirstDate", petFirstDate);
-        result.put("petBff", petBff);
+        result.put("petAbout", petAbout);
         result.put("petNeutralization", petNeutralization);
         return result;
     }

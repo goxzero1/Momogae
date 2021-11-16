@@ -21,7 +21,7 @@ import com.google.firebase.storage.StorageReference;
 import java.util.HashMap;
 import java.util.Map;
 
-public class FriendActivity extends AppCompatActivity {
+public class ChatFragmentPagerAdapter extends AppCompatActivity {
     private StorageReference mStorage;
     private String userID;
     private SectionsPagerAdapter mSectionsPagerAdapter;

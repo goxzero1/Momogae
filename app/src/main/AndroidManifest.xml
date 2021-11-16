@@ -51,7 +51,7 @@
 
         <activity
             android:name=".Board.BoardActivity"
-            android:theme="@style/AppTheme.NoActionBar"> //중요
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity android:name=".Board.PostDetailActivity"></activity>
         <activity android:name=".Board.NewPostActivity"></activity>
@@ -63,9 +63,9 @@
 
         <activity
             android:name=".Chat.ChatActivity"
-            android:theme="@style/AppTheme.NoActionBar"> //상습범
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
-        <activity android:name=".Chat.FriendActivity"
+        <activity android:name=".Chat.ChatFragmentPagerAdapter"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".Chat.SplashActivity"></activity>
 
@@ -82,8 +82,6 @@
 
 
 
-
-
         <activity android:name=".MyPets.MyPetActivity"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".MyPets.PetWriteActivity" />
@@ -92,12 +90,17 @@
         </activity>
         <activity android:name=".MyPets.PetEditActivity"/>
 
+
+
         <activity
             android:name=".Diary.DiaryActivity"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity android:name=".Diary.DiaryWriteActivity"></activity>
         <activity android:name=".Diary.DiaryLargeActivity"></activity>
+
+
+
 
         <activity android:name=".Todo.TodoActivity"/>
         <activity android:name=".Todo.AddTaskActivity"></activity>

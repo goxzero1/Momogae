@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,7 +15,6 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.momogae.MyPets.models.Pet;
 import com.example.momogae.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -105,9 +103,9 @@ public class PetWriteActivity extends AppCompatActivity {
                 firstdate = write_firstdate.getText().toString();
 
                 String key = name;
-                Pet pet = new Pet(userID, name, age, gender, species, firstdate, neutralization, about);
+                PetModel petModel = new PetModel(userID, name, age, gender, species, firstdate, neutralization, about);
                 Map<String, Object> childUpdates = new HashMap<>();
-                childUpdates.put("/pet/" + userID + "/" + key, pet.toMap());
+                childUpdates.put("/petModel/" + userID + "/" + key, petModel.toMap());
                 databaseReference.updateChildren(childUpdates);
 
                 if (flagImage == 1) {
@@ -120,23 +118,20 @@ public class PetWriteActivity extends AppCompatActivity {
                     bitmap.compress(Bitmap.CompressFormat.JPEG, 100, uploadStream);
                     byte[] bytes = uploadStream.toByteArray();
 
-                    UploadTask uploadTask = mStorage.child("pet/" + userID + "/" + name + "/profile/profileImage").putBytes(bytes);
+                    UploadTask uploadTask = mStorage.child("petModel/" + userID + "/" + name + "/profile/profileImage").putBytes(bytes);
                     uploadTask.addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception exception) {
-                            // Handle unsuccessful uploads
-                            Log.e("디버그", "업로드안됨*****************************");
+
                         }
                     }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
                             // ...
-                            Log.e("디버그", "업로드됨!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!11*****************************");
+
                         }
                     });
-
-                    System.out.println("new pet added");
                     finish();
                 }
             }

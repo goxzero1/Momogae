@@ -126,8 +126,6 @@ public class MapActivity extends AppCompatActivity
         setTitle("Momogae");
         mLayout = findViewById(R.id.layout_map);
 
-        Log.d(TAG, "onCreate");
-
         userID = SharedPreference.getAttribute(getApplicationContext(), "userID");
         mStorage = FirebaseStorage.getInstance().getReference();
 
@@ -234,8 +232,6 @@ public class MapActivity extends AppCompatActivity
                 String markerSnippet = "위도:" + String.valueOf(location.getLatitude())
                         + " 경도:" + String.valueOf(location.getLongitude());
 
-                Log.d(TAG, "onLocationResult : " + markerSnippet);
-
 
                 //현재 위치에 마커 생성하고 이동
                 if (mCurrentLocatiion == null) {
@@ -257,7 +253,6 @@ public class MapActivity extends AppCompatActivity
 
         if (!checkLocationServicesStatus()) {
 
-            Log.d(TAG, "startLocationUpdates : call showDialogForLocationServiceSetting");
             showDialogForLocationServiceSetting();
         }else {
 
@@ -270,13 +265,11 @@ public class MapActivity extends AppCompatActivity
 
             if (hasFineLocationPermission != PackageManager.PERMISSION_GRANTED ||
                     hasCoarseLocationPermission != PackageManager.PERMISSION_GRANTED   ) {
-
-                Log.d(TAG, "startLocationUpdates : 퍼미션 안가지고 있음");
                 return;
             }
 
 
-            Log.d(TAG, "startLocationUpdates : call mFusedLocationClient.requestLocationUpdates");
+
 
 
 
@@ -294,8 +287,6 @@ public class MapActivity extends AppCompatActivity
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-
-        Log.d(TAG, "onMapReady :");
 
         mGoogleMap = googleMap;
 
@@ -362,7 +353,6 @@ public class MapActivity extends AppCompatActivity
             @Override
             public void onMapClick(LatLng latLng) {
 
-                Log.d( TAG, "onMapClick :");
             }
         });
 
@@ -376,11 +366,10 @@ public class MapActivity extends AppCompatActivity
     protected void onStart() {
         super.onStart();
 
-        Log.d(TAG, "onStart");
+
 
         if (checkPermission()) {
 
-            Log.d(TAG, "onStart : call mFusedLocationClient.requestLocationUpdates");
             mFusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);
 
             if (mGoogleMap!=null)
@@ -399,7 +388,6 @@ public class MapActivity extends AppCompatActivity
 
         if (mFusedLocationClient != null) {
 
-            Log.d(TAG, "onStop : call stopLocationUpdates");
             mFusedLocationClient.removeLocationUpdates(locationCallback);
         }
     }
@@ -631,9 +619,6 @@ public class MapActivity extends AppCompatActivity
                 //사용자가 GPS 활성 시켰는지 검사
                 if (checkLocationServicesStatus()) {
                     if (checkLocationServicesStatus()) {
-
-                        Log.d(TAG, "onActivityResult : GPS 활성화 되있음");
-
 
                         needRequest = true;
 

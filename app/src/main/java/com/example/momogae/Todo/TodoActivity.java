@@ -2,7 +2,6 @@ package com.example.momogae.Todo;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -132,7 +131,7 @@ public class TodoActivity extends AppCompatActivity implements TaskAdapter.ItemC
             @Override
             public void run() {
                 mDb.taskDao().updateTask(taskEntry);
-                Log.d("oncheckList", " "+taskEntry.isChecked() +"---");
+
             }
         });
     }

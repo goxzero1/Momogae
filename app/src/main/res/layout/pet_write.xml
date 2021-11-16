@@ -62,7 +62,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:fontFamily="sans-serif-light"
-                android:hint="처음 만난 날 ex(2017-03-22)"
+                android:hint="처음 만난 날 ex(2021-03-22)"
                 android:layout_weight="1"/>
 
             <EditText

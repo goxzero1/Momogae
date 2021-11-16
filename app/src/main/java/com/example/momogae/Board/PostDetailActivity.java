@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -16,7 +15,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,9 +23,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.momogae.Chat.ChatActivity;
 import com.example.momogae.Login.SharedPreference;
-import com.example.momogae.Main.models.Comment;
-import com.example.momogae.Main.models.Post;
-import com.example.momogae.Main.models.User;
 import com.example.momogae.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -71,7 +66,7 @@ public class PostDetailActivity extends AppCompatActivity implements View.OnClic
     private RecyclerView mCommentsRecycler;
 
     private String userID;
-    private String userCompanions;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,9 +74,6 @@ public class PostDetailActivity extends AppCompatActivity implements View.OnClic
         setContentView(R.layout.activity_post_detail);
 
         userID = SharedPreference.getAttribute(getApplicationContext(),"userID");
-        userCompanions = "WITH  ";
-
-        // Get post key from intent
         mPostKey = getIntent().getStringExtra(EXTRA_POST_KEY);
         mType = getIntent().getStringExtra(EXTRA_TYPE);
         if (mPostKey == null) {
@@ -89,8 +81,6 @@ public class PostDetailActivity extends AppCompatActivity implements View.OnClic
         }
 
 
-
-        // Initialize Database
         mPostReference = FirebaseDatabase.getInstance().getReference()
                 .child("posts/" + mType).child(mPostKey);
         mCommentsReference = FirebaseDatabase.getInstance().getReference()
@@ -108,7 +98,6 @@ public class PostDetailActivity extends AppCompatActivity implements View.OnClic
         mCommentField = findViewById(R.id.fieldCommentText);
         mCommentButton = findViewById(R.id.buttonPostComment);
         mCommentsRecycler = findViewById(R.id.recyclerPostComments);
-
         mCommentButton.setOnClickListener(this);
         mCommentsRecycler.setLayoutManager(new LinearLayoutManager(this));
     }
@@ -139,42 +128,33 @@ public class PostDetailActivity extends AppCompatActivity implements View.OnClic
     @Override
     public void onStart() {
         super.onStart();
-
         final long ONE_MEGABYTE = 1024 * 1024*1024;
 
-        Log.e("디버그",mAuthorView.getText().toString()+"/"+mTitleView.getText().toString()+"-----------------------------------------------------");
-
-        // Add value event listener to the post
-        // [START post_value_event_listener]
         ValueEventListener postListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                // Get Post object and use the values to update the UI
-                Post post = dataSnapshot.getValue(Post.class);
 
+                PostModel postModel = dataSnapshot.getValue(PostModel.class);
 
-                if(FirebaseStorage.getInstance().getReference().child(post.author + "/profile/profileImage") != null){
+                if(FirebaseStorage.getInstance().getReference().child(postModel.author + "/profile/profileImage") != null){
                     final long ONE_MEGABYTE = 1024 * 1024*1024;
-                    FirebaseStorage.getInstance().getReference().child(post.author + "/profile/profileImage").getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                    FirebaseStorage.getInstance().getReference().child(postModel.author + "/profile/profileImage").getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
                         @Override
                         public void onSuccess(byte[] bytes) {
-                            // Data for "images/island.jpg" is returns, use this as needed
                             Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0 , bytes.length);
                             mAuthorPhotoView.setImageBitmap(bitmap);
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception exception) {
-                            // Handle any errors
-                            Log.e("디버그","프로필 사진 못 봐~~~~~~~~~~");
                         }
                     });
                 }
-                mAuthorView.setText(post.author);
-                mTitleView.setText(post.title);
-                mBodyView.setText(post.body);
+                mAuthorView.setText(postModel.author);
+                mTitleView.setText(postModel.title);
+                mBodyView.setText(postModel.body);
 
-                if (!post.author.equals(userID)) {
+                if (!postModel.author.equals(userID)) {
                     mAuthor.setOnLongClickListener(new View.OnLongClickListener() {
                         @Override
                         public boolean onLongClick(View view) {
@@ -184,39 +164,10 @@ public class PostDetailActivity extends AppCompatActivity implements View.OnClic
                     registerForContextMenu(mAuthor);
                 }
 
-
-                FirebaseDatabase.getInstance().getReference("/pet/"+post.uid).addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        System.out.println("Done clear the pet data");
-
-                        for (DataSnapshot postSnapshot: dataSnapshot.getChildren()){
-                            String key = postSnapshot.getKey();
-                            System.out.println("key is "+key);
-                            //postSnapshot.child("petSpecies").getValue();
-                            //Pet get = postSnapshot.getValue(Pet.class);
-                            userCompanions = userCompanions + postSnapshot.child("petSpecies").getValue().toString() + "   ";
-                            Log.e("디버그",postSnapshot.child("petSpecies").getValue().toString());
-                            Log.e("디버그","key is "+key);
-                            Log.e("디버그",userCompanions+"!!!!!!!!!!!!!!!!!!!!!!!");
-                            //pet_data.add(get);
-                        }
-                    }
-
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
-
-                mImageReference = FirebaseStorage.getInstance().getReference().child(post.author+"/"+post.title);
-                Log.e("디버그",post.author+"/"+post.title+"-----------------------------------------------------");
-
+                mImageReference = FirebaseStorage.getInstance().getReference().child(postModel.author+"/"+ postModel.title);
                 mImageReference.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
                     @Override
                     public void onSuccess(byte[] bytes) {
-                        // Data for "images/island.jpg" is returns, use this as needed
                         Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0 , bytes.length);
                         mImageView.setVisibility(mImageView.VISIBLE);
                         mImageView.setImageBitmap(bitmap);
@@ -224,30 +175,17 @@ public class PostDetailActivity extends AppCompatActivity implements View.OnClic
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception exception) {
-                        // Handle any errors
-                        //Toast.makeText(getApplicationContext(),"이미지를 로드할 수 없습니다.",Toast.LENGTH_LONG).show();
+
                     }
                 });
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                // Getting Post failed, log a message
-                Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
-                // [START_EXCLUDE]
-                Toast.makeText(PostDetailActivity.this, "Failed to load post.",
-                        Toast.LENGTH_SHORT).show();
-                // [END_EXCLUDE]
             }
         };
         mPostReference.addValueEventListener(postListener);
-        // [END post_value_event_listener]
-
-
-        // Keep copy of post listener so we can remove it when app stops
         mPostListener = postListener;
-
-        // Listen for comments
         mAdapter = new CommentAdapter(this, mCommentsReference);
         mCommentsRecycler.setAdapter(mAdapter);
     }
@@ -256,12 +194,10 @@ public class PostDetailActivity extends AppCompatActivity implements View.OnClic
     public void onStop() {
         super.onStop();
 
-        // Remove post value event listener
         if (mPostListener != null) {
             mPostReference.removeEventListener(mPostListener);
         }
 
-        // Clean up comments listener
         mAdapter.cleanupListener();
     }
 
@@ -279,35 +215,28 @@ public class PostDetailActivity extends AppCompatActivity implements View.OnClic
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        // Get user information
-                        User user = dataSnapshot.getValue(User.class);
-                        String authorName = user.userID;
 
-                        // Create new comment object
+                        UserModel userModel = dataSnapshot.getValue(UserModel.class);
+                        String authorName = userModel.userID;
                         String commentText = mCommentField.getText().toString();
-                        Comment comment = new Comment(uid, authorName, commentText);
+                        CommentModel commentModel = new CommentModel(uid, authorName, commentText);
 
-                        // Push the comment, it will appear in the list
-                        mCommentsReference.push().setValue(comment);
-                        if(FirebaseStorage.getInstance().getReference().child(user.userID + "/profile/profileImage") != null){
+                        mCommentsReference.push().setValue(commentModel);
+                        if(FirebaseStorage.getInstance().getReference().child(userModel.userID + "/profile/profileImage") != null){
                             final long ONE_MEGABYTE = 1024 * 1024*1024;
-                            FirebaseStorage.getInstance().getReference().child(user.userID + "/profile/profileImage").getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                            FirebaseStorage.getInstance().getReference().child(userModel.userID + "/profile/profileImage").getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
                                 @Override
                                 public void onSuccess(byte[] bytes) {
-                                    // Data for "images/island.jpg" is returns, use this as needed
                                     Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0 , bytes.length);
                                     mCommentPhotoView.setImageBitmap(bitmap);
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception exception) {
-                                    // Handle any errors
-                                    Log.e("디버그","프로필 사진 못 봐~~~~~~~~~~ post");
+
                                 }
                             });
                         }
-
-                        // Clear the field
                         mCommentField.setText(null);
                     }
 
@@ -341,7 +270,7 @@ public class PostDetailActivity extends AppCompatActivity implements View.OnClic
         private ChildEventListener mChildEventListener;
 
         private List<String> mCommentIds = new ArrayList<>();
-        private List<Comment> mComments = new ArrayList<>();
+        private List<CommentModel> mCommentModels = new ArrayList<>();
         private List<Bitmap> mCommentPhotos = new ArrayList<>();
 
         public CommentAdapter(final Context context, DatabaseReference ref) {
@@ -351,143 +280,108 @@ public class PostDetailActivity extends AppCompatActivity implements View.OnClic
             mDatabaseReference = ref;
             mStorageReference = FirebaseStorage.getInstance().getReference();
 
-
-            // Create child event listener
-            // [START child_event_listener_recycler]
             ChildEventListener childEventListener = new ChildEventListener() {
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
-                    Log.d(TAG, "onChildAdded:" + dataSnapshot.getKey());
 
-                    // A new comment has been added, add it to the displayed list
-                    Comment comment = dataSnapshot.getValue(Comment.class);
+                    CommentModel commentModel = dataSnapshot.getValue(CommentModel.class);
 
-                    // [START_EXCLUDE]
-                    // Update RecyclerView
                     mCommentIds.add(dataSnapshot.getKey());
-                    mComments.add(comment);
-                    if(mStorageReference.child(comment.uid+"/profile/profileImage") != null) {
-                        mStorageReference.child(comment.uid+"/profile/profileImage").getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                    mCommentModels.add(commentModel);
+                    if(mStorageReference.child(commentModel.uid+"/profile/profileImage") != null) {
+                        mStorageReference.child(commentModel.uid+"/profile/profileImage").getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
                             @Override
                             public void onSuccess(byte[] bytes) {
-                                // Data for "images/island.jpg" is returns, use this as needed
                                 Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0 , bytes.length);
                                 mCommentPhotos.add(bitmap);
                             }
                         }).addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception exception) {
-                                // Handle any errors
-                                Log.e("디버그","프로필 사진 못 봐~~~~~~~~~~ post");
+
                             }
                         });
                     }
-                    notifyItemInserted(mComments.size() - 1);
+                    notifyItemInserted(mCommentModels.size() - 1);
                     // [END_EXCLUDE]
                 }
 
                 @Override
                 public void onChildChanged(DataSnapshot dataSnapshot, String previousChildName) {
-                    Log.d(TAG, "onChildChanged:" + dataSnapshot.getKey());
-
-                    // A comment has changed, use the key to determine if we are displaying this
-                    // comment and if so displayed the changed comment.
-                    Comment newComment = dataSnapshot.getValue(Comment.class);
+                    CommentModel newCommentModel = dataSnapshot.getValue(CommentModel.class);
                     String commentKey = dataSnapshot.getKey();
 
-                    if(mStorageReference.child(newComment.uid+"/profile/profileImage") != null) {
-                        mStorageReference.child(newComment.uid+"/profile/profileImage").getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                    if(mStorageReference.child(newCommentModel.uid+"/profile/profileImage") != null) {
+                        mStorageReference.child(newCommentModel.uid+"/profile/profileImage").getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
                             @Override
                             public void onSuccess(byte[] bytes) {
-                                // Data for "images/island.jpg" is returns, use this as needed
                                 Bitmap newCommentPhoto = BitmapFactory.decodeByteArray(bytes, 0 , bytes.length);
                             }
                         }).addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception exception) {
-                                // Handle any errors
-                                Log.e("디버그","프로필 사진 못 봐~~~~~~~~~~ post");
+
                             }
                         });
                     }
 
-                    // [START_EXCLUDE]
                     final int commentIndex = mCommentIds.indexOf(commentKey);
                     if (commentIndex > -1) {
                         // Replace with the new data
-                        mComments.set(commentIndex, newComment);
-                        if(mStorageReference.child(newComment.uid+"/profile/profileImage") != null) {
-                            mStorageReference.child(newComment.uid+"/profile/profileImage").getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                        mCommentModels.set(commentIndex, newCommentModel);
+                        if(mStorageReference.child(newCommentModel.uid+"/profile/profileImage") != null) {
+                            mStorageReference.child(newCommentModel.uid+"/profile/profileImage").getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
                                 @Override
                                 public void onSuccess(byte[] bytes) {
-                                    // Data for "images/island.jpg" is returns, use this as needed
                                     Bitmap newCommentPhoto = BitmapFactory.decodeByteArray(bytes, 0 , bytes.length);
                                     mCommentPhotos.set(commentIndex, newCommentPhoto);
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception exception) {
-                                    // Handle any errors
-                                    Log.e("디버그","프로필 사진 못 봐~~~~~~~~~~ post");
+
                                 }
                             });
                         }
 
-                        // Update the RecyclerView
-                        notifyItemChanged(commentIndex);
+                        notifyItemChanged(commentIndex); //변경사항 발생시에 업데이트
                     } else {
-                        Log.w(TAG, "onChildChanged:unknown_child:" + commentKey);
+
                     }
-                    // [END_EXCLUDE]
                 }
 
                 @Override
                 public void onChildRemoved(DataSnapshot dataSnapshot) {
-                    Log.d(TAG, "onChildRemoved:" + dataSnapshot.getKey());
 
-                    // A comment has changed, use the key to determine if we are displaying this
-                    // comment and if so remove it.
                     String commentKey = dataSnapshot.getKey();
 
-                    // [START_EXCLUDE]
                     int commentIndex = mCommentIds.indexOf(commentKey);
                     if (commentIndex > -1) {
-                        // Remove data from the list
-                        mCommentIds.remove(commentIndex);
-                        mComments.remove(commentIndex);
-                        mCommentPhotos.remove(commentIndex);
 
-                        // Update the RecyclerView
+                        mCommentIds.remove(commentIndex);
+                        mCommentModels.remove(commentIndex);
+                        mCommentPhotos.remove(commentIndex);
                         notifyItemRemoved(commentIndex);
+
                     } else {
-                        Log.w(TAG, "onChildRemoved:unknown_child:" + commentKey);
+
                     }
-                    // [END_EXCLUDE]
                 }
 
                 @Override
                 public void onChildMoved(DataSnapshot dataSnapshot, String previousChildName) {
-                    Log.d(TAG, "onChildMoved:" + dataSnapshot.getKey());
 
-                    // A comment has changed position, use the key to determine if we are
-                    // displaying this comment and if so move it.
-                    Comment movedComment = dataSnapshot.getValue(Comment.class);
+                    CommentModel movedCommentModel = dataSnapshot.getValue(CommentModel.class);
                     String commentKey = dataSnapshot.getKey();
 
-                    // ...
                 }
 
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
-                    Log.w(TAG, "postComments:onCancelled", databaseError.toException());
-                    Toast.makeText(mContext, "Failed to load comments.",
-                            Toast.LENGTH_SHORT).show();
+
                 }
             };
             ref.addChildEventListener(childEventListener);
-            // [END child_event_listener_recycler]
-
-            // Store reference to listener so it can be removed on app stop
             mChildEventListener = childEventListener;
         }
 
@@ -500,24 +394,21 @@ public class PostDetailActivity extends AppCompatActivity implements View.OnClic
 
         @Override
         public void onBindViewHolder(final CommentViewHolder holder, int position) {
-            Comment comment = mComments.get(position);
-            holder.authorView.setText(comment.author);
-            holder.bodyView.setText(comment.text);
+            CommentModel commentModel = mCommentModels.get(position);
+            holder.authorView.setText(commentModel.author);
+            holder.bodyView.setText(commentModel.text);
 
-            if(FirebaseStorage.getInstance().getReference().child(comment.uid + "/profile/profileImage") != null){
+            if(FirebaseStorage.getInstance().getReference().child(commentModel.uid + "/profile/profileImage") != null){
                 final long ONE_MEGABYTE = 1024 * 1024*1024;
-                FirebaseStorage.getInstance().getReference().child(comment.uid + "/profile/profileImage").getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                FirebaseStorage.getInstance().getReference().child(commentModel.uid + "/profile/profileImage").getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
                     @Override
                     public void onSuccess(byte[] bytes) {
-                        // Data for "images/island.jpg" is returns, use this as needed
                         Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0 , bytes.length);
                         holder.profileView.setImageBitmap(bitmap);
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception exception) {
-                        // Handle any errors
-                        Log.e("디버그","프로필 사진 못 봐~~~~~~~~~~ binding");
                     }
                 });
             }
@@ -525,7 +416,7 @@ public class PostDetailActivity extends AppCompatActivity implements View.OnClic
 
         @Override
         public int getItemCount() {
-            return mComments.size();
+            return mCommentModels.size();
         }
 
         public void cleanupListener() {

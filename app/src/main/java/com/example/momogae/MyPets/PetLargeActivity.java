@@ -22,17 +22,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import static com.example.momogae.MyPets.MyPetActivity.pet_data;
+import static com.example.momogae.MyPets.MyPetActivity.pet_Model_data;
 
 public class PetLargeActivity extends AppCompatActivity {
-    final int REQUEST_GET_SINGLE_FILE = 1;
-    int flagImage=0;
-
     StorageReference mStorage;
     private ImageView profileImage;
 
     private static TextView species, name, firstdate, age, gender, neutralization, bestFriend;
-    String petKey, userID, petName;
+    String userID, petName;
     public static Button edit_btn, delete_btn, diary_btn;
     private DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 
@@ -65,17 +62,17 @@ public class PetLargeActivity extends AppCompatActivity {
         age = (TextView) findViewById(R.id.pet_age);
         gender = (TextView) findViewById(R.id.pet_gender);
         neutralization = (TextView) findViewById(R.id.pet_neutralization);
-        bestFriend = (TextView) findViewById(R.id.pet_BFF);
+        bestFriend = (TextView) findViewById(R.id.pet_about);
 
 
 
-        species.setText(pet_data.get(position).getPetSpecies());
-        name.setText(pet_data.get(position).getPetName());
-        firstdate.setText(pet_data.get(position).getPetFirstDate());
-        age.setText(pet_data.get(position).getPetAge());
-        gender.setText(pet_data.get(position).getPetGender());
-        neutralization.setText(pet_data.get(position).getPetNeutralization());
-        bestFriend.setText(pet_data.get(position).getPetBff());
+        species.setText(pet_Model_data.get(position).getPetSpecies());
+        name.setText(pet_Model_data.get(position).getPetName());
+        firstdate.setText(pet_Model_data.get(position).getPetFirstDate());
+        age.setText(pet_Model_data.get(position).getPetAge());
+        gender.setText(pet_Model_data.get(position).getPetGender());
+        neutralization.setText(pet_Model_data.get(position).getPetNeutralization());
+        bestFriend.setText(pet_Model_data.get(position).getPetAbout());
 
         userID = SharedPreference.getAttribute(getApplicationContext(), "userID");
 
@@ -85,18 +82,18 @@ public class PetLargeActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent edit_intent = new Intent(PetLargeActivity.this, PetEditActivity.class);
                 edit_intent.putExtra("position", position);
-                edit_intent.putExtra("petName", pet_data.get(position).getPetName());
+                edit_intent.putExtra("petName", pet_Model_data.get(position).getPetName());
                 startActivity(edit_intent);
             }
         });
 
-        delete_btn = (Button) findViewById(R.id.delete_pet_btn);
+        delete_btn = (Button) findViewById(R.id.todo_pet_btn);
         delete_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent edit_intent = new Intent(getApplicationContext(), TodoActivity.class);
                 edit_intent.putExtra("position", position);
-                edit_intent.putExtra("petName", pet_data.get(position).getPetName());
+                edit_intent.putExtra("petName", pet_Model_data.get(position).getPetName());
                 startActivity(edit_intent);
             }
         });

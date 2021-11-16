@@ -120,7 +120,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.8"
-                    android:hint="Write a comment..."
+                    android:hint="Write a comment"
                     android:fontFamily="sans-serif-light"
                     android:maxLines="1" />
 

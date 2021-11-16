@@ -1,4 +1,4 @@
-package com.example.momogae.Main.models;
+package com.example.momogae.Board;
 
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @IgnoreExtraProperties
-public class Post {
+public class PostModel {
 
     public String key;
     public String uid;
@@ -16,9 +16,9 @@ public class Post {
     public String body;
     public String type;
 
-    public Post() {}
+    public PostModel() {}
 
-    public Post(String uid, String author, String title, String body, String type) {
+    public PostModel(String uid, String author, String title, String body, String type) {
         this.uid = uid;
         this.author = uid;
         this.title = title;
@@ -26,7 +26,7 @@ public class Post {
         this.type = type;
     }
 
-    public Post(String key, String uid, String author, String title, String body, String type) {
+    public PostModel(String key, String uid, String author, String title, String body, String type) {
         this.key = key;
         this.uid = uid;
         this.author = uid;

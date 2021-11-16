@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Environment;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
@@ -13,11 +12,11 @@ import androidx.core.app.ActivityCompat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Util9 {
-    private static final Util9 ourInstance = new Util9();
+public class Util {
+    private static final Util ourInstance = new Util();
 
 
-    private Util9() {
+    private Util() {
     }
 
 
@@ -60,16 +59,13 @@ public class Util9 {
     public  static boolean isPermissionGranted(Activity activity, String permission) {
         if (Build.VERSION.SDK_INT >= 23) {
             if (activity.checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED) {
-                Log.v("DirectTalk9","Permission is granted");
                 return true;
             } else {
-                Log.v("DirectTalk9","Permission is revoked");
                 ActivityCompat.requestPermissions(activity, new String[]{permission}, 1);
                 return false;
             }
         }
-        else { //permission is automatically granted on sdk<23 upon installation
-            Log.v("DirectTalk9","Permission is granted");
+        else {
             return true;
         }
     }

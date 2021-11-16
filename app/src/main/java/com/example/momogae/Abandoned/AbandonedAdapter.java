@@ -17,11 +17,11 @@ import java.util.ArrayList;
 
 public class AbandonedAdapter extends RecyclerView.Adapter<AbandonedAdapter.MyViewHolder> {
 
-    private ArrayList<AbandonedItem> mList;
+    private ArrayList<AbandonedModel> mList;
     private LayoutInflater mInflate;
     private Context mContext;
 
-    public AbandonedAdapter(Context context, ArrayList<AbandonedItem> items) {
+    public AbandonedAdapter(Context context, ArrayList<AbandonedModel> items) {
         this.mList = items;
         this.mInflate = LayoutInflater.from(context);
         this.mContext = context;

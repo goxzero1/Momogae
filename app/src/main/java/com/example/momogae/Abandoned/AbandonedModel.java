@@ -1,6 +1,6 @@
 package com.example.momogae.Abandoned;
 
-public class AbandonedItem {
+public class AbandonedModel {
     String popfile;
     String kindCd;
     String sexCd;

@@ -28,7 +28,7 @@ public class SplashActivity extends Activity {
                 if ( SharedPreference.getAttribute(getApplicationContext(),"userID")==null) {
                     mainIntent = new Intent(SplashActivity.this, LoginActivity.class);
                 } else {
-                    mainIntent = new Intent(SplashActivity.this, FriendActivity.class);
+                    mainIntent = new Intent(SplashActivity.this, ChatFragmentPagerAdapter.class);
                 }
                 SplashActivity.this.startActivity(mainIntent);
                 SplashActivity.this.finish();

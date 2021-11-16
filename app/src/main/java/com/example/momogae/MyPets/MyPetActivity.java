@@ -10,7 +10,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.momogae.Login.SharedPreference;
-import com.example.momogae.MyPets.models.Pet;
 import com.example.momogae.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
@@ -27,7 +26,7 @@ import java.util.ArrayList;
 public class MyPetActivity extends AppCompatActivity  {
 
     private FloatingActionButton fab_add;
-    public static ArrayList<Pet> pet_data;
+    public static ArrayList<PetModel> pet_Model_data;
     RecyclerView recyclerView;
     private DatabaseReference petDB;
     public static String userID;
@@ -38,7 +37,7 @@ public class MyPetActivity extends AppCompatActivity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         userID = SharedPreference.getAttribute(getApplicationContext(), "userID");
-        pet_data = new ArrayList<Pet>();
+        pet_Model_data = new ArrayList<PetModel>();
         setContentView(R.layout.activity_my_pet);
         mStorage = FirebaseStorage.getInstance().getReference();
 
@@ -47,9 +46,8 @@ public class MyPetActivity extends AppCompatActivity  {
 
         recyclerView = findViewById(R.id.myPetRecyclerView);
         recyclerView.setHasFixedSize(true);
-        adapter = new PetViewAdapter(pet_data, MyPetActivity.this);
+        adapter = new PetViewAdapter(pet_Model_data, MyPetActivity.this);
         recyclerView.setAdapter(adapter);
-        System.out.println("Done setting adapter");
 
         petDB = FirebaseDatabase.getInstance().getReference("/pet/" + userID);
         String sort_column_name = "petName";
@@ -57,13 +55,11 @@ public class MyPetActivity extends AppCompatActivity  {
         sortbyName.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                System.out.println("Done clear the pet data");
-                pet_data.clear();
+                pet_Model_data.clear();
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     String key = postSnapshot.getKey();
-                    System.out.println("key is " + key);
-                    Pet get = postSnapshot.getValue(Pet.class);
-                    pet_data.add(get);
+                    PetModel get = postSnapshot.getValue(PetModel.class);
+                    pet_Model_data.add(get);
                 }
                 adapter.notifyDataSetChanged();
             }

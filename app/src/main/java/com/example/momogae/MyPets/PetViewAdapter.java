@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.momogae.Login.SharedPreference;
-import com.example.momogae.MyPets.models.Pet;
 import com.example.momogae.R;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
@@ -24,12 +23,12 @@ import java.util.ArrayList;
 
 public class PetViewAdapter extends RecyclerView.Adapter<PetViewAdapter.MyHolder>{
 
-    ArrayList<Pet> petList;
+    ArrayList<PetModel> petModelList;
     Context context;
     String userID;
 
-    public PetViewAdapter(ArrayList<Pet> petList, Context context){
-        this.petList = petList;
+    public PetViewAdapter(ArrayList<PetModel> petModelList, Context context){
+        this.petModelList = petModelList;
         this.context = context;
         userID = SharedPreference.getAttribute(context,"userID");
     }
@@ -45,7 +44,7 @@ public class PetViewAdapter extends RecyclerView.Adapter<PetViewAdapter.MyHolder
     @Override
     public void onBindViewHolder(@NonNull MyHolder holder, int position) {
         final int pos = position;
-        Pet myList = petList.get(position);
+        PetModel myList = petModelList.get(position);
         holder.name.setText(myList.getPetName());
         holder.age.setText(myList.getPetAge());
         holder.species.setText(myList.getPetSpecies());
@@ -75,8 +74,8 @@ public class PetViewAdapter extends RecyclerView.Adapter<PetViewAdapter.MyHolder
     public int getItemCount() {
         int arr = 0;
         try {
-            if (petList.size() == 0){ arr = 0;}
-            else { arr = petList.size(); }
+            if (petModelList.size() == 0){ arr = 0;}
+            else { arr = petModelList.size(); }
         }
         catch (Exception e) {}
         return arr;

@@ -15,7 +15,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -76,7 +75,7 @@ import static android.app.Activity.RESULT_OK;
 
 public class ChatFragment extends Fragment {
     private static final int PICK_FROM_ALBUM = 1;
-    private static String rootPath = Util9.getRootPath()+"/DirectTalk9/";
+    private static String rootPath = Util.getRootPath()+"/DirectTalk9/";
 
     private Button sendBtn;
     private EditText msg_input;
@@ -128,7 +127,7 @@ public class ChatFragment extends Fragment {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if(!hasFocus) {
-                    Util9.hideKeyboard(getActivity());
+                    Util.hideKeyboard(getActivity());
                 }
             }
         });
@@ -382,7 +381,7 @@ public class ChatFragment extends Fragment {
     public void onActivityResult(final int requestCode, int resultCode, Intent data) {
         if (resultCode!= RESULT_OK) { return;}
         Uri fileUri = data.getData();
-        final String filename = Util9.getUniqueValue();
+        final String filename = Util.getUniqueValue();
 
         showProgressDialog("Uploading selected File.");
         final ChatModel.FileInfo fileinfo  = getFileDetailFromUri(getContext(), fileUri);
@@ -425,7 +424,7 @@ public class ChatFragment extends Fragment {
         if (ContentResolver.SCHEME_FILE.equals(uri.getScheme())) {
             File file = new File(uri.getPath());
             fileDetail.filename = file.getName();
-            fileDetail.filesize = Util9.size2String(file.length());
+            fileDetail.filesize = Util.size2String(file.length());
         }
 
         // Content Scheme.
@@ -436,7 +435,7 @@ public class ChatFragment extends Fragment {
                 int nameIndex = returnCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
                 int sizeIndex = returnCursor.getColumnIndex(OpenableColumns.SIZE);
                 fileDetail.filename = returnCursor.getString(nameIndex);
-                fileDetail.filesize = Util9.size2String(returnCursor.getLong(sizeIndex));
+                fileDetail.filesize = Util.size2String(returnCursor.getLong(sizeIndex));
                 returnCursor.close();
 
             }
@@ -469,27 +468,27 @@ public class ChatFragment extends Fragment {
     class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
         final private RequestOptions requestOptions = new RequestOptions().transforms(new CenterCrop(), new RoundedCorners(90));
 
-        List<Message> messageList;
+        List<MessageModel> messageModelList;
         String beforeDay = null;
 
 
         RecyclerViewAdapter() {
             File dir = new File(rootPath);
             if (!dir.exists()) {
-                if (!Util9.isPermissionGranted(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                if (!Util.isPermissionGranted(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                     return;
                 }
                 dir.mkdirs();
             }
 
-            messageList = new ArrayList<Message>();
+            messageModelList = new ArrayList<MessageModel>();
             setUnread2Read();
             startListening();
         }
 
         public void startListening() {
             beforeDay = null;
-            messageList.clear();
+            messageModelList.clear();
 
             CollectionReference roomRef = firestore.collection("rooms").document(roomID).collection("messages");
             // my chatting room information
@@ -497,33 +496,33 @@ public class ChatFragment extends Fragment {
                 @Override
                 public void onEvent(@Nullable QuerySnapshot documentSnapshots, @Nullable FirebaseFirestoreException e) {
                     if (e != null) {return;}
-                    Message message;
+                    MessageModel messageModel;
                     for (DocumentChange change : documentSnapshots.getDocumentChanges()) {
                         switch (change.getType()) {
                             case ADDED:
-                                message = change.getDocument().toObject(Message.class);
-                                //if (message.msg !=null & message.timestamp == null) {continue;} // FieldValue.serverTimestamp is so late
-                                if (message.getReadUsers().indexOf(myUid) == -1) {
-                                    message.getReadUsers().add(myUid);
-                                    change.getDocument().getReference().update("readUsers", message.getReadUsers());
+                                messageModel = change.getDocument().toObject(MessageModel.class);
+                                //if (messageModel.msg !=null & messageModel.timestamp == null) {continue;} // FieldValue.serverTimestamp is so late
+                                if (messageModel.getReadUsers().indexOf(myUid) == -1) {
+                                    messageModel.getReadUsers().add(myUid);
+                                    change.getDocument().getReference().update("readUsers", messageModel.getReadUsers());
                                 }
-                                messageList.add(message);
+                                messageModelList.add(messageModel);
                                 notifyItemInserted(change.getNewIndex());
                                 break;
 
                             case MODIFIED:
-                                message = change.getDocument().toObject(Message.class);
-                                messageList.set(change.getOldIndex(), message);
+                                messageModel = change.getDocument().toObject(MessageModel.class);
+                                messageModelList.set(change.getOldIndex(), messageModel);
                                 notifyItemChanged(change.getOldIndex());
                                 break;
 
                             case REMOVED:
-                                messageList.remove(change.getOldIndex());
+                                messageModelList.remove(change.getOldIndex());
                                 notifyItemRemoved(change.getOldIndex());
                                 break;
                         }
                     }
-                    recyclerView.scrollToPosition(messageList.size() - 1);
+                    recyclerView.scrollToPosition(messageModelList.size() - 1);
                 }
             });
 
@@ -537,22 +536,22 @@ public class ChatFragment extends Fragment {
                 listenerRegistration = null;
             }
 
-            messageList.clear();
+            messageModelList.clear();
             notifyDataSetChanged();
         }
 
         @Override
         public int getItemViewType(int position) {
-            Message message = messageList.get(position);
-            if (myUid.equals(message.getUid()) ) {
-                switch(message.getMsgtype()){
+            MessageModel messageModel = messageModelList.get(position);
+            if (myUid.equals(messageModel.getUid()) ) {
+                switch(messageModel.getMsgtype()){
                     case "1": return R.layout.item_chatimage_right;
                     case "2": return R.layout.item_chatfile_right;
                     default:  return R.layout.item_chatmsg_right;
                 }
 
             } else {
-                switch(message.getMsgtype()){
+                switch(messageModel.getMsgtype()){
                     case "1": return R.layout.item_chatimage_left;
                     case "2": return R.layout.item_chatfile_left;
                     default:  return R.layout.item_chatmsg_left;
@@ -573,33 +572,33 @@ public class ChatFragment extends Fragment {
         @Override
         public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
             final MessageViewHolder messageViewHolder = (MessageViewHolder) holder;
-            final Message message = messageList.get(position);
+            final MessageModel messageModel = messageModelList.get(position);
 
-            setReadCounter(message, messageViewHolder.read_counter);
+            setReadCounter(messageModel, messageViewHolder.read_counter);
 
-            if ("0".equals(message.getMsgtype())) {                                      // text message
-                messageViewHolder.msg_item.setText(message.getMsg());
+            if ("0".equals(messageModel.getMsgtype())) {                                      // text messageModel
+                messageViewHolder.msg_item.setText(messageModel.getMsg());
             } else
-            if ("2".equals(message.getMsgtype())) {                                      // file transfer
-                messageViewHolder.msg_item.setText(message.getFilename() + "\n" + message.getFilesize());
-                messageViewHolder.filename = message.getFilename();
-                messageViewHolder.realname = message.getMsg();
-                File file = new File(rootPath + message.getFilename());
+            if ("2".equals(messageModel.getMsgtype())) {                                      // file transfer
+                messageViewHolder.msg_item.setText(messageModel.getFilename() + "\n" + messageModel.getFilesize());
+                messageViewHolder.filename = messageModel.getFilename();
+                messageViewHolder.realname = messageModel.getMsg();
+                File file = new File(rootPath + messageModel.getFilename());
                 if(file.exists()) {
                     messageViewHolder.button_item.setText("Open File");
                 } else {
                     messageViewHolder.button_item.setText("Download");
                 }
             } else {                                                               // image transfer
-                messageViewHolder.realname = message.getMsg();
+                messageViewHolder.realname = messageModel.getMsg();
                 Glide.with(getContext())
-                        .load(storageReference.child("filesmall/"+message.getMsg()))
+                        .load(storageReference.child("filesmall/"+ messageModel.getMsg()))
                         .apply(new RequestOptions().override(800, 800))
                         .into(messageViewHolder.img_item);
             }
 
-            if (! myUid.equals(message.getUid())) {
-                UserModel userModel = userList.get(message.getUid());
+            if (! myUid.equals(messageModel.getUid())) {
+                UserModel userModel = userList.get(messageModel.getUid());
                 messageViewHolder.msg_name.setText(userModel.getUsernm());
 
                 if (FirebaseStorage.getInstance().getReference(userModel.ID+"/profile").child("profileImage")==null) {
@@ -617,10 +616,10 @@ public class ChatFragment extends Fragment {
             messageViewHolder.divider.setVisibility(View.INVISIBLE);
             messageViewHolder.divider.getLayoutParams().height = 0;
             messageViewHolder.timestamp.setText("");
-            if (message.getTimestamp()==null) {return;}
+            if (messageModel.getTimestamp()==null) {return;}
 
-            String day = dateFormatDay.format( message.getTimestamp());
-            String timestamp = dateFormatHour.format( message.getTimestamp());
+            String day = dateFormatDay.format( messageModel.getTimestamp());
+            String timestamp = dateFormatHour.format( messageModel.getTimestamp());
             messageViewHolder.timestamp.setText(timestamp);
 
             if (position==0) {
@@ -628,7 +627,7 @@ public class ChatFragment extends Fragment {
                 messageViewHolder.divider.setVisibility(View.VISIBLE);
                 messageViewHolder.divider.getLayoutParams().height = 60;
             } else {
-                Message beforeMsg = messageList.get(position - 1);
+                MessageModel beforeMsg = messageModelList.get(position - 1);
                 String beforeDay = dateFormatDay.format( beforeMsg.getTimestamp() );
 
                 if (!day.equals(beforeDay) && beforeDay != null) {
@@ -642,8 +641,8 @@ public class ChatFragment extends Fragment {
 
         }
 
-        void setReadCounter (Message message, final TextView textView) {
-            int cnt = userCount - message.getReadUsers().size();
+        void setReadCounter (MessageModel messageModel, final TextView textView) {
+            int cnt = userCount - messageModel.getReadUsers().size();
             if (cnt > 0) {
                 textView.setVisibility(View.VISIBLE);
                 textView.setText(String.valueOf(cnt));
@@ -655,7 +654,7 @@ public class ChatFragment extends Fragment {
 
         @Override
         public int getItemCount() {
-            return messageList.size();
+            return messageModelList.size();
         }
 
     }
@@ -703,7 +702,7 @@ public class ChatFragment extends Fragment {
                 }
             }
             public void download() {
-                if (!Util9.isPermissionGranted(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                if (!Util.isPermissionGranted(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                     return ;
                 }
                 showProgressDialog("Downloading File.");
@@ -715,12 +714,12 @@ public class ChatFragment extends Fragment {
                     public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
                         button_item.setText("Open File");
                         hideProgressDialog();
-                        Log.e("DirectTalk9 ","local file created " +localFile.toString());
+
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception exception) {
-                        Log.e("DirectTalk9 ","local file not created  " +exception.toString());
+
                     }
                 });
 

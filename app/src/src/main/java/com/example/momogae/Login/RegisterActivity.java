@@ -47,7 +47,6 @@ public class RegisterActivity extends AppCompatActivity {
         public void onDataChange(DataSnapshot dataSnapshot) {
             Iterator<DataSnapshot> child = dataSnapshot.getChildren().iterator();
             while (child.hasNext()) {
-                Log.e("디버그","find identical id");
                 if (editID.getText().toString().equals(child.next().getKey())) {
                     Toast.makeText(getApplicationContext(), "ID already exists.", Toast.LENGTH_LONG).show();
                     databaseReference.removeEventListener(this);
@@ -133,26 +132,24 @@ public class RegisterActivity extends AppCompatActivity {
 
         firestore.collection("users").document(editID.getText().toString()).set(user);
 
-        Log.e("디버그","name can be null");
         databaseReference.child(editID.getText().toString()).child("ID").setValue(editID.getText().toString());
         databaseReference.child(editID.getText().toString()).child("Password").setValue(editPassword.getText().toString());
         databaseReference.child(editID.getText().toString()).child("Phone").setValue(editPhone.getText().toString());
         databaseReference.child(editID.getText().toString()).child("userMsg").setValue("hello world!");
 
         if(editName.getText().toString()!=null){
-            Log.e("디버그","name can be null");
+
             databaseReference.child(editID.getText().toString()).child("Name").setValue(editName.getText().toString());
         }
         else{
-            Log.e("디버그","name no data");
+
             databaseReference.child(editID.getText().toString()).child("Name").setValue("No Data");
         }
 
         if(editEmail.getText().toString()!= null){
-            Log.e("디버그","email can be null");
+
             databaseReference.child(editID.getText().toString()).child("Email").setValue(editEmail.getText().toString());        }
         else {
-            Log.e("디버그","email no data");
             databaseReference.child(editID.getText().toString()).child("Email").setValue("No Data");
         }
 

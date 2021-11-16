@@ -6,7 +6,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -62,7 +61,7 @@ public class DiaryWriteActivity extends AppCompatActivity {
         petName = intent.getStringExtra("petName");
         saveDate = intent.getStringExtra("saveDate");
         userID = SharedPreference.getAttribute(getApplicationContext(), "userID");
-        System.out.println("userID in write mode is "+userID);
+
         setContentView(R.layout.diary_tab_write);
         // requestWindowFeature(Window.FEATURE_NO_TITLE);
         // getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -131,7 +130,7 @@ public class DiaryWriteActivity extends AppCompatActivity {
                 }
             }
         } catch (Exception e) {
-            Log.e("FileSelectorActivity", "File select error", e);
+
         }
 
     }
@@ -144,12 +143,12 @@ public class DiaryWriteActivity extends AppCompatActivity {
         Calendar time = Calendar.getInstance();
         String format_time1 = format.format(time.getTime());
 
-        //String key = databaseReference.child("diary").push().getKey();
+
         DiaryClass diaryClass = new DiaryClass(userID, title, contents, saveDate);
         Map<String, Object> childUpdates= new HashMap<>();
         childUpdates.put("/pet/"+userID+"/"+petName+"/"+saveDate, diaryClass.toMap());
-        databaseReference.updateChildren(childUpdates);
-        System.out.println("new diary added");
+        databaseReference.updateChildren(childUpdates); //다이어리 업로드
+
 
         if(flag == 1) {
             // [START upload_memory]
@@ -165,15 +164,12 @@ public class DiaryWriteActivity extends AppCompatActivity {
             uploadTask.addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception exception) {
-                    // Handle unsuccessful uploads
-                    Log.e("디버그", "업로드안됨*****************************");
+
                 }
             }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
-                    // ...
-                    Log.e("디버그", "업로드됨!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!11*****************************");
+
                 }
             });
             // [END upload_memory]

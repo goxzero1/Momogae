@@ -26,8 +26,8 @@ public class AbandonedActivity extends AppCompatActivity {
     public String dataKey ="95zOfUKYctzSJ7y9tqQq6QGtBjTeOfIf9aJOcbGtdctl4q2d3iB77Ov5WRkqERsaabfkluvGV%2B7U4BcPMmfN3A%3D%3D";
     //공공데이터에서 받은 서비스 키
     private String requestUrl;
-    ArrayList<AbandonedItem> list = null;
-    AbandonedItem abandonedItem = null; //데이터를 받아올 리스트 초기화
+    ArrayList<AbandonedModel> list = null;
+    AbandonedModel abandonedModel = null; //데이터를 받아올 리스트 초기화
     RecyclerView recyclerView;
     AbandonedAdapter adapter;
     TextView no_result;
@@ -85,20 +85,20 @@ public class AbandonedActivity extends AppCompatActivity {
                     switch (eventType){
                         case XmlPullParser.START_DOCUMENT:
                             //XML 파일의 맨 처음의 반환값
-                            list = new ArrayList<AbandonedItem>();
+                            list = new ArrayList<AbandonedModel>();
                             break;
                         case XmlPullParser.END_DOCUMENT:
                             break;
                         case XmlPullParser.END_TAG:
                             //요소의 종료태그를 만났을때 반환값
-                            if(parser.getName().equals("item") && abandonedItem != null) {
-                                list.add(abandonedItem);
+                            if(parser.getName().equals("item") && abandonedModel != null) {
+                                list.add(abandonedModel);
                             }
                             break;
                         case XmlPullParser.START_TAG:
                             //요소의 처음태그를 만났을때 반환값
                             if(parser.getName().equals("item")){
-                                abandonedItem = new AbandonedItem();
+                                abandonedModel = new AbandonedModel();
                             }
                             if (parser.getName().equals("popfile")) popfile = true; //일치할시 접근가능
                             if (parser.getName().equals("kindCd")) kindCd = true;
@@ -110,22 +110,22 @@ public class AbandonedActivity extends AppCompatActivity {
                         case XmlPullParser.TEXT:
                             //파서가 내용에 접근했을때 반환값
                             if(popfile){
-                                abandonedItem.setPopfile(parser.getText()); //true일때 내용을 저장함
+                                abandonedModel.setPopfile(parser.getText()); //true일때 내용을 저장함
                                 popfile = false;
                             } else if(kindCd) {
-                                abandonedItem.setKindCd(parser.getText());
+                                abandonedModel.setKindCd(parser.getText());
                                 kindCd = false;
                             } else if (sexCd) {
-                                abandonedItem.setSexCd(parser.getText());
+                                abandonedModel.setSexCd(parser.getText());
                                 sexCd = false;
                             } else if (specialMark) {
-                                abandonedItem.setSpecialMark(parser.getText());
+                                abandonedModel.setSpecialMark(parser.getText());
                                 specialMark = false;
                             } else if (careNm) {
-                                abandonedItem.setCareNm(parser.getText());
+                                abandonedModel.setCareNm(parser.getText());
                                 careNm = false;
                             } else if (careTel) {
-                                abandonedItem.setCareTel(parser.getText());
+                                abandonedModel.setCareTel(parser.getText());
                                 careTel = false;
                             }
                             break;

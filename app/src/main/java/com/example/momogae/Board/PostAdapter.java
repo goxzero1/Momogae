@@ -7,14 +7,13 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.momogae.Main.models.Post;
 import com.example.momogae.R;
 
 import java.util.ArrayList;
 
 public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
 
-    private ArrayList<Post> posts;
+    private ArrayList<PostModel> postModels;
     private String mUid;
     private ItemClickListener mItemClickListener;
 
@@ -23,7 +22,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
     }
 
     interface ItemClickListener {
-        void onClick(int position, Post post);
+        void onClick(int position, PostModel postModel);
     }
 
     @NonNull
@@ -36,34 +35,34 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull PostViewHolder holder, int position) {
 
-        Post post = posts.get(position);
+        PostModel postModel = postModels.get(position);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mItemClickListener.onClick(position, post);
+                mItemClickListener.onClick(position, postModel);
             }
         });
 
-        holder.bindToPost(post, new View.OnClickListener() {
+        holder.bindToPost(postModel, new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mItemClickListener.onClick(position, post);
+                mItemClickListener.onClick(position, postModel);
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        return posts != null ? posts.size() : 0;
+        return postModels != null ? postModels.size() : 0;
     }
 
     public void setItemClickListener(ItemClickListener mItemClickListener) {
         this.mItemClickListener = mItemClickListener;
     }
 
-    public void setPosts(ArrayList<Post> posts) {
-        this.posts = posts;
+    public void setPostModels(ArrayList<PostModel> postModels) {
+        this.postModels = postModels;
         notifyDataSetChanged();
     }
 }

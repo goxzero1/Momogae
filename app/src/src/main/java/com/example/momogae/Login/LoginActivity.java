@@ -56,7 +56,6 @@ public class LoginActivity extends AppCompatActivity {
 
                             if(userID.equals(checkID.getText().toString()) && userPassword.equals(checkPassword.getText().toString()))
                             {
-                                    Log.e("로그인","로그인성공$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
                                     Toast.makeText(getApplicationContext(), "로그인!", Toast.LENGTH_LONG).show();
 
                                     SharedPreference.setAttribute(getApplicationContext(), "userID",userID);

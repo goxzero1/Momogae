@@ -6,7 +6,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,8 +19,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.momogae.Login.SharedPreference;
-import com.example.momogae.Main.models.Post;
-import com.example.momogae.Main.models.User;
 import com.example.momogae.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -107,64 +104,49 @@ public class NewPostActivity extends AppCompatActivity {
         final String title = mTitleField.getText().toString();
         final String body = mBodyField.getText().toString();
 
-        // Title is required
         if (TextUtils.isEmpty(title)) {
-            mTitleField.setError(REQUIRED);
+            mTitleField.setError(REQUIRED); //글제목 필수
             return;
         }
 
-        // Body is required
         if (TextUtils.isEmpty(body)) {
-            mBodyField.setError(REQUIRED);
+            mBodyField.setError(REQUIRED); //글내용 필수
             return;
         }
 
-        // Disable button so there are no multi-posts
-        setEditingEnabled(false);
-        Toast.makeText(this, "Posting...", Toast.LENGTH_SHORT).show();
 
-        // [START single_value_read]
+        setEditingEnabled(false);
+        Toast.makeText(this, "게시중...", Toast.LENGTH_SHORT).show();
+
         final String userID = getUid();
         mDatabase.child("users").child(userID).addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         String type = BoardType.findWithIndex(mSpinner.getSelectedItemPosition()).name().toLowerCase();
+                        UserModel userModel = dataSnapshot.getValue(UserModel.class);
 
-                        // Get user value
-                        User user = dataSnapshot.getValue(User.class);
-
-                        // [START_EXCLUDE]
-                        if (user == null) {
-                            // User is null, error out
-                            Log.e(TAG, "User " + userID + " is unexpectedly null");
+                        if (userModel == null) {
                             Toast.makeText(NewPostActivity.this,
-                                    "Error: could not fetch user.",
+                                    "글 등록이 불가합니다.",
                                     Toast.LENGTH_SHORT).show();
                         } else {
-                            // Write new post
-                            Log.e(TAG, "userId ==> " + user.userID);
-                            writeNewPost(userID, user.userID, title, body, type);
+                            writeNewPost(userID, userModel.userID, title, body, type); //파이어베이스에 등록
                         }
 
-                        // Finish this Activity, back to the stream
                         setEditingEnabled(true);
                         finish();
-                        // [END_EXCLUDE]
                     }
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
-                        Log.w(TAG, "getUser:onCancelled", databaseError.toException());
-                        // [START_EXCLUDE]
                         setEditingEnabled(true);
-                        // [END_EXCLUDE]
                     }
                 });
-        // [END single_value_read]
+
 
         if(flag == 1) {
-            // [START upload_memory]
+
             mImageField.setDrawingCacheEnabled(true);
             mImageField.buildDrawingCache();
 
@@ -177,18 +159,13 @@ public class NewPostActivity extends AppCompatActivity {
             uploadTask.addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception exception) {
-                    // Handle unsuccessful uploads
-                    Log.e("디버그", "업로드안됨*****************************");
                 }
             }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
-                    // ...
-                    Log.e("디버그", "업로드됨!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!11*****************************");
+
                 }
             });
-            // [END upload_memory]
         }
     }
 
@@ -206,8 +183,8 @@ public class NewPostActivity extends AppCompatActivity {
     private void writeNewPost(String userID, String username, String title, String body, String type) {
 
         String key = mDatabase.child("posts").push().getKey(); //게시글 별 키를 다르게 해야 하기 때문에 키를 받아옴
-        Post post = new Post(userID, username, title, body, type); //게시글 정보에는 유저 아이디, 이름, 글 제목, 글 내용 그리고 타입이 있다.
-        Map<String, Object> postValues = post.toMap(); //위 정보는 posts/type/key/ 경로의 하위 정보로 업데이트된다. (postValues)
+        PostModel postModel = new PostModel(userID, username, title, body, type); //게시글 정보에는 유저 아이디, 이름, 글 제목, 글 내용 그리고 타입이 있다.
+        Map<String, Object> postValues = postModel.toMap(); //위 정보는 posts/type/key/ 경로의 하위 정보로 업데이트된다. (postValues)
 
         Map<String, Object> childUpdates = new HashMap<>(); // 파이어베이스에 데이터 업데이트
         childUpdates.put("/posts/" + type + "/" + key, postValues); //경로 : posts/type/key, +postValues
@@ -218,24 +195,16 @@ public class NewPostActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_new_post, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if(id== R.id.action_settings) {
             submitPost(flagImage);
         }
-
-        //noinspection SimplifiableIfStatement
-
         return super.onOptionsItemSelected(item);
     }
-    // [END write_fan_out]
 }

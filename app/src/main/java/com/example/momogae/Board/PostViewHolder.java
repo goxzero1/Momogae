@@ -9,7 +9,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.momogae.Main.models.Post;
 import com.example.momogae.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -39,17 +38,16 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
         profileView = itemView.findViewById(R.id.postAuthorPhoto);
     }
 
-    public void bindToPost(Post post, View.OnClickListener starClickListener) {
-        titleView.setText(post.title);
-        authorView.setText(post.author);
-        bodyView.setText(post.body);
+    public void bindToPost(PostModel postModel, View.OnClickListener starClickListener) {
+        titleView.setText(postModel.title);
+        authorView.setText(postModel.author);
+        bodyView.setText(postModel.body);
 
-        if(mStorage.child(post.author + "/profile/profileImage") != null){
+        if(mStorage.child(postModel.author + "/profile/profileImage") != null){
             final long ONE_MEGABYTE = 1024 * 1024*1024;
-            mStorage.child(post.author + "/profile/profileImage").getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+            mStorage.child(postModel.author + "/profile/profileImage").getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
                 @Override
                 public void onSuccess(byte[] bytes) {
-                    // Data for "images/island.jpg" is returns, use this as needed
                     Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0 , bytes.length);
                     profileView.setImageBitmap(bitmap);
                 }
@@ -62,7 +60,7 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
             });
         }
 
-        mStorage.child(post.author+"/"+post.title).getDownloadUrl().addOnSuccessListener(new OnSuccessListener(){
+        mStorage.child(postModel.author+"/"+ postModel.title).getDownloadUrl().addOnSuccessListener(new OnSuccessListener(){
 
             @Override
             public void onSuccess(Object o) {

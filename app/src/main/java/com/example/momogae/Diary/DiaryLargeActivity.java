@@ -6,7 +6,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -107,7 +106,7 @@ public class DiaryLargeActivity extends AppCompatActivity {
         if (mth.equals("11")) { monthView.setText("November"); }
         if (mth.equals("12")) { monthView.setText("December"); }
         dateView.setText(key.split("-")[2]);
-        System.out.println("key Date number is "+key);
+
     }
 
     @Override
@@ -143,7 +142,7 @@ public class DiaryLargeActivity extends AppCompatActivity {
                 }
             }
         } catch (Exception e) {
-            Log.e("FileSelectorActivity", "File select error", e);
+
         }
 
     }
@@ -152,13 +151,13 @@ public class DiaryLargeActivity extends AppCompatActivity {
         final String revised_title = update_title.getText().toString();
         final String revised_contents = update_contents.getText().toString();
 
-        System.out.println("new content is "+update_contents);
+
 
         DiaryClass diaryClass= new DiaryClass(userID, revised_title, revised_contents, key);
         Map<String, Object> childUpdates = new HashMap<>();
         childUpdates.put("/pet/"+userID+"/"+petName+"/"+key, diaryClass.toMap());
         databaseReference.updateChildren(childUpdates);
-        System.out.println("done revising");
+
         // [END single_value_read]
 
         if(flag == 1) {
@@ -176,14 +175,14 @@ public class DiaryLargeActivity extends AppCompatActivity {
                 @Override
                 public void onFailure(@NonNull Exception exception) {
                     // Handle unsuccessful uploads
-                    Log.e("디버그", "업로드안됨*****************************");
+
                 }
             }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
                     // ...
-                    Log.e("디버그", "업로드됨!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!11*****************************");
+
                 }
             });
             // [END upload_memory]
@@ -215,7 +214,7 @@ public class DiaryLargeActivity extends AppCompatActivity {
                 childUpdates = new HashMap<>();
                 childUpdates.put("/pet/"+userID+"/"+petName+"/"+key, null);
                 databaseReference.updateChildren(childUpdates);
-                System.out.println("done deleting");
+
                 finish();
                 break;
 
