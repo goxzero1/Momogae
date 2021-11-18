@@ -72,7 +72,7 @@ public abstract class PostListFragment extends Fragment {
             }
         });
 
-        mAdapter.setItemClickListener(new PostAdapter.ItemClickListener() {
+        mAdapter.setItemClickListener(new PostAdapter.ItemClickListener() { //포스트어댑터 리사이클러뷰 클릭시
             @Override
             public void onClick(int position, PostModel postModel) {
                 Intent intent = new Intent(getActivity(), PostDetailActivity.class);

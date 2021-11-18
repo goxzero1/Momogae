@@ -13,7 +13,7 @@ import java.io.InputStream;
 
 @GlideModule
 
-public class MyAppGlideModule extends AppGlideModule { //glide library 사용하기 위한 클래스. glide: 이미지 로딩에 쓰임
+public class GlideModel extends AppGlideModule { //glide library 사용하기 위한 클래스. glide: 이미지 로딩에 쓰임
 
     @Override
     public void registerComponents(Context context, Glide glide, Registry registry) {

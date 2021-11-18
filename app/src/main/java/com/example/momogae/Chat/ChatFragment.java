@@ -662,9 +662,6 @@ public class ChatFragment extends Fragment {
             read_counter = view.findViewById(R.id.read_counter);
             divider = view.findViewById(R.id.divider);
             divider_date = view.findViewById(R.id.divider_date);
-                  // for file
-
-
 
         }
     }

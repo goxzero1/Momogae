@@ -13,8 +13,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Util {
-    private static final Util ourInstance = new Util();
-
 
     private Util() {
     }
@@ -29,12 +27,12 @@ public class Util {
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
-    public static String getUniqueValue() {
+    public static String getUniqueValue() { //스토리지 사진 업데이트(이름설정) 항목
         SimpleDateFormat ft = new SimpleDateFormat("yyyyMMddhhmmssSSS");
         return ft.format(new Date()) + (int) (Math.random()*10);
     }
 
-    public static String size2String(Long filesize) {
+    public static String size2String(Long filesize) { //파이어스토어 사진 업데이트 항목
         Integer unit = 1024;
         if (filesize < unit){
             return String.format("%d bytes", filesize);
