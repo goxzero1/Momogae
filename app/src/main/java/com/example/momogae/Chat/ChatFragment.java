@@ -6,19 +6,15 @@ import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -27,7 +23,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -41,7 +36,6 @@ import com.bumptech.glide.request.transition.Transition;
 import com.example.momogae.Login.SharedPreference;
 import com.example.momogae.R;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
@@ -57,7 +51,6 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.firestore.WriteBatch;
-import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -383,7 +376,7 @@ public class ChatFragment extends Fragment {
         Uri fileUri = data.getData();
         final String filename = Util.getUniqueValue();
 
-        showProgressDialog("Uploading selected File.");
+        showProgressDialog("이미지를 보내는 중 입니다.");
         final ChatModel.FileInfo fileinfo  = getFileDetailFromUri(getContext(), fileUri);
 
         storageReference.child("files/"+filename).putFile(fileUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
@@ -452,7 +445,7 @@ public class ChatFragment extends Fragment {
 
         progressDialog.setIndeterminate(true);
         progressDialog.setTitle(title);
-        progressDialog.setMessage("Please wait..");
+        progressDialog.setMessage("잠시만 기다려 주시개");
         progressDialog.setCancelable(false);
         progressDialog.show();
     }
@@ -546,14 +539,12 @@ public class ChatFragment extends Fragment {
             if (myUid.equals(messageModel.getUid()) ) {
                 switch(messageModel.getMsgtype()){
                     case "1": return R.layout.item_chatimage_right;
-                    case "2": return R.layout.item_chatfile_right;
                     default:  return R.layout.item_chatmsg_right;
                 }
 
             } else {
                 switch(messageModel.getMsgtype()){
                     case "1": return R.layout.item_chatimage_left;
-                    case "2": return R.layout.item_chatfile_left;
                     default:  return R.layout.item_chatmsg_left;
 
                 }
@@ -579,17 +570,7 @@ public class ChatFragment extends Fragment {
             if ("0".equals(messageModel.getMsgtype())) {                                      // text messageModel
                 messageViewHolder.msg_item.setText(messageModel.getMsg());
             } else
-            if ("2".equals(messageModel.getMsgtype())) {                                      // file transfer
-                messageViewHolder.msg_item.setText(messageModel.getFilename() + "\n" + messageModel.getFilesize());
-                messageViewHolder.filename = messageModel.getFilename();
-                messageViewHolder.realname = messageModel.getMsg();
-                File file = new File(rootPath + messageModel.getFilename());
-                if(file.exists()) {
-                    messageViewHolder.button_item.setText("Open File");
-                } else {
-                    messageViewHolder.button_item.setText("Download");
-                }
-            } else {                                                               // image transfer
+            {                                                               // image transfer
                 messageViewHolder.realname = messageModel.getMsg();
                 Glide.with(getContext())
                         .load(storageReference.child("filesmall/"+ messageModel.getMsg()))
@@ -668,8 +649,6 @@ public class ChatFragment extends Fragment {
         public TextView read_counter;
         public LinearLayout divider;
         public TextView divider_date;
-        public TextView button_item;            // only item_chatfile_
-        public LinearLayout msgLine_item;       // only item_chatfile_
         public String filename;
         public String realname;
 
@@ -683,77 +662,11 @@ public class ChatFragment extends Fragment {
             read_counter = view.findViewById(R.id.read_counter);
             divider = view.findViewById(R.id.divider);
             divider_date = view.findViewById(R.id.divider_date);
-            button_item = view.findViewById(R.id.button_item);
-            msgLine_item = view.findViewById(R.id.msgLine_item);        // for file
+                  // for file
 
-            if (msgLine_item!=null) {
-                msgLine_item.setOnClickListener(downloadClickListener);
-            }
+
 
         }
-
-        // file download and open
-        Button.OnClickListener downloadClickListener = new View.OnClickListener() {
-            public void onClick(View view) {
-                if ("Download".equals(button_item.getText())) {
-                    download();
-                } else {
-                    openWith();
-                }
-            }
-            public void download() {
-                if (!Util.isPermissionGranted(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                    return ;
-                }
-                showProgressDialog("Downloading File.");
-
-                final File localFile = new File(rootPath, filename);
-
-                storageReference.child("files/"+realname).getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                        button_item.setText("Open File");
-                        hideProgressDialog();
-
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
-
-                    }
-                });
-
-            }
-
-            public void openWith() {
-                File newFile = new File(rootPath + filename);
-                MimeTypeMap mime = MimeTypeMap.getSingleton();
-                String ext = newFile.getName().substring(newFile.getName().lastIndexOf(".") + 1);
-                String type = mime.getMimeTypeFromExtension(ext);
-
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                Uri uri;
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    uri = FileProvider.getUriForFile(getContext(), getActivity().getPackageName() + ".provider", newFile);
-
-                    List<ResolveInfo> resInfoList = getActivity().getPackageManager().queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
-                    for (ResolveInfo resolveInfo : resInfoList) {
-                        String packageName = resolveInfo.activityInfo.packageName;
-                        getActivity().grantUriPermission(packageName, uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                    }
-
-                }else {
-
-                    uri = Uri.fromFile(newFile);
-
-                }
-
-                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                intent.setDataAndType(uri, type);//"application/vnd.android.package-archive");
-                startActivity(Intent.createChooser(intent, "Your title"));
-            }
-
-        };
     }
 
 

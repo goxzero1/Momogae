@@ -88,7 +88,7 @@ public class ChatFragmentPagerAdapter extends AppCompatActivity {
         @Override
         public Fragment getItem(int position) {
             switch (position) {
-                case 0: return new UserListFragment();
+                case 0: return new UserListFragment(); //채팅기능 시작 화면: UserlistFragment
                 case 1: return new ChatRoomFragment();
                 default: return new UserFragment();
             }

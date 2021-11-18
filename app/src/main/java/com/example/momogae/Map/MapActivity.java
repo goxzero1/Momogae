@@ -12,12 +12,10 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Looper;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -79,12 +77,9 @@ public class MapActivity extends AppCompatActivity
     private GoogleMap mGoogleMap = null;
     private Marker currentMarker = null;
 
-    private static final String TAG = "googlemap_example";
     private static final int GPS_ENABLE_REQUEST_CODE = 2001;
     private static final int UPDATE_INTERVAL_MS = 1000;  // 1초
     private static final int FASTEST_UPDATE_INTERVAL_MS = 9000; // 9초
-
-    // onRequestPermissionsResult에서 수신된 결과에서 ActivityCompat.requestPermissions를 사용한 퍼미션 요청을 구별하기 위해 사용됩니다.
     private static final int PERMISSIONS_REQUEST_CODE = 100;
     boolean needRequest = false;
 
@@ -409,13 +404,9 @@ public class MapActivity extends AppCompatActivity
                     latlng.longitude,
                     1);
         } catch (IOException ioException) {
-            //네트워크 문제
-            Toast.makeText(this, "지오코더 서비스 사용불가", Toast.LENGTH_LONG).show();
             return "지오코더 서비스 사용불가";
         } catch (IllegalArgumentException illegalArgumentException) {
-            Toast.makeText(this, "잘못된 GPS 좌표", Toast.LENGTH_LONG).show();
             return "잘못된 GPS 좌표";
-
         }
 
 
@@ -743,7 +734,7 @@ public class MapActivity extends AppCompatActivity
                 .listener(MapActivity.this)
                 .key("AIzaSyDvEYjENIJ0ff4NDH6_LaS1KrJRkdZNwf8") //구글맵 api 키 설정
                 .latlng(location.latitude, location.longitude)//현재 위치 반경에서
-                .radius(7000) // 7km 내에서 검색
+                .radius(1000) // 7km 내에서 검색
                 .type(PlaceType.VETERINARY_CARE) //구글에서 제공해주는 api
                 .build()
                 .execute();
@@ -762,7 +753,7 @@ public class MapActivity extends AppCompatActivity
                 .listener(MapActivity.this)
                 .key("AIzaSyCRAFrVWsDo4ECDz9kOMYS5Z6mjMbfy1nw")
                 .latlng(location.latitude, location.longitude)//현재 위치
-                .radius(7000) // 7km 내에서 검색
+                .radius(2000) // 7km 내에서 검색
                 .type(PlaceType.PET_STORE)
                 .build()
                 .execute();
@@ -778,7 +769,7 @@ public class MapActivity extends AppCompatActivity
                 .listener(MapActivity.this)
                 .key("AIzaSyDvEYjENIJ0ff4NDH6_LaS1KrJRkdZNwf8")
                 .latlng(location.latitude, location.longitude)//현재 위치 반경에서
-                .radius(5000) // 4km 내에서 검색
+                .radius(2000) // 4km 내에서 검색
                 .type(PlaceType.CAFE) //모든 카페가 검색됨
                 .language("ko", "KR")
                 .keyword("애견")
@@ -789,7 +780,7 @@ public class MapActivity extends AppCompatActivity
                 .listener(MapActivity.this)
                 .key("AIzaSyDvEYjENIJ0ff4NDH6_LaS1KrJRkdZNwf8")
                 .latlng(location.latitude, location.longitude)//현재 위치
-                .radius(5000) // 4km 내에서 검색
+                .radius(2000) // 4km 내에서 검색
                 .type(PlaceType.CAFE)
                 .language("ko", "KR")
                 .keyword("반려")
@@ -800,7 +791,7 @@ public class MapActivity extends AppCompatActivity
                 .listener(MapActivity.this)
                 .key("AIzaSyDvEYjENIJ0ff4NDH6_LaS1KrJRkdZNwf8")
                 .latlng(location.latitude, location.longitude)//현재 위치 반경에서
-                .radius(3000) // 3km 내에서 검색
+                .radius(2000) // 3km 내에서 검색
                 .type(PlaceType.CAFE) //모든 카페 정보가 검색됨
                 .language("ko", "KR")
                 .keyword("애견동반") //키워드 "애견동반"을 포함하여 검색
@@ -820,7 +811,7 @@ public class MapActivity extends AppCompatActivity
                 .listener(MapActivity.this)
                 .key("AIzaSyDvEYjENIJ0ff4NDH6_LaS1KrJRkdZNwf8")
                 .latlng(location.latitude, location.longitude)//현재 위치
-                .radius(10000) // 10km 내에서 검색
+                .radius(3000) // 10km 내에서 검색
                 .type(PlaceType.RESTAURANT)
                 .language("ko", "KR")
                 .keyword("애견동반")
@@ -831,10 +822,21 @@ public class MapActivity extends AppCompatActivity
                 .listener(MapActivity.this)
                 .key("AIzaSyDvEYjENIJ0ff4NDH6_LaS1KrJRkdZNwf8")
                 .latlng(location.latitude, location.longitude)//현재 위치
-                .radius(5000) // 4km 내에서 검색
-                .type(PlaceType.STORE)
+                .radius(3000) // 4km 내에서 검색
+                .type(PlaceType.RESTAURANT)
                 .language("ko", "KR")
-                .keyword("애견동반가능식당")
+                .keyword("반려")
+                .build()
+                .execute();
+
+        new NRPlaces.Builder()
+                .listener(MapActivity.this)
+                .key("AIzaSyDvEYjENIJ0ff4NDH6_LaS1KrJRkdZNwf8")
+                .latlng(location.latitude, location.longitude)//현재 위치
+                .radius(3000) // 4km 내에서 검색
+                .type(PlaceType.RESTAURANT)
+                .language("ko", "KR")
+                .keyword("애견")
                 .build()
                 .execute();
 

@@ -47,9 +47,9 @@ public class BoardActivity extends AppCompatActivity {
 
                 Arrays.asList(getString(BoardType.QUESTION.getTitleRes()),
                               getString(BoardType.FREE.getTitleRes()),
-                              getString(BoardType.SHARE.getTitleRes())));
+                              getString(BoardType.SHARE.getTitleRes()))); //페이저어댑터의 타이틀을 BoardType과 맞추기
 
-        // Set up the ViewPager with the sections adapter.
+
         mViewPager = findViewById(R.id.container);
         mViewPager.setAdapter(mPagerAdapter);
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {

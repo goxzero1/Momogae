@@ -28,9 +28,9 @@ public class PetLargeActivity extends AppCompatActivity {
     StorageReference mStorage;
     private ImageView profileImage;
 
-    private static TextView species, name, firstdate, age, gender, neutralization, bestFriend;
+    private static TextView species, name, firstdate, age, gender, neutralization, about;
     String userID, petName;
-    public static Button edit_btn, delete_btn, diary_btn;
+    public static Button edit_btn, todo_btn, diary_btn;
     private DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 
 
@@ -62,8 +62,7 @@ public class PetLargeActivity extends AppCompatActivity {
         age = (TextView) findViewById(R.id.pet_age);
         gender = (TextView) findViewById(R.id.pet_gender);
         neutralization = (TextView) findViewById(R.id.pet_neutralization);
-        bestFriend = (TextView) findViewById(R.id.pet_about);
-
+        about = (TextView) findViewById(R.id.pet_about);
 
 
         species.setText(pet_Model_data.get(position).getPetSpecies());
@@ -72,7 +71,7 @@ public class PetLargeActivity extends AppCompatActivity {
         age.setText(pet_Model_data.get(position).getPetAge());
         gender.setText(pet_Model_data.get(position).getPetGender());
         neutralization.setText(pet_Model_data.get(position).getPetNeutralization());
-        bestFriend.setText(pet_Model_data.get(position).getPetAbout());
+        about.setText(pet_Model_data.get(position).getPetAbout());
 
         userID = SharedPreference.getAttribute(getApplicationContext(), "userID");
 
@@ -87,8 +86,8 @@ public class PetLargeActivity extends AppCompatActivity {
             }
         });
 
-        delete_btn = (Button) findViewById(R.id.todo_pet_btn);
-        delete_btn.setOnClickListener(new View.OnClickListener() {
+        todo_btn = (Button) findViewById(R.id.todo_pet_btn);
+        todo_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent edit_intent = new Intent(getApplicationContext(), TodoActivity.class);

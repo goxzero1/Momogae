@@ -132,8 +132,9 @@ public class PetWriteActivity extends AppCompatActivity {
 
                         }
                     });
-                    finish();
+                    PetWriteActivity.this.finish();
                 }
+                PetWriteActivity.this.finish();
             }
         });
     }

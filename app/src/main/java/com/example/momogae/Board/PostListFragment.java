@@ -103,7 +103,7 @@ public abstract class PostListFragment extends Fragment {
             PostModel temp = item.getValue(PostModel.class);
             if (temp.body.contains(query)) {
                 temp.key = item.getKey();
-                items.add(temp);
+                items.add(temp); //query(키워드)발견시 어댑터에 추가
             }
         }
         mAdapter.setPostModels(items);

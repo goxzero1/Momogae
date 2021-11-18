@@ -46,7 +46,7 @@ public class MyPetActivity extends AppCompatActivity  {
 
         recyclerView = findViewById(R.id.myPetRecyclerView);
         recyclerView.setHasFixedSize(true);
-        adapter = new PetViewAdapter(pet_Model_data, MyPetActivity.this);
+        adapter = new PetViewAdapter(pet_Model_data, MyPetActivity.this); //petViewAdpater 연결
         recyclerView.setAdapter(adapter);
 
         petDB = FirebaseDatabase.getInstance().getReference("/pet/" + userID);

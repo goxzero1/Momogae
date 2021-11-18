@@ -25,15 +25,15 @@ public class ChatActivity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeButtonEnabled(true);
 
-        String toUid = getIntent().getStringExtra("toUid");
+        String toUid = getIntent().getStringExtra("toUid"); //채팅 기능에 필요한 Uid, roomid, roomtitle 가져오기
         final String roomID = getIntent().getStringExtra("roomID");
         String roomTitle = getIntent().getStringExtra("roomTitle");
         if (roomTitle!=null) {
             actionBar.setTitle(roomTitle);
         }
 
-        // chatting area
-        chatFragment = ChatFragment.getInstance(toUid, roomID);
+
+        chatFragment = ChatFragment.getInstance(toUid, roomID); //채팅 Fragment
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.mainFragment, chatFragment )
