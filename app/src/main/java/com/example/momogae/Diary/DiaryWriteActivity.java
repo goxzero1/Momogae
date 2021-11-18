@@ -59,12 +59,10 @@ public class DiaryWriteActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         Intent intent = getIntent();
         petName = intent.getStringExtra("petName");
-        saveDate = intent.getStringExtra("saveDate");
+        saveDate = intent.getStringExtra("saveDate"); //DiaryActivity에서 넘어온 값
         userID = SharedPreference.getAttribute(getApplicationContext(), "userID");
 
         setContentView(R.layout.diary_tab_write);
-        // requestWindowFeature(Window.FEATURE_NO_TITLE);
-        // getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         dateView = (TextView) findViewById(R.id.write_date);
         monthView = (TextView) findViewById(R.id.write_month);
@@ -124,8 +122,6 @@ public class DiaryWriteActivity extends AppCompatActivity {
                 if (requestCode==PICK_FROM_ALBUM) {
                     diary_image.setVisibility(diary_image.VISIBLE);
                     Glide.with(getApplicationContext()).load(data.getData()).into(diary_image);
-                    //diary_image.setVisibility(diary_image.VISIBLE);
-                    //diary_image.setImageURI(data.getData());
                     flagImage = 1;
                 }
             }
@@ -135,7 +131,7 @@ public class DiaryWriteActivity extends AppCompatActivity {
 
     }
 
-    private void submitDiary(int flag) {
+    private void submitDiary(int flag) { //다이어리 데이터베이스에 저장
         title = write_title.getText().toString();
         contents = write_contents.getText().toString();
 
@@ -160,7 +156,7 @@ public class DiaryWriteActivity extends AppCompatActivity {
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, uploadStream);
             byte[] bytes = uploadStream.toByteArray();
 
-            UploadTask uploadTask = mStorage.child("pet/"+ userID + "/"+ petName+ "/diary/" + format_time1 + "/photo").putBytes(bytes);
+            UploadTask uploadTask = mStorage.child("pet/"+ userID + "/"+ petName+ "/diary/" + saveDate + "/photo").putBytes(bytes);
             uploadTask.addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception exception) {
@@ -172,25 +168,19 @@ public class DiaryWriteActivity extends AppCompatActivity {
 
                 }
             });
-            // [END upload_memory]
         }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_new_diary, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.write_diary) {
             submitDiary(flagImage);
             finish();

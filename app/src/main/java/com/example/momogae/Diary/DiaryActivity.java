@@ -43,7 +43,7 @@ public class DiaryActivity extends AppCompatActivity
     public static ArrayList<CalendarDay> dates;
 
     @BindView(R.id.calendarView)
-    MaterialCalendarView widget;
+    MaterialCalendarView widget; //materialcalendar 라이브러리 사용
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -55,7 +55,7 @@ public class DiaryActivity extends AppCompatActivity
         userID = SharedPreference.getAttribute(getApplicationContext(), "userID");
         mStorage = FirebaseStorage.getInstance().getReference();
         setContentView(R.layout.content_my_diary);
-        ButterKnife.bind(this);
+        ButterKnife.bind(this); //content_my_diary xml바인딩
         diary_data = new ArrayList<DiaryModel>();
         dates = new ArrayList<CalendarDay>();
 
@@ -70,7 +70,7 @@ public class DiaryActivity extends AppCompatActivity
                     String key = postSnapshot.getKey();
                     if (key.equals("petAge")||key.equals("petGender")||key.equals("petName")||key.equals("petSpecies")||
                             key.equals("petAbout")||key.equals("petFirstDate")||key.equals("petNeutralization")||key.equals("uid")) {continue;}
-                    int year = Integer.parseInt(key.split("-")[0]);
+                    int year = Integer.parseInt(key.split("-")[0]); //String to int
                     int month = Integer.parseInt(key.split("-")[1]);
                     int day = Integer.parseInt(key.split("-")[2]);
                     dates.add(CalendarDay.from(year, month, day));
@@ -131,7 +131,7 @@ public class DiaryActivity extends AppCompatActivity
         oneDayDecorator.setDate(date.getDate());
         widget.invalidateDecorators();
 
-        if (!dates.contains(date)){
+        if (!dates.contains(date)){ //다이어리가 작성되지 않은 날짜가 선택하면 DiaryWriteActivity 실행
             Intent write_intent = new Intent(DiaryActivity.this, DiaryWriteActivity.class);
             write_intent.putExtra("petName", petName);
             write_intent.putExtra("saveDate", shot_Day);
@@ -139,7 +139,7 @@ public class DiaryActivity extends AppCompatActivity
             startActivity(write_intent);
         }
 
-        else {
+        else { //다이어리가 작성된 날짜가 선택되면 파이어베이스에서 데이터 가져오기
             diaryDB = FirebaseDatabase.getInstance().getReference("/pet/" + userID + "/" + petName);
             String sort_column_name = "title";
             Query sortbyTitle = diaryDB.orderByChild(sort_column_name);

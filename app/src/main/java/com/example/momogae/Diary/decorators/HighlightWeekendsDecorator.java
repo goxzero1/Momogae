@@ -11,17 +11,13 @@ import org.threeten.bp.DayOfWeek;
 
 public class HighlightWeekendsDecorator implements DayViewDecorator {
 
-//    private final Drawable highlightDrawable;
-//    private final Drawable drawable;
-//    private static final int color = Color.parseColor("#FFF");
-
     public HighlightWeekendsDecorator() {
     }
 
     @Override
     public boolean shouldDecorate(final CalendarDay day) {
         final DayOfWeek weekDay = day.getDate().getDayOfWeek();
-        return weekDay == DayOfWeek.SATURDAY || weekDay == DayOfWeek.SUNDAY;
+        return weekDay == DayOfWeek.SATURDAY || weekDay == DayOfWeek.SUNDAY; //토요일, 일요일 컬러 빨강
     }
 
     @Override

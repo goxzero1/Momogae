@@ -29,7 +29,7 @@ public class OneDayDecorator implements DayViewDecorator {
     public void decorate(DayViewFacade view) {
         view.addSpan(new StyleSpan(Typeface.BOLD));
         view.addSpan(new RelativeSizeSpan(1.4f));
-        view.addSpan(new ForegroundColorSpan(Color.GREEN));
+        view.addSpan(new ForegroundColorSpan(Color.GREEN)); //선택한 날짜 컬러 초록
     }
 
     public void setDate(LocalDate date) {

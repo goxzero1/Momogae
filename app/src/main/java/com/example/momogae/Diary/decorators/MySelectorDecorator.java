@@ -18,7 +18,7 @@ public class MySelectorDecorator implements DayViewDecorator {
     private HashSet<CalendarDay> dates;
 
     public MySelectorDecorator(Activity context, ArrayList<CalendarDay> dates) {
-        drawable = context.getResources().getDrawable(R.drawable.dog);
+        drawable = context.getResources().getDrawable(R.drawable.dog); //다이어리 입력시 표시
         date = CalendarDay.today();
         this.dates = new HashSet<>(dates);
     }
