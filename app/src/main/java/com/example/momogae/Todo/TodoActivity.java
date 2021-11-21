@@ -49,9 +49,8 @@ public class TodoActivity extends AppCompatActivity implements TaskAdapter.ItemC
         mAdapter = new TaskAdapter(this, this, this);
         mRecyclerView.setAdapter(mAdapter);
 
-        DividerItemDecoration decoration = new DividerItemDecoration(getApplicationContext(), VERTICAL);
+        DividerItemDecoration decoration = new DividerItemDecoration(getApplicationContext(), VERTICAL); //리사이클러뷰 구분선
         mRecyclerView.addItemDecoration(decoration);
-
         mDb = AppDatabase.getInstance(getApplicationContext());
 
 
@@ -66,14 +65,13 @@ public class TodoActivity extends AppCompatActivity implements TaskAdapter.ItemC
                 return false;
             }
 
-
             @Override
             public void onSwiped(@NonNull final RecyclerView.ViewHolder viewHolder, int swipeDir) {
                 AppExecutors.getInstance().diskIO().execute(new Runnable() {
                     @Override
                     public void run() {
                         int position = viewHolder.getAdapterPosition();
-                        List<TaskEntry> tasks =  mAdapter.getTasks();
+                        List<TaskEntity> tasks =  mAdapter.getTasks();
                         mDb.taskDao().deleteTask(tasks.get(position));
                     }
                 });
@@ -81,7 +79,7 @@ public class TodoActivity extends AppCompatActivity implements TaskAdapter.ItemC
         }).attachToRecyclerView(mRecyclerView);
 
 
-        FloatingActionButton fabButton = findViewById(R.id.fab);
+        FloatingActionButton fabButton = findViewById(R.id.fab); //패브버튼으로 할 일 추가
 
         fabButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,7 +89,6 @@ public class TodoActivity extends AppCompatActivity implements TaskAdapter.ItemC
                 startActivity(addTaskIntent);
             }
         });
-
 
         setupViewModel();
     }
@@ -109,7 +106,7 @@ public class TodoActivity extends AppCompatActivity implements TaskAdapter.ItemC
                 AppExecutors.getInstance().diskIO().execute(new Runnable() {
                     @Override
                     public void run() {
-                        mDb.taskDao().deleteAll();
+                        mDb.taskDao().deleteAll(); //데이터베이스의 모든 할 일 삭제
                     }
                 });
                 return true;
@@ -126,28 +123,27 @@ public class TodoActivity extends AppCompatActivity implements TaskAdapter.ItemC
     }
 
     @Override
-    public void onCheckBoxCheckListener(final TaskEntry taskEntry) {
+    public void onCheckBoxCheckListener(final TaskEntity taskEntity) {
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
-                mDb.taskDao().updateTask(taskEntry);
+                mDb.taskDao().updateTask(taskEntity);
 
             }
         });
     }
 
 
-    private void setupViewModel() {
+    private void setupViewModel() { //상황에 따라 다르게 표시하기
         MainViewModel viewModel = new ViewModelProvider(this).get(MainViewModel.class);
-        viewModel.getTasks().observe(this, new Observer<List<TaskEntry>>() {
+        viewModel.getTasks().observe(this, new Observer<List<TaskEntity>>() {
             @Override
-            public void onChanged(List<TaskEntry> taskEntries) { //runs on main thread
+            public void onChanged(List<TaskEntity> taskEntries) {
 
-
-                if(taskEntries.isEmpty()){
+                if(taskEntries.isEmpty()){ //할일이 비어있을 때
                     mRecyclerView.setVisibility(View.INVISIBLE);
                     mEmptyView.setVisibility(View.VISIBLE);
-                }else {
+                }else { //할일이 존재할 때
                     mRecyclerView.setVisibility(View.VISIBLE);
                     mEmptyView.setVisibility(View.GONE);
                 }

@@ -52,7 +52,6 @@ public class PetModel {
     public void setPetNeutralization(String petNeutralization) {this.petNeutralization = petNeutralization;}
     public void setPetAbout(String petAbout) {this.petAbout = petAbout;}
 
-    // [START post_to_map]
     @Exclude
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
@@ -66,6 +65,5 @@ public class PetModel {
         result.put("petNeutralization", petNeutralization);
         return result;
     }
-    // [END post_to_map]
 
 }

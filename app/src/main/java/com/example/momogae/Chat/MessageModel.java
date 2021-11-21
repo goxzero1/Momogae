@@ -7,7 +7,7 @@ import java.util.List;
 public class MessageModel {
     private String uid;
     private String msg;
-    private String msgtype;          // 0: msg, 1: image, 2: file
+    private String msgtype;   //0: 일반 메세지, 1:사진
     private Date timestamp;
     private List<String> readUsers = new ArrayList<>();
     private String filename;

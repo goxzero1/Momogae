@@ -7,12 +7,11 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
-@Database(entities = {TaskEntry.class}, version = 1, exportSchema = false)
+@Database(entities = {TaskEntity.class}, version = 1,exportSchema = false)
 @TypeConverters(DateConverter.class)
 
 public abstract class AppDatabase extends RoomDatabase {
 
-    private static final String LOG_TAG = AppDatabase.class.getSimpleName();
     private static final Object LOCK = new Object();
     private static final String DATABASE_NAME = "todolist";
     private static AppDatabase sInstance;
@@ -22,7 +21,7 @@ public abstract class AppDatabase extends RoomDatabase {
             synchronized (LOCK){
 
                 sInstance = Room.databaseBuilder(context.getApplicationContext(),
-                        AppDatabase.class, AppDatabase.DATABASE_NAME).build();
+                        AppDatabase.class, AppDatabase.DATABASE_NAME).build(); //todolist 데이터베이스 생성
             }
         }
 

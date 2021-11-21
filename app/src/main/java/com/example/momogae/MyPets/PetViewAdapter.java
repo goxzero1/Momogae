@@ -53,12 +53,11 @@ public class PetViewAdapter extends RecyclerView.Adapter<PetViewAdapter.MyHolder
         FirebaseStorage.getInstance().getReference("pet/" + userID + "/" + myList.getPetName() + "/profile").child("profileImage").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
-                // Data for "images/island.jpg" is returns, use this as needed
-                Glide.with(context).load(uri).into(holder.imageView);
+                Glide.with(context).load(uri).into(holder.imageView); //파이어베이스상 경로에 이미지 등록되어있을시 이미지로드
             }
         });
 
-        holder.imageView.setOnClickListener(new View.OnClickListener(){
+        holder.imageView.setOnClickListener(new View.OnClickListener(){ //홀더 이미지 클릭시 LargeActivity로 넘어감
             @Override
             public void onClick(View v){
                 Context context = v.getContext();

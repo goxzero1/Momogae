@@ -74,7 +74,7 @@ public class AbandonedActivity extends AppCompatActivity {
                 InputStream is = url.openStream(); //url 주소를 넣어 그 안의 주소를 읽어옴
                 XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
                 XmlPullParser parser = factory.newPullParser();
-                parser.setInput(new InputStreamReader(is, "UTF-8"));
+                parser.setInput(new InputStreamReader(is, "UTF-8")); //xml파일을 인코더하기 위해 필요한 코드
                 // XmlPullParser를 이용해 데이터를 파싱하고 데이터를 한글형식으로 받아옴
 
                 String tag;

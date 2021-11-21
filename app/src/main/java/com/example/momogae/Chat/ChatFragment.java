@@ -125,6 +125,8 @@ public class ChatFragment extends Fragment {
             }
         });
 
+
+
         if (getArguments() != null) {
             roomID = getArguments().getString("roomID");
             toUid = getArguments().getString("toUid");
@@ -520,7 +522,6 @@ public class ChatFragment extends Fragment {
             });
 
         }
-
 
 
         public void stopListening() {

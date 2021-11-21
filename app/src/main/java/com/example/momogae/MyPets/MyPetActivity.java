@@ -37,7 +37,7 @@ public class MyPetActivity extends AppCompatActivity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         userID = SharedPreference.getAttribute(getApplicationContext(), "userID");
-        pet_Model_data = new ArrayList<PetModel>();
+        pet_Model_data = new ArrayList<PetModel>(); //펫 리스트
         setContentView(R.layout.activity_my_pet);
         mStorage = FirebaseStorage.getInstance().getReference();
 
@@ -70,7 +70,7 @@ public class MyPetActivity extends AppCompatActivity  {
             }
         });
 
-        fab_add = (FloatingActionButton) findViewById(R.id.fabNewPet);
+        fab_add = (FloatingActionButton) findViewById(R.id.fabNewPet); //새로운 마이펫 등록
         fab_add.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent write_intent = new Intent(MyPetActivity.this, PetWriteActivity.class);

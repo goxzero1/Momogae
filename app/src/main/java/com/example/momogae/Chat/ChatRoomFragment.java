@@ -137,9 +137,8 @@ public class ChatRoomFragment extends Fragment {
                                 if (messageModel.getMsg() !=null) { // there are no last messageModel
                                     chatRoomModel.setLastDatetime(simpleDateFormat.format(messageModel.getTimestamp()));
                                     switch(messageModel.getMsgtype()){
-                                        case "1": chatRoomModel.setLastMsg("Image"); break;
-                                        case "2": chatRoomModel.setLastMsg("File"); break;
-                                        default:  chatRoomModel.setLastMsg(messageModel.getMsg());
+                                        case "1": chatRoomModel.setLastMsg("Image"); break; //마지막에 보낸 메세지가 사진형식일 때
+                                        default:  chatRoomModel.setLastMsg(messageModel.getMsg()); //마지막에 보낸 메세지 setting
                                     }
                                 }
                                 Map<String, Long> users = (Map<String, Long>) document.get("users");
@@ -160,7 +159,7 @@ public class ChatRoomFragment extends Fragment {
                                         chatRoomModel.setTitle(userModel.getUsernm());
                                         chatRoomModel.setPhoto(userModel.ID+"/profile");
                                     }
-                                } else {                // group chat room
+                                } else {
                                     chatRoomModel.setTitle(document.getString("title"));
                                 }
                                 if (messageModel.getTimestamp()==null) messageModel.setTimestamp(new Date());

@@ -22,13 +22,10 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
 
 
     private static final String DATE_FORMAT = "dd/MM/yyy";
-
     final private ItemClickListener mItemClickListener;
     final private CheckBoxCheckListener mCheckBoxCheckListener;
-    // Class variables for the List that holds task data and the Context
-    private List<TaskEntry> mTaskEntries;
+    private List<TaskEntity> mTaskEntries;
     private Context mContext;
-    // Date formatter
     private SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT, Locale.getDefault());
 
     public TaskAdapter(Context context, ItemClickListener listener, CheckBoxCheckListener mCheckBoxCheckListener) {
@@ -41,7 +38,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
     @NonNull
     @Override
     public TaskViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        // Inflate the task_layout to a view
         View view = LayoutInflater.from(mContext)
                 .inflate(R.layout.task_layout, parent, false);
 
@@ -51,22 +47,16 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
 
     @Override
     public void onBindViewHolder(TaskViewHolder holder, int position) {
-        // Determine the values of the wanted data
-        TaskEntry taskEntry = mTaskEntries.get(position);
-        String description = taskEntry.getDescription();
 
-        String updatedAt = dateFormat.format(taskEntry.getUpdatedAt());
+        TaskEntity taskEntity = mTaskEntries.get(position);
+        String description = taskEntity.getDescription();
+        String updatedAt = dateFormat.format(taskEntity.getUpdatedAt());
 
+        holder.taskDescriptionView.setText(description); //할일
+        holder.updatedAtView.setText(updatedAt); //날짜
+        holder.checkBox.setChecked(taskEntity.isChecked()); //체크박스
 
-        holder.taskDescriptionView.setText(description);
-        holder.updatedAtView.setText(updatedAt);
-
-
-
-
-        holder.checkBox.setChecked(taskEntry.isChecked());
-
-        if(taskEntry.isChecked()){
+        if(taskEntity.isChecked()){ //체크박스 체크시 할일 글자 변경 이벤트
             holder.taskDescriptionView.setBackgroundResource(R.drawable.strike_through);
             holder.taskDescriptionView.setTextColor(Color.GRAY);
 
@@ -85,13 +75,13 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         return mTaskEntries.size();
     }
 
-    public List<TaskEntry> getTasks() {
+    public List<TaskEntity> getTasks() {
         return mTaskEntries;
     }
 
 
 
-    public void setTasks(List<TaskEntry> taskEntries) {
+    public void setTasks(List<TaskEntity> taskEntries) {
         mTaskEntries = taskEntries;
         notifyDataSetChanged();
     }
@@ -102,12 +92,10 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
     }
 
     public interface CheckBoxCheckListener {
-        void onCheckBoxCheckListener(TaskEntry taskEntry);
+        void onCheckBoxCheckListener(TaskEntity taskEntity);
     }
 
-
-    // Inner class for creating ViewHolders
-    class TaskViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class TaskViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener { //뷰홀더 클릭이벤트 발생시
 
 
         TextView taskDescriptionView;
@@ -123,7 +111,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
             checkBox = itemView.findViewById(R.id.checkBox);
             itemView.setOnClickListener(this);
 
-            checkBox.setOnClickListener(new View.OnClickListener() {
+            checkBox.setOnClickListener(new View.OnClickListener() { //체크박스 선택/비선택 홀더 모습
                 @Override
                 public void onClick(View v) {
                     if(mTaskEntries.get(getAdapterPosition()).isChecked()){

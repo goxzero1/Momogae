@@ -22,7 +22,6 @@ public class AddTaskActivity extends AppCompatActivity {
     public static final String EXTRA_TASK_ID = "extraTaskId";
     public static final String INSTANCE_TASK_ID = "instanceTaskId";
     private static final int DEFAULT_TASK_ID = -1;
-    private static final String TAG = AddTaskActivity.class.getSimpleName();
 
     EditText mEditText;
     Button mButton;
@@ -34,7 +33,7 @@ public class AddTaskActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_task);
 
-        initViews();
+        initViews(); //할 일 추가 코드
 
          mDb = AppDatabase.getInstance(getApplicationContext());
 
@@ -42,19 +41,19 @@ public class AddTaskActivity extends AppCompatActivity {
             mTaskId = savedInstanceState.getInt(INSTANCE_TASK_ID, DEFAULT_TASK_ID);
         }
 
-        Intent intent = getIntent();
-        if (intent != null && intent.hasExtra(EXTRA_TASK_ID)) {
-            mButton.setText(R.string.update_button);
+        Intent intent = getIntent(); //TodoActiviy에서 보낸 인텐트 받아와서
+        if (intent != null && intent.hasExtra(EXTRA_TASK_ID)) { //만약 인텐트가 비어있지 않다면
+            mButton.setText(R.string.update_button); //할 일 수정하기
             if (mTaskId == DEFAULT_TASK_ID) {
                 mTaskId = intent.getIntExtra(EXTRA_TASK_ID, DEFAULT_TASK_ID);
 
                 AddTaskViewModelFactory factory = new AddTaskViewModelFactory(mDb, mTaskId);
                 final AddTaskViewModel viewModel = new ViewModelProvider(this, factory).get(AddTaskViewModel.class);
-                viewModel.getTask().observe(this, new Observer<TaskEntry>() {
+                viewModel.getTask().observe(this, new Observer<TaskEntity>() {
                     @Override
-                    public void onChanged(TaskEntry taskEntry) {
+                    public void onChanged(TaskEntity taskEntity) {
                         viewModel.getTask().removeObserver(this);
-                        populateUI(taskEntry);
+                        populateUI(taskEntity);
                     }
                 });
             }
@@ -69,7 +68,7 @@ public class AddTaskActivity extends AppCompatActivity {
 
 
     private void initViews() {
-        mEditText = findViewById(R.id.editTextTaskDescription);
+        mEditText = findViewById(R.id.editTextTaskDescription); //해야 할 일이 무엇인가요?
         mButton = findViewById(R.id.saveButton);
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,7 +79,7 @@ public class AddTaskActivity extends AppCompatActivity {
     }
 
 
-    private void populateUI(TaskEntry task) {
+    private void populateUI(TaskEntity task) {
         if (task == null ){
             return;
         }
@@ -95,16 +94,16 @@ public class AddTaskActivity extends AppCompatActivity {
         if(description.equals("")){ //할일을 입력하지 않은 경우
             Toast.makeText(this,"할 일을 입력하세요", Toast.LENGTH_SHORT).show();
         }else{ //할 일을 입력한 경우 할 일 추가
-            final TaskEntry taskEntry = new TaskEntry(description, date, false );
+            final TaskEntity taskEntity = new TaskEntity(description, date, false );
 
             AppExecutors.getInstance().diskIO().execute(new Runnable() {
                 @Override
                 public void run() {
                     if(mTaskId == DEFAULT_TASK_ID){
-                        mDb.taskDao().insertTask(taskEntry);
+                        mDb.taskDao().insertTask(taskEntity);
                     }else {
-                        taskEntry.setId(mTaskId);
-                        mDb.taskDao().updateTask(taskEntry);
+                        taskEntity.setId(mTaskId);
+                        mDb.taskDao().updateTask(taskEntity);
                     }
                     finish();
                 }

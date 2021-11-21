@@ -9,23 +9,16 @@ import androidx.annotation.NonNull;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-//Executors helps in sequencetial execution, otherwise we use Thread runnable which may cause race condition
 public class AppExecutors {
 
-    // For Singleton instantiation
     private static final Object LOCK = new Object();
     private static AppExecutors sInstance;
     private final Executor diskIO;
-    private final Executor mainThread;
-    private final Executor networkIO;
 
     private AppExecutors(Executor diskIO, Executor networkIO, Executor mainThread) {
         this.diskIO = diskIO;
-        this.networkIO = networkIO;
-        this.mainThread = mainThread;
     }
 
-    //For singleton instantiation
     public static AppExecutors getInstance() {
         if (sInstance == null) {
             synchronized (LOCK) {

@@ -40,9 +40,8 @@ public class ChatFragmentPagerAdapter extends AppCompatActivity {
 
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
-
         mViewPager = (ViewPager) findViewById(R.id.container);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
+        mViewPager.setAdapter(mSectionsPagerAdapter); //viewpager
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -86,7 +85,7 @@ public class ChatFragmentPagerAdapter extends AppCompatActivity {
         }
 
         @Override
-        public Fragment getItem(int position) {
+        public Fragment getItem(int position) { //컨테이너 - 프래그먼트 - 뷰페이저 연결
             switch (position) {
                 case 0: return new UserListFragment(); //채팅기능 시작 화면: UserlistFragment
                 case 1: return new ChatRoomFragment();

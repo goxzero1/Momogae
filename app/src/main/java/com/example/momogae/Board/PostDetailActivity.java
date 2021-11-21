@@ -119,6 +119,7 @@ public class PostDetailActivity extends AppCompatActivity implements View.OnClic
         if (item.getItemId() == R.id.send_chat) {
             Intent intent = new Intent(this, ChatActivity.class); //chatActivity 연결
             intent.putExtra("toUid", mAuthorView.getText()); //특정 사용자를 나타내는 Uid를 가져옴
+            intent.putExtra("roomTitle", mAuthorView.getText());
             startActivity(intent); //ChatActivity 이동 Start
         }
         return true;

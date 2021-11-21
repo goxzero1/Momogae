@@ -10,7 +10,7 @@ import java.util.List;
 
 public class MainViewModel extends AndroidViewModel {
 
-    private LiveData<List<TaskEntry>> tasks;
+    private LiveData<List<TaskEntity>> tasks; //TaskEntity의 데이터를 받아와 모든 할 일 set
 
     public MainViewModel(@NonNull Application application){
         super(application);
@@ -18,7 +18,10 @@ public class MainViewModel extends AndroidViewModel {
         tasks = database.taskDao().loadAllTasks();
     }
 
-    public LiveData<List<TaskEntry>> getTasks() {
+    public LiveData<List<TaskEntity>> getTasks() {
         return tasks;
     }
 }
+
+
+

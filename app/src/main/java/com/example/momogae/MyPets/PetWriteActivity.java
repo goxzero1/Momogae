@@ -41,8 +41,6 @@ public class PetWriteActivity extends AppCompatActivity {
     private StorageReference mStorage;
     private String name, age, gender, species, neutralization, about, firstdate;
 
-    private Uri petPhotoUri;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,7 +57,7 @@ public class PetWriteActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(Intent.ACTION_PICK);
                 intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
-                startActivityForResult(intent, PICK_FROM_ALBUM);
+                startActivityForResult(intent, PICK_FROM_ALBUM); //flagImage = 1 로 바뀜
             }
         });
 
@@ -109,7 +107,7 @@ public class PetWriteActivity extends AppCompatActivity {
                 databaseReference.updateChildren(childUpdates);
 
                 if (flagImage == 1) {
-                    // [START upload_memory]
+
                     profileImage.setDrawingCacheEnabled(true);
                     profileImage.buildDrawingCache();
 
@@ -127,8 +125,6 @@ public class PetWriteActivity extends AppCompatActivity {
                     }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
-                            // ...
 
                         }
                     });
@@ -141,10 +137,10 @@ public class PetWriteActivity extends AppCompatActivity {
 
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data){
-        if (requestCode==PICK_FROM_ALBUM) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PICK_FROM_ALBUM) {
             Uri selectedImageUri = data.getData();
-            // Set the image in ImageView
             profileImage.setImageURI(selectedImageUri);
             flagImage = 1;
         }

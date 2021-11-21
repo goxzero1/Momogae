@@ -51,7 +51,6 @@ public class PetLargeActivity extends AppCompatActivity {
         FirebaseStorage.getInstance().getReference("pet/" + userID + "/" + petName + "/profile").child("profileImage").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
-                // Data for "images/island.jpg" is returns, use this as needed
                 Glide.with(profileImage.getContext()).load(uri).into(profileImage);
             }
         });

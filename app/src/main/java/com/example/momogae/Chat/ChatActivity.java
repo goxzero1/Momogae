@@ -33,7 +33,7 @@ public class ChatActivity extends AppCompatActivity {
         }
 
 
-        chatFragment = ChatFragment.getInstance(toUid, roomID); //채팅 Fragment
+        chatFragment = ChatFragment.getInstance(toUid, roomID); //채팅 상세 Fragment
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.mainFragment, chatFragment )

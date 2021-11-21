@@ -24,9 +24,7 @@ public class UserModel {
         this.ID = ID;
     }
 
-    public String getUsernm() {
-        return name;
-    }
+    public String getUsernm() { return name; }
 
     public void setUsernm(String name) {
         this.name = name;

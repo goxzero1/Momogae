@@ -52,7 +52,7 @@ public class UserListFragment extends Fragment {
 
     class UserFragmentRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
-        private List<DataSnapshot> userModels;
+        private List<DataSnapshot> userModels; //유저리스트
         private StorageReference storageReference;
         final private RequestOptions requestOptions = new RequestOptions().transforms(new CenterCrop(), new RoundedCorners(90));
 
@@ -65,7 +65,6 @@ public class UserListFragment extends Fragment {
             FirebaseDatabase.getInstance().getReference().child("users").addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    //userModels.clear();
                     Iterator<DataSnapshot> child = dataSnapshot.getChildren().iterator();
                     while(child.hasNext()){
                         DataSnapshot user = child.next();
@@ -92,7 +91,6 @@ public class UserListFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-            //final UserModel user = userModels.get(position);
             final DataSnapshot user = userModels.get(position);
             final CustomViewHolder customViewHolder = (CustomViewHolder) holder;
             customViewHolder.user_name.setText(user.child("Name").getValue().toString());
@@ -121,7 +119,8 @@ public class UserListFragment extends Fragment {
                 public void onClick(View v) {
                     Intent intent = new Intent(getView().getContext(), ChatActivity.class);
                     intent.putExtra("toUid", user.getKey());
-                    startActivity(intent);
+                    intent.putExtra("roomTitle", user.child("Name").getValue().toString());
+                    startActivity(intent); //리사이클러 아이템 선택시 chatActivity 시작 (user key 필요)
                 }
             });
         }

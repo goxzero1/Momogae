@@ -62,13 +62,11 @@ public class PetEditActivity extends AppCompatActivity {
         FirebaseStorage.getInstance().getReference("pet/" + userID + "/" + petName + "/profile").child("profileImage").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
-                // Data for "images/island.jpg" is returns, use this as needed
                 Glide.with(getApplicationContext()).load(uri).into(profileImage);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
-                // Handle any errors
                 Glide.with(getApplicationContext()).load(R.drawable.ic_pet_cafe).into(profileImage);
             }
         });
@@ -96,15 +94,12 @@ public class PetEditActivity extends AppCompatActivity {
         update_neutralization.setText(pet_Model_data.get(position).getPetNeutralization());
 
         String name = pet_Model_data.get(position).getPetName();
-        String first_date = pet_Model_data.get(position).getPetFirstDate();
-        String species = pet_Model_data.get(position).getPetSpecies();
-
         edit_name.setText(name);
 
         save_btn = (Button) findViewById(R.id.edit_save);
         save_btn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v) { //수정 과정
                 databaseReference.child("pet").child(userID).child(name).child("petAge").setValue(update_age.getText().toString());
                 {
 
@@ -179,7 +174,6 @@ public class PetEditActivity extends AppCompatActivity {
         super.onActivityResult(requestCode,resultCode,data);
         if (requestCode==PICK_FROM_ALBUM) {
             Uri selectedImageUri = data.getData();
-            // Set the image in ImageView
             profileImage.setImageURI(selectedImageUri);
             flagImage = 1;
         }

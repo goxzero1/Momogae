@@ -738,7 +738,7 @@ public class MapActivity extends AppCompatActivity
                 .type(PlaceType.VETERINARY_CARE) //구글에서 제공해주는 api
                 .build()
                 .execute();
-        mGoogleMap.animateCamera(CameraUpdateFactory.zoomTo(13), 1000, null);
+        mGoogleMap.animateCamera(CameraUpdateFactory.zoomTo(14), 1000, null);
     }
 
     public void showPlace_petstore(LatLng location)
@@ -753,11 +753,11 @@ public class MapActivity extends AppCompatActivity
                 .listener(MapActivity.this)
                 .key("AIzaSyCRAFrVWsDo4ECDz9kOMYS5Z6mjMbfy1nw")
                 .latlng(location.latitude, location.longitude)//현재 위치
-                .radius(2000) // 7km 내에서 검색
+                .radius(1500) // 7km 내에서 검색
                 .type(PlaceType.PET_STORE)
                 .build()
                 .execute();
-        mGoogleMap.animateCamera(CameraUpdateFactory.zoomTo(13), 1000, null);
+        mGoogleMap.animateCamera(CameraUpdateFactory.zoomTo(14), 1000, null);
     }
 
     public void showPlace_petcafe(LatLng location) {
@@ -769,7 +769,7 @@ public class MapActivity extends AppCompatActivity
                 .listener(MapActivity.this)
                 .key("AIzaSyDvEYjENIJ0ff4NDH6_LaS1KrJRkdZNwf8")
                 .latlng(location.latitude, location.longitude)//현재 위치 반경에서
-                .radius(2000) // 4km 내에서 검색
+                .radius(1500) // 4km 내에서 검색
                 .type(PlaceType.CAFE) //모든 카페가 검색됨
                 .language("ko", "KR")
                 .keyword("애견")
@@ -780,24 +780,14 @@ public class MapActivity extends AppCompatActivity
                 .listener(MapActivity.this)
                 .key("AIzaSyDvEYjENIJ0ff4NDH6_LaS1KrJRkdZNwf8")
                 .latlng(location.latitude, location.longitude)//현재 위치
-                .radius(2000) // 4km 내에서 검색
+                .radius(1500) // 4km 내에서 검색
                 .type(PlaceType.CAFE)
                 .language("ko", "KR")
                 .keyword("반려")
                 .build()
                 .execute();
 
-        new NRPlaces.Builder()
-                .listener(MapActivity.this)
-                .key("AIzaSyDvEYjENIJ0ff4NDH6_LaS1KrJRkdZNwf8")
-                .latlng(location.latitude, location.longitude)//현재 위치 반경에서
-                .radius(2000) // 3km 내에서 검색
-                .type(PlaceType.CAFE) //모든 카페 정보가 검색됨
-                .language("ko", "KR")
-                .keyword("애견동반") //키워드 "애견동반"을 포함하여 검색
-                .build()
-                .execute();
-        mGoogleMap.animateCamera(CameraUpdateFactory.zoomTo(13), 1000, null);
+        mGoogleMap.animateCamera(CameraUpdateFactory.zoomTo(14), 1000, null);
     }
 
     public void showPlace_PetRestaurant(LatLng location) {
@@ -811,7 +801,7 @@ public class MapActivity extends AppCompatActivity
                 .listener(MapActivity.this)
                 .key("AIzaSyDvEYjENIJ0ff4NDH6_LaS1KrJRkdZNwf8")
                 .latlng(location.latitude, location.longitude)//현재 위치
-                .radius(3000) // 10km 내에서 검색
+                .radius(2000) // 10km 내에서 검색
                 .type(PlaceType.RESTAURANT)
                 .language("ko", "KR")
                 .keyword("애견동반")
@@ -822,7 +812,7 @@ public class MapActivity extends AppCompatActivity
                 .listener(MapActivity.this)
                 .key("AIzaSyDvEYjENIJ0ff4NDH6_LaS1KrJRkdZNwf8")
                 .latlng(location.latitude, location.longitude)//현재 위치
-                .radius(3000) // 4km 내에서 검색
+                .radius(2000) // 4km 내에서 검색
                 .type(PlaceType.RESTAURANT)
                 .language("ko", "KR")
                 .keyword("반려")
@@ -833,13 +823,13 @@ public class MapActivity extends AppCompatActivity
                 .listener(MapActivity.this)
                 .key("AIzaSyDvEYjENIJ0ff4NDH6_LaS1KrJRkdZNwf8")
                 .latlng(location.latitude, location.longitude)//현재 위치
-                .radius(3000) // 4km 내에서 검색
+                .radius(2000) // 4km 내에서 검색
                 .type(PlaceType.RESTAURANT)
                 .language("ko", "KR")
                 .keyword("애견")
                 .build()
                 .execute();
 
-        mGoogleMap.animateCamera(CameraUpdateFactory.zoomTo(13), 1000, null);
+        mGoogleMap.animateCamera(CameraUpdateFactory.zoomTo(14), 1000, null);
     }
 }
